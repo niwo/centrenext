@@ -67,8 +67,8 @@ export const metadata: Metadata = {
   },
 };
 
-const umamiScriptUrl = process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL;
-const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+const goatCounterEndpoint = process.env.NEXT_PUBLIC_GOATCOUNTER_ENDPOINT;
+const goatCounterScriptUrl = process.env.NEXT_PUBLIC_GOATCOUNTER_SCRIPT_URL ?? "https://gc.zgo.at/count.js";
 
 export default function RootLayout({
   children,
@@ -87,11 +87,11 @@ export default function RootLayout({
             document.documentElement.classList.toggle("dark", theme === "dark");
           })();`}
         </Script>
-        {umamiScriptUrl && umamiWebsiteId ? (
+        {goatCounterEndpoint ? (
           <Script
-            defer
-            src={umamiScriptUrl}
-            data-website-id={umamiWebsiteId}
+            async
+            src={goatCounterScriptUrl}
+            data-goatcounter={goatCounterEndpoint}
             strategy="afterInteractive"
           />
         ) : null}

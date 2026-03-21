@@ -43,11 +43,17 @@ npm run dev
 NEXT_PUBLIC_SITE_URL=https://www.example.com
 ```
 
-- Optionales Open-Source-Tracking (Umami) kann ohne Vendor-Lock-in eingebunden werden:
+- Optionales Open-Source-Tracking mit GoatCounter kann fuer einfache Webstatistiken eingebunden werden.
+- GoatCounter ist leichtgewichtig, datensparsam und als europaeischer Dienst nutzbar.
 
 ```bash
-NEXT_PUBLIC_UMAMI_SCRIPT_URL=https://umami.example.com/script.js
-NEXT_PUBLIC_UMAMI_WEBSITE_ID=<website-id>
+NEXT_PUBLIC_GOATCOUNTER_ENDPOINT=https://<your-code>.goatcounter.com/count
 ```
 
-Wenn die Umami-Variablen fehlen, wird kein Tracking-Script geladen.
+Optional kann auch eine eigene Script-URL gesetzt werden, falls GoatCounter selbst gehostet wird:
+
+```bash
+NEXT_PUBLIC_GOATCOUNTER_SCRIPT_URL=https://stats.example.com/count.js
+```
+
+Wenn die GoatCounter-Variablen fehlen, wird kein Tracking-Script geladen.
