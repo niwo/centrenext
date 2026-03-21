@@ -1,5 +1,7 @@
 import { Phone, Mail } from "lucide-react";
 
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+
 type SiteFooterProps = {
   footer: {
     copyright: string;
@@ -17,7 +19,11 @@ type SiteFooterProps = {
 
 export function SiteFooter({ footer, practice }: SiteFooterProps) {
   return (
-    <footer className="section-shell flex flex-col gap-6 bg-forest text-sand sm:flex-row sm:items-end sm:justify-between">
+    <footer className="section-shell relative flex flex-col gap-6 bg-forest text-sand sm:flex-row sm:items-end sm:justify-between">
+      <div className="absolute top-6 right-6">
+        <ThemeToggle />
+      </div>
+
       <div className="space-y-2">
         <p className="section-kicker text-sand/60">{footer.contactKicker}</p>
         <h2 className="font-display text-5xl">{practice.name}</h2>

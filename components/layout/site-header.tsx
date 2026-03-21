@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 type SiteHeaderProps = {
@@ -50,14 +49,13 @@ export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps
             CB
           </Link>
           <div className="flex h-12 items-center">
-            <Link href={`/${locale}`} className="block font-display text-2xl leading-none text-forest transition-opacity hover:opacity-75 sm:text-3xl">
+            <Link href={`/${locale}`} className="block font-display font-black text-2xl leading-none bg-gradient-to-r from-forest via-teal-700 to-forest bg-clip-text text-transparent transition-opacity hover:opacity-75 sm:text-3xl">
               {practiceName}
             </Link>
           </div>
         </div>
 
         <div className="float-right flex h-12 items-center gap-2.5 lg:hidden">
-          <ThemeToggle />
           <Button
             type="button"
             variant="ghost"
@@ -99,9 +97,6 @@ export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps
           );
         })}
         <div className="mt-2 flex items-center gap-2 lg:mt-0">
-          <div className="hidden lg:block">
-            <ThemeToggle />
-          </div>
           <Link
             href={alternateLocaleHref}
             className="rounded-full border border-forest/15 px-4 py-2 font-semibold text-forest transition-colors hover:bg-forest hover:text-sand"

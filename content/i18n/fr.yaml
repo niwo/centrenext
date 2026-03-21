@@ -39,12 +39,6 @@ team:
     christa:
       role: "Physiotherapeute diplomee"
 
-specialties:
-  physiotherapie: Physiotherapie
-  psych-k: Psych-K
-  sportphysiotherapie: "Physiotherapie du sport"
-  faszientechniken: Techniques fasciales
-
 services:
   title: Prestations
   intro: "Les prestations sont gerees sous forme de fichiers Markdown et affichees automatiquement."

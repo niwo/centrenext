@@ -52,6 +52,10 @@ export default async function NewsPostPage({ params }: PageProps) {
     notFound();
   }
 
+  const relatedServices = content.servicePosts.filter((servicePost) =>
+    servicePost.tags.some((tag) => post.tags.includes(tag)),
+  );
+
   return (
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
@@ -76,8 +80,25 @@ export default async function NewsPostPage({ params }: PageProps) {
             <h1 className="section-title">{post.title}</h1>
             <p className="text-lg leading-8 text-ink/75">{post.excerpt}</p>
 
-            <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-              <ReactMarkdown>{post.content}</ReactMarkdown>
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+              <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
+                <ReactMarkdown>{post.content}</ReactMarkdown>
+              </div>
+
+              {relatedServices.length > 0 ? (
+                <aside className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5 lg:sticky lg:top-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.services.title}</p>
+                  <ul className="mt-3 space-y-2">
+                    {relatedServices.map((servicePost) => (
+                      <li key={servicePost.slug}>
+                        <Link href={`/${locale}/services/${servicePost.slug}`} className="font-semibold text-forest underline-offset-4 hover:underline">
+                          {servicePost.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              ) : null}
             </div>
 
             <div className="flex flex-wrap gap-3">
