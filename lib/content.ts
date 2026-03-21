@@ -124,7 +124,6 @@ type PageContent = {
   };
   testimonials: {
     title: string;
-    intro: string;
     kicker: string;
     items: TestimonialItem[];
   };
@@ -206,9 +205,9 @@ type I18nData = {
   about: { title: string; detailLink: string; body: string };
   team: {
     title: string;
-    intro: string;
     detailLink: string;
     members: Record<string, { role: string }>;
+    intro: string;
   };
   services: {
     title: string;
@@ -537,7 +536,6 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     },
     testimonials: {
       title: i18n.testimonials.title,
-      intro: i18n.testimonials.intro,
       kicker: i18n.testimonials.kicker,
       items: testimonialItems,
     },

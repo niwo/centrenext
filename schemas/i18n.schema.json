@@ -39,7 +39,7 @@
     },
     "testimonials": {
       "type": "object",
-      "required": ["kicker", "title", "intro"]
+      "required": ["kicker", "title"]
     }
   },
   "additionalProperties": false
