@@ -1,5 +1,3 @@
-### Equipe
-
 Notre equipe vous accompagne avec expertise, ecoute et une approche orientee vers des progres durables.
 
 - Suivi personnalise avec des interlocuteurs constants

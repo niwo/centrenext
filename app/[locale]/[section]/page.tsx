@@ -195,6 +195,9 @@ export default async function SectionPage({ params }: PageProps) {
               </div>
             ) : isTeamSection ? (
               <div className="space-y-8">
+                <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
+                  <ReactMarkdown>{content.details[section]}</ReactMarkdown>
+                </div>
                 <div className="grid gap-5 sm:grid-cols-2">
                   {content.page.team.people.map((person) => (
                     <Link

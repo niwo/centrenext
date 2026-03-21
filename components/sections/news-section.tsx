@@ -32,7 +32,7 @@ function formatNewsDate(date: string, locale: string) {
 
 export function NewsSection({ news, locale }: NewsSectionProps) {
   return (
-    <section id="news" className="section-shell space-y-6">
+    <section id="news" className="section-shell flex flex-col gap-6">
       <div className="space-y-2">
         <p className="section-kicker">{news.kicker}</p>
         <h2 className="section-title">{news.title}</h2>
@@ -51,7 +51,7 @@ export function NewsSection({ news, locale }: NewsSectionProps) {
           </Link>
         ))}
       </div>
-      <Button asChild variant="outline">
+      <Button asChild variant="outline" className="mt-auto self-start">
         <Link href={`/${locale}/news`}>{news.detailLink}</Link>
       </Button>
     </section>

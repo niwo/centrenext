@@ -206,7 +206,6 @@ type I18nData = {
   team: {
     title: string;
     detailLink: string;
-    members: Record<string, { role: string }>;
     intro: string;
   };
   services: {
@@ -318,7 +317,12 @@ async function readNewsPosts(newsDir: string): Promise<NewsPost[]> {
     throw error;
   });
   const markdownFiles = entries
-    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".md"))
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        entry.name.toLowerCase().endsWith(".md") &&
+        entry.name.toLowerCase() !== "index.md",
+    )
     .map((entry) => entry.name);
 
   const posts = await Promise.all(
@@ -351,7 +355,12 @@ async function readTestimonialPosts(testimonialsDir: string): Promise<Testimonia
     throw error;
   });
   const markdownFiles = entries
-    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".md"))
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        entry.name.toLowerCase().endsWith(".md") &&
+        entry.name.toLowerCase() !== "index.md",
+    )
     .map((entry) => entry.name);
 
   const items = await Promise.all(
@@ -383,7 +392,12 @@ async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
     throw error;
   });
   const markdownFiles = entries
-    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".md"))
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        entry.name.toLowerCase().endsWith(".md") &&
+        entry.name.toLowerCase() !== "index.md",
+    )
     .map((entry) => entry.name);
 
   const posts = await Promise.all(
@@ -478,7 +492,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     slug: member.id,
     name: member.name,
     slogan: member.slogans?.[locale],
-    role: member.titles?.[locale] ?? i18n.team.members[member.id]?.role ?? member.id,
+    role: member.titles?.[locale] ?? member.id,
     email: member.email,
     phone: member.phone,
     image: member.image,
