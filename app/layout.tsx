@@ -5,6 +5,8 @@ import { Cormorant_Garamond, Dancing_Script, Manrope } from "next/font/google";
 import "@/app/globals.css";
 import { getBaseUrl, getRootLanguageAlternates, toAbsoluteUrl } from "@/lib/seo";
 
+const defaultSeoDescription = "Die Praxis fuer das ganzheitliche Wohlbefinden. Angebote: Physiotherapie, Coaching und Rehabilitation.";
+
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
@@ -28,7 +30,7 @@ export const metadata: Metadata = {
     default: "Centre bien-etre",
     template: "%s | Centre bien-etre",
   },
-  description: "Mehrsprachige Website des Centre bien-etre mit Angeboten, Team, News und Kontaktinformationen.",
+  description: defaultSeoDescription,
   keywords: ["Physiotherapie", "Biel", "Bienne", "Centre bien-etre", "Angebote", "Team", "Kontakt"],
   alternates: {
     canonical: "/",
@@ -43,7 +45,7 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "Centre bien-etre",
     title: "Centre bien-etre",
-    description: "Mehrsprachige Website des Centre bien-etre mit Angeboten, Team, News und Kontaktinformationen.",
+    description: defaultSeoDescription,
     images: [{ url: toAbsoluteUrl("/images/DSC06768.jpg") }],
     locale: "de_CH",
     alternateLocale: ["fr_CH"],
@@ -51,7 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Centre bien-etre",
-    description: "Mehrsprachige Website des Centre bien-etre mit Angeboten, Team, News und Kontaktinformationen.",
+    description: defaultSeoDescription,
     images: [toAbsoluteUrl("/images/DSC06768.jpg")],
   },
   icons: {
