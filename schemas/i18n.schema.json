@@ -18,20 +18,20 @@
     },
     "team": {
       "type": "object",
-      "required": ["title", "intro", "detailLink", "members"]
+      "required": ["title", "intro", "detailLink"]
     },
     "specialties": { "type": "object" },
     "services": {
       "type": "object",
-      "required": ["title", "intro", "pricePrefix", "detailLink"]
+      "required": ["title", "pricePrefix", "detailLink"]
     },
     "news": {
       "type": "object",
-      "required": ["title", "intro", "detailLink"]
+      "required": ["title", "detailLink"]
     },
     "location": {
       "type": "object",
-      "required": ["title", "intro", "detailLink", "addressLabel", "openingHoursLabel", "mapLabel"]
+      "required": ["title", "detailLink", "addressLabel", "openingHoursLabel", "mapLabel"]
     },
     "footer": {
       "type": "object",
