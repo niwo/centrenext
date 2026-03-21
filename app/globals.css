@@ -63,10 +63,28 @@ body {
 }
 
 @layer components {
+  @keyframes logo-pulsate {
+    0%,
+    100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 0 rgb(var(--color-clay) / 0));
+    }
+
+    50% {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 10px rgb(var(--color-clay) / 0.42));
+    }
+  }
+
   .section-shell {
     @apply rounded-[2rem] p-6 shadow-soft backdrop-blur sm:p-8;
     border-color: rgb(var(--border-soft) / 0.5);
     background-color: rgb(var(--surface-shell) / 0.8);
+  }
+
+  .logo-pulsate {
+    animation: logo-pulsate 2.6s ease-in-out infinite;
+    transform-origin: center;
   }
 
   .section-title {
@@ -112,5 +130,11 @@ body {
     .testimonials-marquee-shell {
       padding: 0 2.5rem;
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-pulsate {
+    animation: none;
   }
 }
