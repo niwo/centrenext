@@ -4,7 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 
-import { getSectionSlug } from "@/lib/routes";
+import { getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
 import type { Locale } from "@/lib/site-config";
 
 export const sectionKeys = ["about", "team", "services", "news", "location"] as const;
@@ -77,6 +77,14 @@ export type TestimonialItem = {
   name: string;
   date: string;
   image?: string;
+};
+
+export type SearchIndexItem = {
+  type: "team" | "services" | "news" | "about" | "location";
+  title: string;
+  href: string;
+  summary: string;
+  haystack: string;
 };
 
 type PageContent = {
@@ -161,6 +169,7 @@ export type SiteContent = {
   teamProfiles: TeamProfile[];
   servicePosts: ServicePost[];
   newsPosts: NewsPost[];
+  searchIndex: SearchIndexItem[];
 };
 
 export type LandingPageContent = {
@@ -374,6 +383,16 @@ function compareByDateDesc(a: { date: string }, b: { date: string }) {
 
 function compareServicesBySlug(a: ServicePost, b: ServicePost) {
   return a.slug.localeCompare(b.slug);
+}
+
+function compactText(value: string, maxLength: number) {
+  const normalized = value.replace(/\s+/g, " ").trim();
+
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+
+  return `${normalized.slice(0, maxLength).trimEnd()}...`;
 }
 
 function getLocalizedField(value: LocalizedField, locale: Locale) {
@@ -648,5 +667,56 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     footer: i18n.footer,
   };
 
-  return { page, about: details.about, details, practice, teamProfiles, servicePosts, newsPosts };
+  const teamProfileMap = Object.fromEntries(teamProfiles.map((profile) => [profile.slug, profile.content]));
+
+  const teamSearchItems: SearchIndexItem[] = teamPeople.map((person) => {
+    const profileContent = teamProfileMap[person.slug] ?? "";
+    const summary = compactText([person.role, person.slogan, profileContent].filter(Boolean).join(" - "), 180);
+
+    return {
+      type: "team",
+      title: person.name,
+      href: getItemHref(locale, "team", person.slug),
+      summary,
+      haystack: [person.name, person.role, person.slogan, profileContent].filter(Boolean).join(" "),
+    };
+  });
+
+  const serviceSearchItems: SearchIndexItem[] = servicePosts.map((servicePost) => ({
+    type: "services",
+    title: servicePost.title,
+    href: getItemHref(locale, "services", servicePost.slug),
+    summary: compactText([servicePost.description, servicePost.content].filter(Boolean).join(" - "), 180),
+    haystack: [servicePost.title, servicePost.description, servicePost.content, servicePost.tags.join(" ")]
+      .filter(Boolean)
+      .join(" "),
+  }));
+
+  const newsSearchItems: SearchIndexItem[] = newsPosts.map((newsPost) => ({
+    type: "news",
+    title: newsPost.title,
+    href: getItemHref(locale, "news", newsPost.slug),
+    summary: compactText([newsPost.excerpt, newsPost.content].filter(Boolean).join(" - "), 180),
+    haystack: [newsPost.title, newsPost.excerpt, newsPost.content, newsPost.tags.join(" ")].filter(Boolean).join(" "),
+  }));
+
+  const aboutSearchItem: SearchIndexItem = {
+    type: "about",
+    title: i18n.about.title,
+    href: getSectionHref(locale, "about"),
+    summary: compactText(details.about, 180),
+    haystack: [i18n.about.title, i18n.nav.about, details.about].filter(Boolean).join(" "),
+  };
+
+  const locationSearchItem: SearchIndexItem = {
+    type: "location",
+    title: i18n.location.title,
+    href: getSectionHref(locale, "location"),
+    summary: compactText(details.location, 180),
+    haystack: [i18n.location.title, i18n.nav.location, i18n.location.intro, details.location].filter(Boolean).join(" "),
+  };
+
+  const searchIndex = [...teamSearchItems, ...serviceSearchItems, ...newsSearchItems, aboutSearchItem, locationSearchItem];
+
+  return { page, about: details.about, details, practice, teamProfiles, servicePosts, newsPosts, searchIndex };
 }
