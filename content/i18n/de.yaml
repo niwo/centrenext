@@ -59,7 +59,11 @@ location:
   mapLabel: Kartenansicht
 
 footer:
-  copyright: "\xA9 2026 Centre Bien-Etre"
   contactKicker: Kontakt
   backLink: "Zurück zur Übersicht"
   detailKicker: Detailseite
+
+testimonials:
+  kicker: Erfahrungsberichte
+  title: Was unsere Klientinnen sagen
+  intro: Stimmen aus der Praxis – ehrlich und persönlich.

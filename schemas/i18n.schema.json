@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["days", "nav", "hero", "about", "team", "specialties", "services", "news", "location", "footer"],
+  "required": ["days", "nav", "hero", "about", "team", "services", "news", "location", "footer", "testimonials"],
   "properties": {
     "days": { "type": "object" },
     "nav": {
@@ -35,7 +35,11 @@
     },
     "footer": {
       "type": "object",
-      "required": ["copyright", "contactKicker", "backLink", "detailKicker"]
+      "required": ["contactKicker", "backLink", "detailKicker"]
+    },
+    "testimonials": {
+      "type": "object",
+      "required": ["kicker", "title", "intro"]
     }
   },
   "additionalProperties": false

@@ -8,6 +8,7 @@ import { LocationSection } from "@/components/sections/location-section";
 import { NewsSection } from "@/components/sections/news-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { TeamSection } from "@/components/sections/team-section";
+import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { getSiteContent } from "@/lib/content";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
 
@@ -41,6 +42,7 @@ export default async function LocalePage({ params }: PageProps) {
           <TeamSection locale={locale} team={content.page.team} />
         </div>
         <ServicesSection locale={locale} services={content.page.services} />
+        <TestimonialsSection locale={locale} testimonials={content.page.testimonials} />
         <div className="grid gap-8 xl:grid-cols-[0.92fr_1.08fr]">
           <NewsSection locale={locale} news={content.page.news} />
           <LocationSection locale={locale} location={content.page.location} practice={content.practice} />
