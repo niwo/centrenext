@@ -12,6 +12,18 @@
     "name": {
       "type": "string"
     },
+    "seo": {
+      "type": "object",
+      "required": [
+        "defaultImage"
+      ],
+      "properties": {
+        "defaultImage": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "address": {
       "type": "object",
       "required": [

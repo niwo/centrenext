@@ -3,6 +3,10 @@ import Script from "next/script";
 import { Cormorant_Garamond, Dancing_Script, Manrope } from "next/font/google";
 
 import "@/app/globals.css";
+import { getSiteSeoContent } from "@/lib/content";
+import { getBaseUrl, getRootLanguageAlternates, toAbsoluteUrl } from "@/lib/seo";
+
+const defaultSeoDescription = "Die Praxis fuer das ganzheitliche Wohlbefinden. Angebote: Physiotherapie, Coaching und Rehabilitation.";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -21,19 +25,55 @@ const dancingScript = Dancing_Script({
   weight: ["500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: "Centre Bien-Etre 2.0",
-  description: "Mehrsprachige Landing Page fuer eine moderne Physiotherapiepraxis.",
-  icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#5bbad5" }],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { siteName, defaultImage } = await getSiteSeoContent();
+
+  return {
+    metadataBase: getBaseUrl(),
+    title: {
+      default: siteName,
+      template: `%s | ${siteName}`,
+    },
+    description: defaultSeoDescription,
+    keywords: ["Physiotherapie", "Biel", "Bienne", "Centre bien-etre", "Angebote", "Team", "Kontakt"],
+    alternates: {
+      canonical: "/",
+      languages: getRootLanguageAlternates(),
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      type: "website",
+      url: "/",
+      siteName,
+      title: siteName,
+      description: defaultSeoDescription,
+      images: [{ url: toAbsoluteUrl(defaultImage) }],
+      locale: "de_CH",
+      alternateLocale: ["fr_CH"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description: defaultSeoDescription,
+      images: [toAbsoluteUrl(defaultImage)],
+    },
+    icons: {
+      icon: [
+        { url: "/favicon.ico" },
+        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+      other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#5bbad5" }],
+    },
+  };
+}
+
+const goatCounterEndpoint = process.env.NEXT_PUBLIC_GOATCOUNTER_ENDPOINT;
+const goatCounterScriptUrl = process.env.NEXT_PUBLIC_GOATCOUNTER_SCRIPT_URL ?? "https://gc.zgo.at/count.js";
 
 export default function RootLayout({
   children,
@@ -52,6 +92,14 @@ export default function RootLayout({
             document.documentElement.classList.toggle("dark", theme === "dark");
           })();`}
         </Script>
+        {goatCounterEndpoint ? (
+          <Script
+            async
+            src={goatCounterScriptUrl}
+            data-goatcounter={goatCounterEndpoint}
+            strategy="afterInteractive"
+          />
+        ) : null}
         {children}
       </body>
     </html>

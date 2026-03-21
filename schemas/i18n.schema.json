@@ -1,8 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["days", "nav", "hero", "about", "team", "services", "news", "location", "footer", "testimonials"],
+  "required": ["landing", "days", "nav", "hero", "about", "team", "services", "news", "location", "footer", "testimonials"],
   "properties": {
+    "landing": {
+      "type": "object",
+      "required": ["localeLinkLabel"]
+    },
     "days": { "type": "object" },
     "nav": {
       "type": "object",
@@ -10,7 +14,7 @@
     },
     "hero": {
       "type": "object",
-      "required": ["eyebrow", "title", "description", "primaryCta", "secondaryCta"]
+      "required": ["eyebrow", "title", "primaryCta", "secondaryCta"]
     },
     "about": {
       "type": "object",

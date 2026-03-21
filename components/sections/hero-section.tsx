@@ -9,7 +9,6 @@ type HeroSectionProps = {
   hero: {
     eyebrow: string;
     title: string;
-    description: string;
     primaryCta: {
       label: string;
       href: string;
@@ -40,7 +39,6 @@ export function HeroSection({ hero, locale, tagline }: HeroSectionProps) {
         <div className="max-w-4xl space-y-5">
           <h1 className="font-display text-5xl leading-none text-forest sm:text-7xl">{tagline}</h1>
           <p className="max-w-3xl text-xl leading-9 text-ink/80">{hero.title}</p>
-          <p className="max-w-3xl text-lg leading-8 text-ink/75">{hero.description}</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Button asChild size="lg">
