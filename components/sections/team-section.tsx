@@ -23,7 +23,7 @@ type TeamSectionProps = {
 
 export function TeamSection({ team, locale }: TeamSectionProps) {
   return (
-    <section id="team" className="section-shell space-y-6">
+    <section id="team" className="section-shell flex flex-col gap-6">
       <div className="space-y-2">
         <p className="section-kicker">{team.kicker}</p>
         <h2 className="section-title">{team.title}</h2>
@@ -51,7 +51,7 @@ export function TeamSection({ team, locale }: TeamSectionProps) {
           </Link>
         ))}
       </div>
-      <Button asChild variant="outline">
+      <Button asChild variant="outline" className="mt-auto self-start">
         <Link href={`/${locale}/team`}>{team.detailLink}</Link>
       </Button>
     </section>

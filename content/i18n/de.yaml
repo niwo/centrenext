@@ -35,24 +35,18 @@ team:
   title: Team
   intro: "Das ist das Team von Centre bien-etre. Wir freuen uns auf euch!"
   detailLink: Details zum Team
-  members:
-    christa:
-      role: Dipl. Physiotherapeutin
 
 services:
   title: Leistungen
-  intro: Leistungen werden als eigene Markdown-Dateien gepflegt und automatisch auf der Seite dargestellt.
   pricePrefix: "ab CHF"
   detailLink: Details zu Leistungen
 
 news:
-  title: Aktuelle Hinweise
-  intro: Alle News werden als einzelne Markdown-Beiträge im News-Ordner gepflegt und automatisch nach Datum sortiert.
+  title: Aktuelle News
   detailLink: Alle News
 
 location:
   title: Standort der Praxis
-  intro: Die Praxisadresse, Kontaktinformationen und Kartenansicht werden zentral verwaltet und in beide Sprachen eingebunden.
   detailLink: Standortdetails
   addressLabel: Adresse
   openingHoursLabel: Öffnungszeiten

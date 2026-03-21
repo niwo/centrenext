@@ -31,7 +31,7 @@ type LocationSectionProps = {
 
 export function LocationSection({ location, practice, locale }: LocationSectionProps) {
   return (
-    <section id="location" className="section-shell space-y-6">
+    <section id="location" className="section-shell flex flex-col gap-6">
       <div className="space-y-2">
         <p className="section-kicker">{location.kicker}</p>
         <h2 className="section-title">{location.title}</h2>
@@ -70,7 +70,7 @@ export function LocationSection({ location, practice, locale }: LocationSectionP
         </div>
       </Card>
 
-      <Button asChild variant="outline">
+      <Button asChild variant="outline" className="mt-auto self-start">
         <Link href={`/${locale}/location`}>{location.detailLink}</Link>
       </Button>
     </section>

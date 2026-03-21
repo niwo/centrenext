@@ -35,24 +35,18 @@ team:
   title: Les collaboratrices
   intro: "Une equipe a taille humaine, avec des expertises complementaires et un suivi tres personnel."
   detailLink: "Voir l'equipe"
-  members:
-    christa:
-      role: "Physiotherapeute diplomee"
 
 services:
   title: Prestations
-  intro: "Les prestations sont gerees sous forme de fichiers Markdown et affichees automatiquement."
   pricePrefix: "des CHF"
   detailLink: Voir les prestations
 
 news:
   title: Informations recentes
-  intro: "Les actualites sont gerees sous forme d'articles Markdown et triees automatiquement par date."
   detailLink: Toutes les actualites
 
 location:
   title: "Location du cabinet"
-  intro: "L'adresse, les coordonnees et la carte sont gerees au meme endroit pour alimenter toutes les langues."
   detailLink: "Voir l'acces"
   addressLabel: Adresse
   openingHoursLabel: Horaires

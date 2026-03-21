@@ -1,0 +1,33 @@
+# Netlify configuration for static export deployment
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+# Locale detection and redirection rules
+# These redirect requests to the appropriate locale-specific path based on Accept-Language header
+
+# Redirect root to locale-specific path based on Accept-Language header
+[[redirects]]
+  from = "/"
+  to = "/de"
+  status = 302
+  force = false
+  conditions = { Language = "de" }
+
+[[redirects]]
+  from = "/"
+  to = "/fr"
+  status = 302
+  force = false
+  conditions = { Language = "fr" }
+
+# Default fallback: redirect root to German if no matching language
+[[redirects]]
+  from = "/"
+  to = "/de"
+  status = 302
+  force = false
+
+# Preserve existing locale-specific routes (no redirect needed)
+# Routes like /de/*, /fr/* will be served as-is

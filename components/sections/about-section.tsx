@@ -26,7 +26,7 @@ export function AboutSection({ locale, title, kicker, tagline, detailLink, about
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgb(var(--surface-shell)/0.4)] to-[rgb(var(--surface-shell)/0.97)]" />
       </div>
-      <div className="space-y-5 px-6 pb-6 pt-2 sm:px-8 sm:pb-8">
+        <div className="flex flex-col gap-5 px-6 pb-6 pt-2 sm:px-8 sm:pb-8">
         <div className="space-y-2">
           <p className="section-kicker">{kicker}</p>
           <h2 className="section-title">{title}</h2>
@@ -35,7 +35,7 @@ export function AboutSection({ locale, title, kicker, tagline, detailLink, about
         <div className="prose prose-stone max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
           <ReactMarkdown>{about}</ReactMarkdown>
         </div>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="mt-auto self-start">
           <Link href={`/${locale}/about`}>{detailLink}</Link>
         </Button>
       </div>
