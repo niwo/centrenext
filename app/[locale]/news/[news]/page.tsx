@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { Home } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -108,7 +109,10 @@ export default async function NewsPostPage({ params }: PageProps) {
                 <Link href={getSectionHref(localeValue, "news")}>{content.page.news.detailLink}</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href={`/${locale}`}>{content.page.footer.backLink}</Link>
+                <Link href={`/${locale}`} className="inline-flex items-center gap-2">
+                  <Home className="h-4 w-4" aria-hidden />
+                  {content.page.footer.backLink}
+                </Link>
               </Button>
             </div>
           </div>

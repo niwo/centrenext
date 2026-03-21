@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Newspaper } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -54,7 +55,10 @@ export function NewsSection({ news, locale }: NewsSectionProps) {
         ))}
       </div>
       <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={getSectionHref(locale, "news")}>{news.detailLink}</Link>
+        <Link href={getSectionHref(locale, "news")} className="inline-flex items-center gap-2">
+          <Newspaper className="h-4 w-4" aria-hidden />
+          {news.detailLink}
+        </Link>
       </Button>
     </section>
   );

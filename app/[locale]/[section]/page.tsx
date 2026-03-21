@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { Clock3 } from "lucide-react";
+import { Building2, Clock3, Home, Mail, MapPin, Phone } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MapPinned } from "lucide-react";
 import { getSiteContent, sectionKeys, type SectionKey } from "@/lib/content";
-import { getCanonicalSection, getItemHref, getSectionSlug } from "@/lib/routes";
+import { getCanonicalSection, getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
 
 type PageProps = {
@@ -27,6 +27,13 @@ const sectionImageByKey: Record<SectionKey, string> = {
   news: "/images/DSC06642.jpg",
   location: "/images/DSC06768.jpg",
 };
+
+const aboutGalleryImages = [
+  "/images/DSC06642.jpg",
+  "/images/DSC06768.jpg",
+  "/images/DSC06813.jpg",
+  "/images/DSC06840.jpg",
+];
 
 function getSectionTitle(section: SectionKey, content: Awaited<ReturnType<typeof getSiteContent>>) {
   if (section === "about") return content.page.about.title;
@@ -93,30 +100,54 @@ export default async function SectionPage({ params }: PageProps) {
             </nav>
             <h1 className="section-title">{title}</h1>
             {isAboutSection ? (
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
-                <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
-                </div>
-                <Card className="space-y-5 bg-[rgb(var(--surface-elevated)/0.74)]">
-                  <div>
-                    <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
-                      <Clock3 className="h-4 w-4" />
-                      {content.page.location.openingHoursLabel}
-                    </p>
-                    <div className="mt-4 grid gap-3 text-base text-ink/75">
-                      {content.practice.openingHours.map((slot) => (
-                        <div
-                          key={slot.day}
-                          className="flex justify-between gap-6 border-b border-[rgb(var(--border-soft)/0.6)] pb-3 last:border-none last:pb-0"
-                        >
-                          <span>{slot.day}</span>
-                          <span className="font-medium text-forest">{slot.hours}</span>
-                        </div>
-                      ))}
-                    </div>
+              <>
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+                  <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
+                    <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
                   </div>
-                </Card>
-              </div>
+                  <Card className="space-y-5 bg-[rgb(var(--surface-elevated)/0.74)]">
+                    <div>
+                      <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
+                        <Clock3 className="h-4 w-4" />
+                        {content.page.location.openingHoursLabel}
+                      </p>
+                      <div className="mt-4 grid gap-3 text-base text-ink/75">
+                        {content.practice.openingHours.map((slot) => (
+                          <div
+                            key={slot.day}
+                            className="flex justify-between gap-6 border-b border-[rgb(var(--border-soft)/0.6)] pb-3 last:border-none last:pb-0"
+                          >
+                            <span>{slot.day}</span>
+                            <span className="font-medium text-forest">{slot.hours}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+                <Button asChild variant="outline" className="self-start">
+                  <Link href={getSectionHref(localeValue, "location")} className="inline-flex items-center gap-2">
+                    <MapPin className="h-4 w-4" aria-hidden />
+                    {content.page.location.detailLink}
+                  </Link>
+                </Button>
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold uppercase tracking-[0.24em] text-clay">Galerie</p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {aboutGalleryImages.map((imageSrc, index) => (
+                      <div key={imageSrc} className="overflow-hidden rounded-2xl border border-[rgb(var(--border-soft)/0.6)] bg-[rgb(var(--surface-card)/0.88)]">
+                        <Image
+                          src={imageSrc}
+                          alt={`${title} Bild ${index + 1}`}
+                          width={960}
+                          height={640}
+                          className="h-52 w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
             ) : isServicesSection ? (
               <div className="grid gap-5 sm:grid-cols-2">
                 {content.page.services.items.map((service) => (
@@ -176,7 +207,7 @@ export default async function SectionPage({ params }: PageProps) {
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
                   <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
                 </div>
-                <Card className="space-y-3 bg-[rgb(var(--surface-elevated)/0.74)]">
+                <Card className="max-w-xl space-y-3 bg-[rgb(var(--surface-elevated)/0.74)]">
                   <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
                     <MapPinned className="h-4 w-4" />
                     {content.page.location.addressLabel}
@@ -186,7 +217,23 @@ export default async function SectionPage({ params }: PageProps) {
                       <div key={line}>{line}</div>
                     ))}
                   </address>
+                  <div className="space-y-2 pt-2 text-ink/75">
+                    <a href={`tel:${content.practice.contact.phone.replace(/\s+/g, "")}`} className="flex items-center gap-2 hover:text-forest">
+                      <Phone className="h-4 w-4 text-clay" />
+                      {content.practice.contact.phone}
+                    </a>
+                    <a href={`mailto:${content.practice.contact.email}`} className="flex items-center gap-2 hover:text-forest">
+                      <Mail className="h-4 w-4 text-clay" />
+                      {content.practice.contact.email}
+                    </a>
+                  </div>
                 </Card>
+                <Button asChild variant="outline" className="self-start">
+                  <Link href={getSectionHref(localeValue, "about")} className="inline-flex items-center gap-2">
+                    <Building2 className="h-4 w-4" aria-hidden />
+                    {content.page.location.practiceDetailLink}
+                  </Link>
+                </Button>
                 <div className="overflow-hidden rounded-[1.75rem] border border-[rgb(var(--border-soft)/0.6)] bg-[rgb(var(--surface-card)/0.9)] shadow-soft">
                   <div className="border-b border-stone-200 px-5 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
                     {content.page.location.mapLabel}
@@ -240,7 +287,10 @@ export default async function SectionPage({ params }: PageProps) {
             )}
             <div className="mt-12">
               <Button asChild>
-                <Link href={`/${locale}`}>{content.page.footer.backLink}</Link>
+                <Link href={`/${locale}`} className="inline-flex items-center gap-2">
+                  <Home className="h-4 w-4" aria-hidden />
+                  {content.page.footer.backLink}
+                </Link>
               </Button>
             </div>
           </div>

@@ -14,7 +14,7 @@
     },
     "about": {
       "type": "object",
-      "required": ["title", "detailLink", "body"]
+      "required": ["title", "detailLink"]
     },
     "team": {
       "type": "object",

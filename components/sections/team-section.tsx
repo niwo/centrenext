@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -54,7 +55,10 @@ export function TeamSection({ team, locale }: TeamSectionProps) {
         ))}
       </div>
       <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={getSectionHref(locale, "team")}>{team.detailLink}</Link>
+        <Link href={getSectionHref(locale, "team")} className="inline-flex items-center gap-2">
+          <Users className="h-4 w-4" aria-hidden />
+          {team.detailLink}
+        </Link>
       </Button>
     </section>
   );
