@@ -5,7 +5,6 @@ import ReactMarkdown from "react-markdown";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getSiteContent } from "@/lib/content";
@@ -44,6 +43,12 @@ export default async function TeamMemberPage({ params }: PageProps) {
     notFound();
   }
 
+  const relatedServices = content.servicePosts.filter((servicePost) =>
+    servicePost.tags.some((tag) => person.specialtyKeys.includes(tag)),
+  );
+  const relatedNewsPosts = content.newsPosts.filter((post) =>
+    post.tags.some((tag) => person.specialtyKeys.includes(tag)),
+  );
   const phoneHref = person.phone ? `tel:${person.phone.replace(/\s+/g, "")}` : undefined;
 
   return (
@@ -53,62 +58,94 @@ export default async function TeamMemberPage({ params }: PageProps) {
         <SiteHeader locale={locale} practiceName={content.practice.name} navigation={content.page.navigation} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
-          <Image src={person.image ?? "/images/team/christa.jpg"} alt={person.name} width={1500} height={560} className="h-72 w-full object-cover" />
-          <div className="space-y-6 px-6 pb-10 sm:px-10">
-            <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
-              <Link href={`/${locale}`} className="hover:text-forest">
-                Start
-              </Link>
-              <span aria-hidden="true" className="text-clay/60">/</span>
-              <Link href={`/${locale}/team`} className="hover:text-forest">
-                {content.page.team.title}
-              </Link>
-              <span aria-hidden="true" className="text-clay/60">/</span>
-              <span className="text-forest">{person.name}</span>
-            </nav>
-            <h1 className="section-title">{person.name}</h1>
+          <div className="relative">
+            <Image src={person.headerImage ?? person.image ?? "/images/team/christa.jpg"} alt={person.name} width={1500} height={560} className="h-72 w-full object-cover" />
+            <div className="absolute -bottom-14 left-6 sm:left-10">
+              <Image
+                src={person.image ?? "/images/team/christa.jpg"}
+                alt={person.name}
+                width={112}
+                height={112}
+                className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-md"
+              />
+            </div>
+          </div>
+          <div className="px-6 pb-10 pt-16 sm:px-10">
+            <div className="flow-root">
+              <aside className="mb-6 w-full space-y-4 lg:float-right lg:mb-4 lg:ml-8 lg:w-[22rem]">
+                <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-6 py-5 shadow-sm">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{content.page.footer.contactKicker}</p>
+                  <div className="space-y-2 text-lg text-ink/80">
+                    {person.email ? (
+                      <p>
+                        E-Mail: <a href={`mailto:${person.email}`} className="font-semibold text-forest underline-offset-4 hover:underline">{person.email}</a>
+                      </p>
+                    ) : null}
+                    {person.phone && phoneHref ? (
+                      <p>
+                        Telefon: <a href={phoneHref} className="font-semibold text-forest underline-offset-4 hover:underline">{person.phone}</a>
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
 
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+                {relatedServices.length > 0 ? (
+                  <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.services.title}</p>
+                    <ul className="mt-3 flex flex-wrap gap-2">
+                      {relatedServices.map((servicePost) => (
+                        <li key={servicePost.slug}>
+                          <Link
+                            href={`/${locale}/services/${servicePost.slug}`}
+                            className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
+                          >
+                            {servicePost.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+
+                {relatedNewsPosts.length > 0 ? (
+                  <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.news.title}</p>
+                    <ul className="mt-3 space-y-2">
+                      {relatedNewsPosts.map((post) => (
+                        <li key={post.slug}>
+                          <Link href={`/${locale}/news/${post.slug}`} className="font-semibold text-forest underline-offset-4 hover:underline">
+                            {post.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </aside>
+
               <div className="space-y-6">
+                <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
+                  <Link href={`/${locale}`} className="hover:text-forest">
+                    Start
+                  </Link>
+                  <span aria-hidden="true" className="text-clay/60">/</span>
+                  <Link href={`/${locale}/team`} className="hover:text-forest">
+                    {content.page.team.title}
+                  </Link>
+                  <span aria-hidden="true" className="text-clay/60">/</span>
+                  <span className="text-forest">{person.name}</span>
+                </nav>
+                <h1 className="section-title font-black bg-gradient-to-r from-forest via-teal-700 to-forest bg-clip-text text-transparent">{person.name}</h1>
                 <p className="text-lg font-semibold uppercase tracking-[0.24em] text-clay">{person.role}</p>
                 {person.slogan ? <p className="text-2xl text-ink/80">{person.slogan}</p> : null}
 
-                <ul className="flex flex-wrap gap-3">
-                  {person.specialties.map((specialty) => (
-                    <li key={specialty}>
-                      <Badge
-                        variant="secondary"
-                        className="rounded-full border border-[rgb(var(--color-mist)/0.6)] bg-[rgb(var(--surface-elevated)/0.9)] px-4 py-1.5 text-sm font-semibold text-forest shadow-sm"
-                      >
-                        {specialty}
-                      </Badge>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-6 py-5 shadow-sm lg:mt-1">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{content.page.footer.contactKicker}</p>
-                <div className="space-y-2 text-lg text-ink/80">
-                  {person.email ? (
-                    <p>
-                      E-Mail: <a href={`mailto:${person.email}`} className="font-semibold text-forest underline-offset-4 hover:underline">{person.email}</a>
-                    </p>
-                  ) : null}
-                  {person.phone && phoneHref ? (
-                    <p>
-                      Telefon: <a href={phoneHref} className="font-semibold text-forest underline-offset-4 hover:underline">{person.phone}</a>
-                    </p>
-                  ) : null}
+                <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/85 prose-strong:text-forest">
+                  <ReactMarkdown>{profile.content}</ReactMarkdown>
                 </div>
               </div>
             </div>
 
-            <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/85 prose-strong:text-forest">
-              <ReactMarkdown>{profile.content}</ReactMarkdown>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild>
                 <Link href={`/${locale}/team`}>{content.page.team.detailLink}</Link>
               </Button>

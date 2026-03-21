@@ -10,8 +10,9 @@ members:
     email: christa@centrebienetre.ch
     phone: "+41 76 568 00 65"
     image: /images/team/christa.jpg
+    headerImage: /images/DSC06813.jpg
     specialtyKeys:
       - physiotherapie
-      - psych-k
+      - coaching
       - sportphysiotherapie
       - faszientechniken

@@ -31,7 +31,8 @@ type TeamMember = {
   email?: string;
   phone?: string;
   image?: string;
-  specialties: string[];
+  headerImage?: string;
+  specialtyKeys: string[];
 };
 
 export type TeamProfile = {
@@ -53,6 +54,7 @@ export type ServicePost = {
   description: string;
   priceChf: number;
   image: string;
+  tags: string[];
   content: string;
 };
 
@@ -64,6 +66,7 @@ type NewsItem = {
 };
 
 export type NewsPost = NewsItem & {
+  tags: string[];
   content: string;
 };
 
@@ -168,6 +171,7 @@ type TeamData = {
     email: string;
     phone: string;
     image: string;
+    headerImage?: string;
     specialtyKeys: string[];
   }>;
 };
@@ -193,7 +197,6 @@ type I18nData = {
     detailLink: string;
     members: Record<string, { role: string }>;
   };
-  specialties: Record<string, string>;
   services: {
     title: string;
     intro: string;
@@ -243,6 +246,7 @@ type NewsFrontmatter = {
   title?: string;
   date?: string;
   excerpt?: string;
+  tags?: string[];
 };
 
 type ServiceFrontmatter = {
@@ -250,7 +254,19 @@ type ServiceFrontmatter = {
   description?: string;
   priceChf?: number;
   image?: string;
+  tags?: string[];
 };
+
+function normalizeTags(value: unknown) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter((entry): entry is string => typeof entry === "string")
+    .map((entry) => entry.trim().toLowerCase())
+    .filter((entry) => entry.length > 0);
+}
 
 function compareNewsByDateDesc(a: NewsPost, b: NewsPost) {
   return new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -292,6 +308,7 @@ async function readNewsPosts(newsDir: string): Promise<NewsPost[]> {
         title: frontmatter.title ?? slug,
         date: frontmatter.date ?? "",
         excerpt: frontmatter.excerpt ?? "",
+        tags: normalizeTags(frontmatter.tags),
         content: parsed.content.trim(),
       };
     }),
@@ -325,6 +342,7 @@ async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
         description: frontmatter.description ?? "",
         priceChf: typeof frontmatter.priceChf === "number" ? frontmatter.priceChf : 0,
         image: frontmatter.image ?? "/images/DSC06840.jpg",
+        tags: normalizeTags(frontmatter.tags),
         content: parsed.content.trim(),
       };
     }),
@@ -390,7 +408,8 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     email: member.email,
     phone: member.phone,
     image: member.image,
-    specialties: member.specialtyKeys.map((k) => i18n.specialties[k] ?? k),
+    headerImage: member.headerImage,
+    specialtyKeys: member.specialtyKeys,
   }));
 
   const serviceItems = servicePosts.map((item) => ({

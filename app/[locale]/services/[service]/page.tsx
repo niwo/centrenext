@@ -43,6 +43,11 @@ export default async function ServicePage({ params }: PageProps) {
     notFound();
   }
 
+  const relatedTeamMembers = content.page.team.people.filter((person) =>
+    person.specialtyKeys.some((tag) => servicePost.tags.includes(tag)),
+  );
+  const relatedNewsPosts = content.newsPosts.filter((post) => post.tags.some((tag) => servicePost.tags.includes(tag)));
+
   return (
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
@@ -64,11 +69,55 @@ export default async function ServicePage({ params }: PageProps) {
               <span className="text-forest">{servicePost.title}</span>
             </nav>
             <h1 className="section-title">{servicePost.title}</h1>
-            <p className="text-base font-semibold uppercase tracking-[0.24em] text-clay">{serviceCard.price}</p>
-            <p className="text-lg leading-8 text-ink/75">{servicePost.description}</p>
 
-            <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-              <ReactMarkdown>{servicePost.content}</ReactMarkdown>
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+              <div className="space-y-4">
+                <p className="text-base font-semibold uppercase tracking-[0.24em] text-clay">{serviceCard.price}</p>
+                <p className="text-lg leading-8 text-ink/75">{servicePost.description}</p>
+
+                <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
+                  <ReactMarkdown>{servicePost.content}</ReactMarkdown>
+                </div>
+              </div>
+
+              {relatedTeamMembers.length > 0 || relatedNewsPosts.length > 0 ? (
+                <aside className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5 lg:sticky lg:top-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">releated news</p>
+
+                  {relatedTeamMembers.length > 0 ? (
+                    <div className="mt-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.team.title}</p>
+                      <ul className="mt-2 flex flex-wrap gap-2">
+                        {relatedTeamMembers.map((person) => (
+                          <li key={person.slug}>
+                            <Link
+                              href={`/${locale}/team/${person.slug}`}
+                              className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
+                            >
+                              {person.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {relatedNewsPosts.length > 0 ? (
+                    <div className="mt-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.news.title}</p>
+                      <ul className="mt-2 space-y-2">
+                        {relatedNewsPosts.map((post) => (
+                          <li key={post.slug}>
+                            <Link href={`/${locale}/news/${post.slug}`} className="font-semibold text-forest underline-offset-4 hover:underline">
+                              {post.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </aside>
+              ) : null}
             </div>
 
             <div className="flex flex-wrap gap-3">

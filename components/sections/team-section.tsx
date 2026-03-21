@@ -17,7 +17,6 @@ type TeamSectionProps = {
       slogan?: string;
       role: string;
       image?: string;
-      specialties: string[];
     }>;
   };
 };

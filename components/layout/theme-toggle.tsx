@@ -51,11 +51,11 @@ export function ThemeToggle() {
       type="button"
       variant="ghost"
       size="default"
-      className="h-9 w-9 p-0 text-forest hover:bg-forest/10"
+      className="h-9 w-9 p-0 text-sand hover:bg-sand/10"
       aria-label={isDark ? "Hellmodus aktivieren" : "Darkmode aktivieren"}
       onClick={toggleTheme}
     >
-      {isMounted && isDark ? <Sun className="h-3.5 w-3.5" aria-hidden /> : <Moon className="h-3.5 w-3.5" aria-hidden />}
+      {isMounted && isDark ? <Sun className="h-5 w-5" aria-hidden /> : <Moon className="h-5 w-5" aria-hidden />}
     </Button>
   );
 }

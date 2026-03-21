@@ -39,12 +39,6 @@ team:
     christa:
       role: Dipl. Physiotherapeutin
 
-specialties:
-  physiotherapie: Physiotherapie
-  psych-k: Psych-K
-  sportphysiotherapie: Sportphysiotherapie
-  faszientechniken: Faszientechniken
-
 services:
   title: Leistungen
   intro: Leistungen werden als eigene Markdown-Dateien gepflegt und automatisch auf der Seite dargestellt.
