@@ -3,9 +3,11 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { getItemHref, getSectionHref } from "@/lib/routes";
+import type { Locale } from "@/lib/site-config";
 
 type TeamSectionProps = {
-  locale: string;
+  locale: Locale;
   team: {
     title: string;
     intro: string;
@@ -32,7 +34,7 @@ export function TeamSection({ team, locale }: TeamSectionProps) {
 
       <div className="grid gap-5">
         {team.people.map((person) => (
-          <Link key={person.slug} href={`/${locale}/team/${person.slug}`}>
+          <Link key={person.slug} href={getItemHref(locale, "team", person.slug)}>
             <Card className="flex flex-col items-center gap-5 bg-[rgb(var(--surface-elevated)/0.72)] p-8 transition hover:bg-[rgb(var(--surface-card)/0.92)]">
               <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                 <Image
@@ -52,7 +54,7 @@ export function TeamSection({ team, locale }: TeamSectionProps) {
         ))}
       </div>
       <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={`/${locale}/team`}>{team.detailLink}</Link>
+        <Link href={getSectionHref(locale, "team")}>{team.detailLink}</Link>
       </Button>
     </section>
   );

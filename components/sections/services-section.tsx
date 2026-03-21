@@ -3,9 +3,11 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { getItemHref, getSectionHref } from "@/lib/routes";
+import type { Locale } from "@/lib/site-config";
 
 type ServicesSectionProps = {
-  locale: string;
+  locale: Locale;
   services: {
     title: string;
     intro: string;
@@ -34,7 +36,7 @@ export function ServicesSection({ services, locale }: ServicesSectionProps) {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         {services.items.map((service) => (
-          <Link id={service.slug} key={service.slug} href={`/${locale}/services/${service.slug}`}>
+          <Link id={service.slug} key={service.slug} href={getItemHref(locale, "services", service.slug)}>
             <Card className="flex h-full flex-col gap-3 bg-[rgb(var(--surface-card)/0.88)] p-3 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]">
               <div className="relative aspect-video w-full overflow-hidden rounded-xl">
                 <Image src={service.image} alt={service.name} fill className="object-cover" />
@@ -48,7 +50,7 @@ export function ServicesSection({ services, locale }: ServicesSectionProps) {
         ))}
       </div>
       <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={`/${locale}/services`}>{services.detailLink}</Link>
+        <Link href={getSectionHref(locale, "services")}>{services.detailLink}</Link>
       </Button>
     </section>
   );

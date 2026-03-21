@@ -5,9 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { getCanonicalSection, getLocalizedPath } from "@/lib/routes";
+import type { Locale } from "@/lib/site-config";
 
 type SiteHeaderProps = {
-  locale: string;
+  locale: Locale;
   practiceName: string;
   navigation: Array<{
     label: string;
@@ -20,21 +22,11 @@ export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const segments = (pathname ?? `/${locale}`).split("/").filter(Boolean);
-  const currentSection = segments[0] === locale ? segments[1] : segments[0];
+  const sectionSegment = segments[0] === locale ? segments[1] : segments[0];
+  const currentSection = sectionSegment ? getCanonicalSection(locale, sectionSegment) : null;
 
   const alternateLocaleHref = (() => {
-    const segments = (pathname ?? `/${locale}`).split("/").filter(Boolean);
-
-    if (segments.length === 0) {
-      return `/${alternateLocale}`;
-    }
-
-    if (segments[0] === locale) {
-      segments[0] = alternateLocale;
-      return `/${segments.join("/")}`;
-    }
-
-    return `/${alternateLocale}/${segments.join("/")}`;
+    return getLocalizedPath(pathname ?? `/${locale}`, alternateLocale as Locale);
   })();
 
   return (
@@ -81,7 +73,7 @@ export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps
         className={`${isMobileMenuOpen ? "mt-5 flex" : "hidden"} clear-both flex-col gap-2 text-ink/75 lg:clear-none lg:float-right lg:mt-0 lg:flex lg:h-12 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-3`}
       >
         {navigation.map((item) => {
-          const sectionKey = item.href.replace("/", "");
+          const sectionKey = getCanonicalSection(locale, item.href.replace("/", ""));
           const isActive = currentSection === sectionKey;
 
           return (

@@ -3,9 +3,11 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
+import { getSectionHref } from "@/lib/routes";
+import type { Locale } from "@/lib/site-config";
 
 type AboutSectionProps = {
-  locale: string;
+  locale: Locale;
   title: string;
   kicker: string;
   tagline: string;
@@ -36,7 +38,7 @@ export function AboutSection({ locale, title, kicker, tagline, detailLink, about
           <ReactMarkdown>{about}</ReactMarkdown>
         </div>
         <Button asChild variant="outline" className="mt-auto self-start">
-          <Link href={`/${locale}/about`}>{detailLink}</Link>
+          <Link href={getSectionHref(locale, "about")}>{detailLink}</Link>
         </Button>
       </div>
     </section>

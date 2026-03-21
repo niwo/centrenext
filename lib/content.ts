@@ -4,6 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 
+import { getSectionSlug } from "@/lib/routes";
 import type { Locale } from "@/lib/site-config";
 
 export const sectionKeys = ["about", "team", "services", "news", "location"] as const;
@@ -516,7 +517,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   }));
 
   // Build navigation from i18n nav keys (order follows sectionKeys)
-  const navigation = sectionKeys.map((k) => ({ label: i18n.nav[k] ?? k, href: `/${k}` }));
+  const navigation = sectionKeys.map((k) => ({ label: i18n.nav[k] ?? k, href: `/${getSectionSlug(locale, k)}` }));
 
   const page: PageContent = {
     navigation,
