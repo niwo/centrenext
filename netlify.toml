@@ -4,6 +4,9 @@
   command = "npm run build"
   publish = "out"
 
+[context.production.environment]
+  NEXT_PUBLIC_GOATCOUNTER_ENDPOINT = "https://centrebienetre.goatcounter.com/count"
+
 # Locale detection and redirection rules
 # These redirect requests to the appropriate locale-specific path based on Accept-Language header
 

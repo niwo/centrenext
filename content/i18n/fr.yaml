@@ -1,3 +1,6 @@
+landing:
+  localeLinkLabel: Version francaise
+
 days:
   monday: Lundi
   tuesday: Mardi
@@ -13,9 +16,8 @@ nav:
   location: Contact
 
 hero:
-  eyebrow: "Physiotherapie a Bienne"
-  title: "Un site clair et bilingue pour presenter les soins, l'equipe et le cabinet."
-  description: "La nouvelle application met en avant les prestations, les prix, les nouvelles et les informations pratiques dans une base simple a maintenir."
+  eyebrow: "Le cabinet pour le bien-etre holistique"
+  title: "Physiotherapie, coaching et plus encore a Bienne - trouvez les prestations adaptees a votre bien-etre."
   primaryCta: Voir les prestations
   secondaryCta: "Voir le contact"
 

@@ -2,6 +2,8 @@ name: Centre bien-être
 tagline:
   de: Die Praxis für das ganzheitliche Wohlbefinden
   fr: Le cabinet pour le bien-être holistique
+seo:
+  defaultImage: /images/DSC06768.jpg
 address:
   street:
     de: Johann-Verresius-Strasse

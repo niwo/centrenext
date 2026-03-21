@@ -22,10 +22,13 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
   const content = await getSiteContent(locale);
   const serviceTitles = content.servicePosts.map((service) => service.title);
   const description = getLocaleSeoDescription(locale, serviceTitles);
-  const title = "Centre bien-etre";
+  const title = content.practice.name;
+  const defaultImage = content.practice.seo.defaultImage;
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description,
     keywords: getLocaleSeoKeywords(locale, serviceTitles),
     alternates: {
@@ -35,10 +38,10 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
     openGraph: {
       type: "website",
       url: `/${locale}`,
-      siteName: "Centre bien-etre",
+      siteName: content.practice.name,
       title,
       description,
-      images: [{ url: toAbsoluteUrl("/images/DSC06768.jpg") }],
+      images: [{ url: toAbsoluteUrl(defaultImage) }],
       locale: getOpenGraphLocale(locale),
       alternateLocale: siteConfig.locales.filter((entry) => entry !== locale).map(getOpenGraphLocale),
     },
@@ -46,7 +49,7 @@ export async function generateMetadata({ params }: LocaleLayoutProps): Promise<M
       card: "summary_large_image",
       title,
       description,
-      images: [toAbsoluteUrl("/images/DSC06768.jpg")],
+      images: [toAbsoluteUrl(defaultImage)],
     },
   };
 }

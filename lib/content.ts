@@ -84,7 +84,6 @@ type PageContent = {
   hero: {
     eyebrow: string;
     title: string;
-    description: string;
     primaryCta: CallToAction;
     secondaryCta: CallToAction;
   };
@@ -141,6 +140,9 @@ export type PracticeContent = {
   tagline: string;
   addressLines: string[];
   mapEmbedUrl: string;
+  seo: {
+    defaultImage: string;
+  };
   contact: {
     phone: string;
     email: string;
@@ -161,6 +163,24 @@ export type SiteContent = {
   newsPosts: NewsPost[];
 };
 
+export type LandingPageContent = {
+  brandLabel: string;
+  introByLocale: Array<{
+    locale: Locale;
+    tagline: string;
+  }>;
+  localeLinks: Array<{
+    locale: Locale;
+    label: string;
+    href: string;
+  }>;
+};
+
+export type SiteSeoContent = {
+  siteName: string;
+  defaultImage: string;
+};
+
 // ---------------------------------------------------------------------------
 // Raw data types (language-neutral, stored in content/data/)
 // ---------------------------------------------------------------------------
@@ -170,6 +190,9 @@ type LocalizedField = string | Partial<Record<Locale, string>>;
 type PracticeData = {
   name: string;
   tagline?: Partial<Record<string, string>>;
+  seo?: {
+    defaultImage?: string;
+  };
   address: { street: LocalizedField; number: number; postcode: number; city: LocalizedField };
   contact: { phone: string; email: string };
   map: { embedUrl: string; lat: number; lon: number };
@@ -195,12 +218,14 @@ type TeamData = {
 // ---------------------------------------------------------------------------
 
 type I18nData = {
+  landing: {
+    localeLinkLabel: string;
+  };
   days: Record<string, string>;
   nav: Record<string, string>;
   hero: {
     eyebrow: string;
     title: string;
-    description: string;
     primaryCta: string;
     secondaryCta: string;
   };
@@ -258,6 +283,53 @@ async function parseYamlFile<T>(filePath: string): Promise<T> {
 async function parseMarkdownFile(filePath: string) {
   const raw = await readTextFile(filePath);
   return matter(raw).content.trim();
+}
+
+export async function getLandingPageContent(): Promise<LandingPageContent> {
+  const dataDir = path.join(process.cwd(), "content", "data");
+  const i18nDir = path.join(process.cwd(), "content", "i18n");
+
+  const [practiceData, defaultI18n, localizedEntries] = await Promise.all([
+    parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
+    parseYamlFile<I18nData>(path.join(i18nDir, "de.yaml")),
+    Promise.all(
+      (["de", "fr"] as const).map(async (locale) => {
+        const i18n = await parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`));
+        return {
+          locale,
+          label: i18n.landing.localeLinkLabel,
+        };
+      }),
+    ),
+  ]);
+
+  return {
+    brandLabel: practiceData.name,
+    introByLocale: ([
+      { locale: "de", i18n: defaultI18n },
+      {
+        locale: "fr",
+        i18n: await parseYamlFile<I18nData>(path.join(i18nDir, "fr.yaml")),
+      },
+    ] as const).map(({ locale, i18n }) => ({
+      locale,
+      tagline: practiceData.tagline?.[locale] ?? "",
+    })),
+    localeLinks: localizedEntries.map(({ locale, label }) => ({
+      locale,
+      label,
+      href: `/${locale}`,
+    })),
+  };
+}
+
+export async function getSiteSeoContent(): Promise<SiteSeoContent> {
+  const practiceData = await parseYamlFile<PracticeData>(path.join(process.cwd(), "content", "data", "main.yaml"));
+
+  return {
+    siteName: practiceData.name,
+    defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.jpg",
+  };
 }
 
 type NewsFrontmatter = {
@@ -440,7 +512,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const testimonialsDir = path.join(process.cwd(), "content", locale, "testimonials");
 
   const [practiceData, teamData, i18n, detailEntries, servicePosts, newsPosts, testimonialItems] = await Promise.all([
-    parseYamlFile<PracticeData>(path.join(dataDir, "practice.yaml")),
+    parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
     parseYamlFile<TeamData>(path.join(dataDir, "team.yaml")),
     parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`)),
     Promise.all(
@@ -483,6 +555,9 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       `${practiceData.address.postcode} ${getLocalizedField(practiceData.address.city, locale)}`,
     ],
     mapEmbedUrl: practiceData.map.embedUrl,
+    seo: {
+      defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.jpg",
+    },
     contact: practiceData.contact,
     openingHours: practiceData.openingHours.map((slot) => ({
       day: i18n.days[slot.dayKey] ?? slot.dayKey,
@@ -526,7 +601,6 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     hero: {
       eyebrow: i18n.hero.eyebrow,
       title: i18n.hero.title,
-      description: i18n.hero.description,
       primaryCta: { label: i18n.hero.primaryCta, href: "#services" },
       secondaryCta: { label: i18n.hero.secondaryCta, href: "#location" },
     },

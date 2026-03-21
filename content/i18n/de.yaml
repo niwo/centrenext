@@ -1,3 +1,6 @@
+landing:
+  localeLinkLabel: Zur deutschen Version
+
 days:
   monday: Montag
   tuesday: Dienstag
@@ -13,9 +16,8 @@ nav:
   location: Kontakt
 
 hero:
-  eyebrow: Physiotherapie in Biel
-  title: Beweglichkeit, Entlastung und Vertrauen in einem klaren digitalen Auftritt.
-  description: Die neue Website präsentiert das Team, die Behandlungen, aktuelle Hinweise und den Standort in einer ruhigen, hochwertigen und einfach pflegbaren Struktur.
+  eyebrow: Die Praxis für das ganzheitliche Wohlbefinden
+  title: Physiotherapie, Coaching und mehr in Biel - finden Sie die passenden Angebote für Ihr Wohlbefinden.
   primaryCta: Angebote ansehen
   secondaryCta: Kontakt entdecken
 

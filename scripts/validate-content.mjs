@@ -10,7 +10,7 @@ const contentDir = path.join(root, "content");
 const schemasDir = path.join(root, "schemas");
 
 const yamlSchemaByRelativePath = {
-  "content/data/practice.yaml": "data-practice.schema.json",
+  "content/data/main.yaml": "data-main.schema.json",
   "content/data/team.yaml": "data-team.schema.json",
   "content/i18n/de.yaml": "i18n.schema.json",
   "content/i18n/fr.yaml": "i18n.schema.json",

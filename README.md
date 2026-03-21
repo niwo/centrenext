@@ -1,4 +1,4 @@
-# Centre Bien-Etre 2.0
+# Centre Bien-Etre
 
 Grundgeruest fuer eine statisch deploybare Next.js-Landing-Page mit lokal gepflegten Inhalten.
 
@@ -31,7 +31,7 @@ npm run dev
 
 - Freitext pro Sprache in `content/de/about.md` und `content/fr/about.md`
 - Strukturierte Inhalte pro Sprache in `content/<locale>/page.yaml`
-- Gemeinsame Standortdaten in `content/shared/practice.yaml`
+- Gemeinsame Standortdaten in `content/data/main.yaml`
 
 ## SEO und Tracking
 
