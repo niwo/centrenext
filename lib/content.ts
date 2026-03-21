@@ -416,7 +416,7 @@ async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
 export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const dataDir = path.join(process.cwd(), "content", "data");
   const i18nDir = path.join(process.cwd(), "content", "i18n");
-  const detailsDir = path.join(process.cwd(), "content", locale, "details");
+  const localeDir = path.join(process.cwd(), "content", locale);
   const teamDir = path.join(process.cwd(), "content", locale, "team");
   const servicesDir = path.join(process.cwd(), "content", locale, "services");
   const newsDir = path.join(process.cwd(), "content", locale, "news");
@@ -427,7 +427,21 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     parseYamlFile<TeamData>(path.join(dataDir, "team.yaml")),
     parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`)),
     Promise.all(
-      sectionKeys.map(async (key) => [key, await parseMarkdownFile(path.join(detailsDir, `${key}.md`))] as const),
+      sectionKeys.map(async (key) => {
+        let filePath: string;
+        if (key === "about" || key === "location") {
+          filePath = path.join(localeDir, `${key}.md`);
+        } else if (key === "team") {
+          filePath = path.join(teamDir, "index.md");
+        } else if (key === "services") {
+          filePath = path.join(servicesDir, "index.md");
+        } else if (key === "news") {
+          filePath = path.join(newsDir, "index.md");
+        } else {
+          filePath = path.join(localeDir, `${key}.md`);
+        }
+        return [key, await parseMarkdownFile(filePath)] as const;
+      }),
     ),
     readServicePosts(servicesDir),
     readNewsPosts(newsDir),
