@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { getCanonicalSection, getLocalizedPath } from "@/lib/routes";
@@ -20,6 +21,7 @@ type SiteHeaderProps = {
 
 export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps) {
   const alternateLocale = locale === "de" ? "fr" : "de";
+  const searchLabel = locale === "de" ? "Suche" : "Recherche";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const segments = (pathname ?? `/${locale}`).split("/").filter(Boolean);
@@ -89,6 +91,15 @@ export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps
             </Link>
           );
         })}
+        <Link
+          href={`/${locale}/search`}
+          aria-current={pathname?.startsWith(`/${locale}/search`) ? "page" : undefined}
+          className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-lg font-semibold transition-colors hover:bg-forest/5 hover:text-forest"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <Search className="h-4 w-4" />
+          {searchLabel}
+        </Link>
         <div className="mt-2 flex items-center gap-2 lg:mt-0">
           <Link
             href={alternateLocaleHref}
