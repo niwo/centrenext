@@ -86,7 +86,7 @@ export default async function SectionPage({ params }: PageProps) {
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
           <Image src={sectionImageByKey[canonicalSection]} alt={title} width={1500} height={560} className="h-64 w-full object-cover" />
