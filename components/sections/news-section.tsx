@@ -3,9 +3,11 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { getItemHref, getSectionHref } from "@/lib/routes";
+import type { Locale } from "@/lib/site-config";
 
 type NewsSectionProps = {
-  locale: string;
+  locale: Locale;
   news: {
     title: string;
     intro: string;
@@ -41,7 +43,7 @@ export function NewsSection({ news, locale }: NewsSectionProps) {
 
       <div className="grid gap-4">
         {news.items.map((item) => (
-          <Link id={item.slug} key={item.slug} href={`/${locale}/news/${item.slug}`}>
+          <Link id={item.slug} key={item.slug} href={getItemHref(locale, "news", item.slug)}>
             <Card className="bg-[rgb(var(--surface-elevated)/0.7)] transition hover:bg-[rgb(var(--surface-elevated)/0.9)]">
               <Image src="/images/DSC06642.jpg" alt={item.title} width={960} height={420} className="h-40 w-full rounded-xl object-cover" />
               <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{formatNewsDate(item.date, locale)}</p>
@@ -52,7 +54,7 @@ export function NewsSection({ news, locale }: NewsSectionProps) {
         ))}
       </div>
       <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={`/${locale}/news`}>{news.detailLink}</Link>
+        <Link href={getSectionHref(locale, "news")}>{news.detailLink}</Link>
       </Button>
     </section>
   );

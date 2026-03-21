@@ -8,6 +8,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getSiteContent } from "@/lib/content";
+import { getItemHref, getSectionHref } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
 
 type PageProps = {
@@ -35,7 +36,8 @@ export default async function TeamMemberPage({ params }: PageProps) {
     notFound();
   }
 
-  const content = await getSiteContent(locale as Locale);
+  const localeValue: Locale = locale;
+  const content = await getSiteContent(localeValue);
   const person = content.page.team.people.find((entry) => entry.slug === member);
   const profile = content.teamProfiles.find((entry) => entry.slug === member);
 
@@ -55,7 +57,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={locale} practiceName={content.practice.name} navigation={content.page.navigation} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
           <div className="relative">
@@ -96,7 +98,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
                       {relatedServices.map((servicePost) => (
                         <li key={servicePost.slug}>
                           <Link
-                            href={`/${locale}/services/${servicePost.slug}`}
+                            href={getItemHref(localeValue, "services", servicePost.slug)}
                             className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
                           >
                             {servicePost.title}
@@ -113,7 +115,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
                     <ul className="mt-3 space-y-2">
                       {relatedNewsPosts.map((post) => (
                         <li key={post.slug}>
-                          <Link href={`/${locale}/news/${post.slug}`} className="font-semibold text-forest underline-offset-4 hover:underline">
+                          <Link href={getItemHref(localeValue, "news", post.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
                             {post.title}
                           </Link>
                         </li>
@@ -129,7 +131,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
                     Start
                   </Link>
                   <span aria-hidden="true" className="text-clay/60">/</span>
-                  <Link href={`/${locale}/team`} className="hover:text-forest">
+                  <Link href={getSectionHref(localeValue, "team")} className="hover:text-forest">
                     {content.page.team.title}
                   </Link>
                   <span aria-hidden="true" className="text-clay/60">/</span>
@@ -149,9 +151,9 @@ export default async function TeamMemberPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-12 flex flex-wrap gap-3">
               <Button asChild>
-                <Link href={`/${locale}/team`}>{content.page.team.detailLink}</Link>
+                <Link href={getSectionHref(localeValue, "team")}>{content.page.team.detailLink}</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/${locale}`}>{content.page.footer.backLink}</Link>

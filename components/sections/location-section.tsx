@@ -3,9 +3,11 @@ import { MapPinned, Phone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { getSectionHref } from "@/lib/routes";
+import type { Locale } from "@/lib/site-config";
 
 type LocationSectionProps = {
-  locale: string;
+  locale: Locale;
   location: {
     title: string;
     intro: string;
@@ -71,7 +73,7 @@ export function LocationSection({ location, practice, locale }: LocationSectionP
       </Card>
 
       <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={`/${locale}/location`}>{location.detailLink}</Link>
+        <Link href={getSectionHref(locale, "location")}>{location.detailLink}</Link>
       </Button>
     </section>
   );

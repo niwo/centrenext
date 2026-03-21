@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MapPinned } from "lucide-react";
 import { getSiteContent, sectionKeys, type SectionKey } from "@/lib/content";
+import { getCanonicalSection, getItemHref, getSectionSlug } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
 
 type PageProps = {
@@ -26,10 +27,6 @@ const sectionImageByKey: Record<SectionKey, string> = {
   news: "/images/DSC06642.jpg",
   location: "/images/DSC06768.jpg",
 };
-
-function isSection(value: string): value is SectionKey {
-  return sectionKeys.includes(value as SectionKey);
-}
 
 function getSectionTitle(section: SectionKey, content: Awaited<ReturnType<typeof getSiteContent>>) {
   if (section === "about") return content.page.about.title;
@@ -50,32 +47,42 @@ function formatNewsDate(date: string, locale: string) {
 }
 
 export function generateStaticParams() {
-  return siteConfig.locales.flatMap((locale) => sectionKeys.map((section) => ({ locale, section })));
+  return siteConfig.locales.flatMap((locale) =>
+    sectionKeys.map((section) => ({ locale, section: getSectionSlug(locale, section) })),
+  );
 }
 
 export default async function SectionPage({ params }: PageProps) {
   const { locale, section } = await params;
 
-  if (!isLocale(locale) || !isSection(section)) {
+  if (!isLocale(locale)) {
     notFound();
   }
 
-  const content = await getSiteContent(locale as Locale);
-  const title = getSectionTitle(section, content);
-  const isAboutSection = section === "about";
-  const isTeamSection = section === "team";
-  const isServicesSection = section === "services";
-  const isNewsSection = section === "news";
-  const isLocationSection = section === "location";
+  const localeValue: Locale = locale;
+
+  const canonicalSection = getCanonicalSection(localeValue, section);
+
+  if (!canonicalSection) {
+    notFound();
+  }
+
+  const content = await getSiteContent(localeValue);
+  const title = getSectionTitle(canonicalSection, content);
+  const isAboutSection = canonicalSection === "about";
+  const isTeamSection = canonicalSection === "team";
+  const isServicesSection = canonicalSection === "services";
+  const isNewsSection = canonicalSection === "news";
+  const isLocationSection = canonicalSection === "location";
 
   return (
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={locale} practiceName={content.practice.name} navigation={content.page.navigation} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
-          <Image src={sectionImageByKey[section]} alt={title} width={1500} height={560} className="h-64 w-full object-cover" />
+          <Image src={sectionImageByKey[canonicalSection]} alt={title} width={1500} height={560} className="h-64 w-full object-cover" />
           <div className="space-y-4 px-6 pb-8 sm:px-8">
             <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
               <Link href={`/${locale}`} className="hover:text-forest">
@@ -88,7 +95,7 @@ export default async function SectionPage({ params }: PageProps) {
             {isAboutSection ? (
               <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[section]}</ReactMarkdown>
+                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
                 </div>
                 <Card className="space-y-5 bg-[rgb(var(--surface-elevated)/0.74)]">
                   <div>
@@ -115,7 +122,7 @@ export default async function SectionPage({ params }: PageProps) {
                 {content.page.services.items.map((service) => (
                   <Link
                     key={service.slug}
-                    href={`/${locale}/services/${service.slug}`}
+                    href={getItemHref(localeValue, "services", service.slug)}
                     className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
                   >
                     <div className="flex items-center gap-5">
@@ -142,7 +149,7 @@ export default async function SectionPage({ params }: PageProps) {
                   <Link
                     id={post.slug}
                     key={post.slug}
-                    href={`/${locale}/news/${post.slug}`}
+                    href={getItemHref(localeValue, "news", post.slug)}
                     className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
                   >
                     <div className="flex items-center gap-7">
@@ -167,7 +174,7 @@ export default async function SectionPage({ params }: PageProps) {
             ) : isLocationSection ? (
               <div className="space-y-8">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[section]}</ReactMarkdown>
+                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
                 </div>
                 <Card className="space-y-3 bg-[rgb(var(--surface-elevated)/0.74)]">
                   <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
@@ -196,13 +203,13 @@ export default async function SectionPage({ params }: PageProps) {
             ) : isTeamSection ? (
               <div className="space-y-8">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[section]}</ReactMarkdown>
+                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
                   {content.page.team.people.map((person) => (
                     <Link
                       key={person.slug}
-                      href={`/${locale}/team/${person.slug}`}
+                      href={getItemHref(localeValue, "team", person.slug)}
                       className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
                     >
                       <div className="flex items-center gap-5">
@@ -227,11 +234,11 @@ export default async function SectionPage({ params }: PageProps) {
             ) : (
               <div className="space-y-8">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[section]}</ReactMarkdown>
+                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
                 </div>
               </div>
             )}
-            <div>
+            <div className="mt-12">
               <Button asChild>
                 <Link href={`/${locale}`}>{content.page.footer.backLink}</Link>
               </Button>

@@ -1,6 +1,22 @@
 export const siteConfig = {
   locales: ["de", "fr"] as const,
   defaultLocale: "de" as const,
+  sectionSlugs: {
+    de: {
+      about: "ueber-uns",
+      team: "team",
+      services: "leistungen",
+      news: "aktuelles",
+      location: "standort",
+    },
+    fr: {
+      about: "a-propos",
+      team: "equipe",
+      services: "services",
+      news: "actualites",
+      location: "adresse",
+    },
+  } as const,
 };
 
 export type Locale = (typeof siteConfig.locales)[number];

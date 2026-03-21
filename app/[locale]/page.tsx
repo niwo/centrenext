@@ -29,23 +29,24 @@ export default async function LocalePage({ params }: PageProps) {
     notFound();
   }
 
-  const content = await getSiteContent(locale as Locale);
+  const localeValue: Locale = locale;
+  const content = await getSiteContent(localeValue);
 
   return (
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[32rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={locale} practiceName={content.practice.name} navigation={content.page.navigation} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} />
         <HeroSection hero={content.page.hero} locale={locale} tagline={content.practice.tagline} />
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <AboutSection locale={locale} about={content.about} title={content.page.about.title} kicker={content.page.about.kicker} tagline={content.practice.tagline} detailLink={content.page.about.detailLink} />
-          <TeamSection locale={locale} team={content.page.team} />
+          <AboutSection locale={localeValue} about={content.about} title={content.page.about.title} kicker={content.page.about.kicker} tagline={content.practice.tagline} detailLink={content.page.about.detailLink} />
+          <TeamSection locale={localeValue} team={content.page.team} />
         </div>
-        <ServicesSection locale={locale} services={content.page.services} />
+        <ServicesSection locale={localeValue} services={content.page.services} />
         <TestimonialsSection locale={locale} testimonials={content.page.testimonials} />
         <div className="grid gap-8 xl:grid-cols-[0.92fr_1.08fr]">
-          <NewsSection locale={locale} news={content.page.news} />
-          <LocationSection locale={locale} location={content.page.location} practice={content.practice} />
+          <NewsSection locale={localeValue} news={content.page.news} />
+          <LocationSection locale={localeValue} location={content.page.location} practice={content.practice} />
         </div>
         <SiteFooter footer={content.page.footer} practice={content.practice} />
       </div>
