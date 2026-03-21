@@ -10,26 +10,18 @@ nav:
   team: Equipe
   services: Prestations
   news: Actualites
-  location: Acces
+  location: Contact
 
 hero:
   eyebrow: "Physiotherapie a Bienne"
   title: "Un site clair et bilingue pour presenter les soins, l'equipe et le cabinet."
   description: "La nouvelle application met en avant les prestations, les prix, les nouvelles et les informations pratiques dans une base simple a maintenir."
   primaryCta: Voir les prestations
-  secondaryCta: "Voir l'acces"
+  secondaryCta: "Voir le contact"
 
 about:
   title: "Apercu du cabinet"
   detailLink: "Decouvrir le cabinet"
-  body: |
-    ### Centre bien-etre a Bienne
-
-    Au Centre bien-etre, le bien-etre reste au coeur de la prise en charge. Le cabinet reunit physiotherapie, nutrition et coaching dans un cadre calme et humain.
-
-    - Accompagnement personnalise
-    - Vision globale du mouvement et de la sante
-    - Offre multidisciplinaire sous un meme toit
 
 team:
   title: Les collaboratrices
@@ -46,8 +38,9 @@ news:
   detailLink: Toutes les actualites
 
 location:
-  title: "Location du cabinet"
-  detailLink: "Voir l'acces"
+  title: Contact
+  detailLink: "Voir le contact"
+  practiceDetailLink: "Detail du cabinet"
   addressLabel: Adresse
   openingHoursLabel: Horaires
   mapLabel: Carte

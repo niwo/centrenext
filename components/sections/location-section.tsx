@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPinned, Phone } from "lucide-react";
+import { Building2, Mail, MapPin, MapPinned, Phone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,6 +13,7 @@ type LocationSectionProps = {
     intro: string;
     kicker: string;
     detailLink: string;
+    practiceDetailLink: string;
     addressLabel: string;
     openingHoursLabel: string;
     mapLabel: string;
@@ -53,7 +54,7 @@ export function LocationSection({ location, practice, locale }: LocationSectionP
         />
       </div>
 
-      <Card className="space-y-5 bg-[rgb(var(--surface-elevated)/0.74)]">
+      <Card className="max-w-xl space-y-5 bg-[rgb(var(--surface-elevated)/0.74)]">
         <div>
           <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-clay">
             <MapPinned className="h-4 w-4" />
@@ -66,15 +67,32 @@ export function LocationSection({ location, practice, locale }: LocationSectionP
           </address>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-ink/75">
-          <Phone className="h-4 w-4 text-clay" />
-          {practice.contact.phone}
+        <div className="space-y-2 text-sm text-ink/75">
+          <a href={`tel:${practice.contact.phone.replace(/\s+/g, "")}`} className="flex items-center gap-2 hover:text-forest">
+            <Phone className="h-4 w-4 text-clay" />
+            {practice.contact.phone}
+          </a>
+          <a href={`mailto:${practice.contact.email}`} className="flex items-center gap-2 hover:text-forest">
+            <Mail className="h-4 w-4 text-clay" />
+            {practice.contact.email}
+          </a>
         </div>
       </Card>
 
-      <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={getSectionHref(locale, "location")}>{location.detailLink}</Link>
-      </Button>
+      <div className="mt-auto flex flex-wrap gap-3">
+        <Button asChild variant="outline" className="self-start">
+          <Link href={getSectionHref(locale, "location")} className="inline-flex items-center gap-2">
+            <MapPin className="h-4 w-4" aria-hidden />
+            {location.detailLink}
+          </Link>
+        </Button>
+        <Button asChild variant="outline" className="self-start">
+          <Link href={getSectionHref(locale, "about")} className="inline-flex items-center gap-2">
+            <Building2 className="h-4 w-4" aria-hidden />
+            {location.practiceDetailLink}
+          </Link>
+        </Button>
+      </div>
     </section>
   );
 }

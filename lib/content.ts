@@ -119,6 +119,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    practiceDetailLink: string;
     addressLabel: string;
     openingHoursLabel: string;
     mapLabel: string;
@@ -203,7 +204,7 @@ type I18nData = {
     primaryCta: string;
     secondaryCta: string;
   };
-  about: { title: string; detailLink: string; body: string };
+  about: { title: string; detailLink: string };
   team: {
     title: string;
     detailLink: string;
@@ -224,6 +225,7 @@ type I18nData = {
     title: string;
     intro: string;
     detailLink: string;
+    practiceDetailLink: string;
     addressLabel: string;
     openingHoursLabel: string;
     mapLabel: string;
@@ -559,6 +561,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: i18n.location.intro,
       kicker: i18n.nav.location,
       detailLink: i18n.location.detailLink,
+      practiceDetailLink: i18n.location.practiceDetailLink,
       addressLabel: i18n.location.addressLabel,
       openingHoursLabel: i18n.location.openingHoursLabel,
       mapLabel: i18n.location.mapLabel,
@@ -571,5 +574,5 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     footer: i18n.footer,
   };
 
-  return { page, about: i18n.about.body, details, practice, teamProfiles, servicePosts, newsPosts };
+  return { page, about: details.about, details, practice, teamProfiles, servicePosts, newsPosts };
 }

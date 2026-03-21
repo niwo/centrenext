@@ -5,7 +5,7 @@ export const siteConfig = {
     de: {
       about: "ueber-uns",
       team: "team",
-      services: "leistungen",
+      services: "angebote",
       news: "aktuelles",
       location: "standort",
     },

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Briefcase } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -50,7 +51,10 @@ export function ServicesSection({ services, locale }: ServicesSectionProps) {
         ))}
       </div>
       <Button asChild variant="outline" className="mt-auto self-start">
-        <Link href={getSectionHref(locale, "services")}>{services.detailLink}</Link>
+        <Link href={getSectionHref(locale, "services")} className="inline-flex items-center gap-2">
+          <Briefcase className="h-4 w-4" aria-hidden />
+          {services.detailLink}
+        </Link>
       </Button>
     </section>
   );
