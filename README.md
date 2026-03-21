@@ -32,3 +32,22 @@ npm run dev
 - Freitext pro Sprache in `content/de/about.md` und `content/fr/about.md`
 - Strukturierte Inhalte pro Sprache in `content/<locale>/page.yaml`
 - Gemeinsame Standortdaten in `content/shared/practice.yaml`
+
+## SEO und Tracking
+
+- Es werden `robots.txt` und `sitemap.xml` automatisch ueber App-Router Metadata-Routes erzeugt.
+- Globale SEO-Metadaten (Open Graph, Canonical, Robots) werden in `app/layout.tsx` gepflegt.
+- Fuer absolute URLs kann optional die Site-URL gesetzt werden:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://www.example.com
+```
+
+- Optionales Open-Source-Tracking (Umami) kann ohne Vendor-Lock-in eingebunden werden:
+
+```bash
+NEXT_PUBLIC_UMAMI_SCRIPT_URL=https://umami.example.com/script.js
+NEXT_PUBLIC_UMAMI_WEBSITE_ID=<website-id>
+```
+
+Wenn die Umami-Variablen fehlen, wird kein Tracking-Script geladen.

@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Cormorant_Garamond, Dancing_Script, Manrope } from "next/font/google";
 
 import "@/app/globals.css";
+import { getBaseUrl, getRootLanguageAlternates, toAbsoluteUrl } from "@/lib/seo";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -22,8 +23,37 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Centre Bien-Etre 2.0",
-  description: "Mehrsprachige Landing Page fuer eine moderne Physiotherapiepraxis.",
+  metadataBase: getBaseUrl(),
+  title: {
+    default: "Centre bien-etre",
+    template: "%s | Centre bien-etre",
+  },
+  description: "Mehrsprachige Website des Centre bien-etre mit Angeboten, Team, News und Kontaktinformationen.",
+  keywords: ["Physiotherapie", "Biel", "Bienne", "Centre bien-etre", "Angebote", "Team", "Kontakt"],
+  alternates: {
+    canonical: "/",
+    languages: getRootLanguageAlternates(),
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Centre bien-etre",
+    title: "Centre bien-etre",
+    description: "Mehrsprachige Website des Centre bien-etre mit Angeboten, Team, News und Kontaktinformationen.",
+    images: [{ url: toAbsoluteUrl("/images/DSC06768.jpg") }],
+    locale: "de_CH",
+    alternateLocale: ["fr_CH"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Centre bien-etre",
+    description: "Mehrsprachige Website des Centre bien-etre mit Angeboten, Team, News und Kontaktinformationen.",
+    images: [toAbsoluteUrl("/images/DSC06768.jpg")],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -34,6 +64,9 @@ export const metadata: Metadata = {
     other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#5bbad5" }],
   },
 };
+
+const umamiScriptUrl = process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL;
+const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
 
 export default function RootLayout({
   children,
@@ -52,6 +85,14 @@ export default function RootLayout({
             document.documentElement.classList.toggle("dark", theme === "dark");
           })();`}
         </Script>
+        {umamiScriptUrl && umamiWebsiteId ? (
+          <Script
+            defer
+            src={umamiScriptUrl}
+            data-website-id={umamiWebsiteId}
+            strategy="afterInteractive"
+          />
+        ) : null}
         {children}
       </body>
     </html>
