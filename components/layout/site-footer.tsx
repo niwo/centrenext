@@ -4,7 +4,6 @@ import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 type SiteFooterProps = {
   footer: {
-    copyright: string;
     contactKicker: string;
   };
   practice: {
@@ -18,6 +17,8 @@ type SiteFooterProps = {
 };
 
 export function SiteFooter({ footer, practice }: SiteFooterProps) {
+  const copyright = `© ${new Date().getFullYear()} ${practice.name}`;
+
   return (
     <footer className="section-shell relative flex flex-col gap-6 bg-forest text-sand sm:flex-row sm:items-end sm:justify-between">
       <div className="absolute top-6 right-6">
@@ -39,7 +40,7 @@ export function SiteFooter({ footer, practice }: SiteFooterProps) {
           <Mail className="h-4 w-4" />
           {practice.contact.email}
         </a>
-        <p>{footer.copyright}</p>
+        <p>{copyright}</p>
       </div>
     </footer>
   );

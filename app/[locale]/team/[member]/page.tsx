@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getSiteContent } from "@/lib/content";
@@ -138,6 +139,21 @@ export default async function TeamMemberPage({ params }: PageProps) {
                 <h1 className="section-title font-black bg-gradient-to-r from-forest via-teal-700 to-forest bg-clip-text text-transparent">{person.name}</h1>
                 <p className="text-lg font-semibold uppercase tracking-[0.24em] text-clay">{person.role}</p>
                 {person.slogan ? <p className="text-2xl text-ink/80">{person.slogan}</p> : null}
+
+                {person.specialtyKeys.length > 0 ? (
+                  <ul className="flex flex-wrap gap-3">
+                    {person.specialtyKeys.map((key) => (
+                      <li key={key}>
+                        <Badge
+                          variant="secondary"
+                          className="rounded-full border border-[rgb(var(--color-mist)/0.6)] bg-[rgb(var(--surface-elevated)/0.9)] px-4 py-1.5 text-sm font-semibold text-forest shadow-sm"
+                        >
+                          {key}
+                        </Badge>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
 
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/85 prose-strong:text-forest">
                   <ReactMarkdown>{profile.content}</ReactMarkdown>

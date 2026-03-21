@@ -59,7 +59,11 @@ location:
   mapLabel: Carte
 
 footer:
-  copyright: "\xA9 2026 Centre Bien-Etre"
   contactKicker: Contact
   backLink: "Retour a l'accueil"
   detailKicker: "Detail"
+
+testimonials:
+  kicker: Temoignages
+  title: Ce que disent nos clients
+  intro: Des temoignages authentiques de notre clientele.

@@ -70,6 +70,14 @@ export type NewsPost = NewsItem & {
   content: string;
 };
 
+export type TestimonialItem = {
+  slug: string;
+  quote: string;
+  name: string;
+  date: string;
+  image?: string;
+};
+
 type PageContent = {
   navigation: NavigationLink[];
   hero: {
@@ -114,8 +122,13 @@ type PageContent = {
     openingHoursLabel: string;
     mapLabel: string;
   };
+  testimonials: {
+    title: string;
+    intro: string;
+    kicker: string;
+    items: TestimonialItem[];
+  };
   footer: {
-    copyright: string;
     contactKicker: string;
     backLink: string;
     detailKicker: string;
@@ -216,8 +229,12 @@ type I18nData = {
     openingHoursLabel: string;
     mapLabel: string;
   };
+  testimonials: {
+    kicker: string;
+    title: string;
+    intro: string;
+  };
   footer: {
-    copyright: string;
     contactKicker: string;
     backLink: string;
     detailKicker: string;
@@ -257,6 +274,12 @@ type ServiceFrontmatter = {
   tags?: string[];
 };
 
+type TestimonialFrontmatter = {
+  name?: string;
+  date?: string;
+  image?: string;
+};
+
 function normalizeTags(value: unknown) {
   if (!Array.isArray(value)) {
     return [];
@@ -269,6 +292,10 @@ function normalizeTags(value: unknown) {
 }
 
 function compareNewsByDateDesc(a: NewsPost, b: NewsPost) {
+  return new Date(b.date).getTime() - new Date(a.date).getTime();
+}
+
+function compareByDateDesc(a: { date: string }, b: { date: string }) {
   return new Date(b.date).getTime() - new Date(a.date).getTime();
 }
 
@@ -317,6 +344,38 @@ async function readNewsPosts(newsDir: string): Promise<NewsPost[]> {
   return posts.sort(compareNewsByDateDesc);
 }
 
+async function readTestimonialPosts(testimonialsDir: string): Promise<TestimonialItem[]> {
+  const entries = await fs.readdir(testimonialsDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
+    if (error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  });
+  const markdownFiles = entries
+    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".md"))
+    .map((entry) => entry.name);
+
+  const items = await Promise.all(
+    markdownFiles.map(async (fileName) => {
+      const filePath = path.join(testimonialsDir, fileName);
+      const raw = await readTextFile(filePath);
+      const parsed = matter(raw);
+      const frontmatter = parsed.data as TestimonialFrontmatter;
+      const slug = fileName.replace(/\.md$/i, "");
+
+      return {
+        slug,
+        quote: parsed.content.trim(),
+        name: frontmatter.name ?? slug,
+        date: frontmatter.date ?? "",
+        image: frontmatter.image,
+      };
+    }),
+  );
+
+  return items.sort(compareByDateDesc);
+}
+
 async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
   const entries = await fs.readdir(servicesDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") {
@@ -362,8 +421,9 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const teamDir = path.join(process.cwd(), "content", locale, "team");
   const servicesDir = path.join(process.cwd(), "content", locale, "services");
   const newsDir = path.join(process.cwd(), "content", locale, "news");
+  const testimonialsDir = path.join(process.cwd(), "content", locale, "testimonials");
 
-  const [practiceData, teamData, i18n, detailEntries, servicePosts, newsPosts] = await Promise.all([
+  const [practiceData, teamData, i18n, detailEntries, servicePosts, newsPosts, testimonialItems] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "practice.yaml")),
     parseYamlFile<TeamData>(path.join(dataDir, "team.yaml")),
     parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`)),
@@ -372,6 +432,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     ),
     readServicePosts(servicesDir),
     readNewsPosts(newsDir),
+    readTestimonialPosts(testimonialsDir),
   ]);
 
   const details = Object.fromEntries(detailEntries) as Record<SectionKey, string>;
@@ -473,6 +534,12 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       addressLabel: i18n.location.addressLabel,
       openingHoursLabel: i18n.location.openingHoursLabel,
       mapLabel: i18n.location.mapLabel,
+    },
+    testimonials: {
+      title: i18n.testimonials.title,
+      intro: i18n.testimonials.intro,
+      kicker: i18n.testimonials.kicker,
+      items: testimonialItems,
     },
     footer: i18n.footer,
   };
