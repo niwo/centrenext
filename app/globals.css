@@ -76,4 +76,36 @@ body {
   .section-kicker {
     @apply text-xs font-semibold uppercase tracking-[0.28em] text-clay;
   }
+
+  .testimonials-marquee {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .testimonials-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: testimonials-scroll 34s linear infinite;
+  }
+
+  .testimonials-marquee:hover .testimonials-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes testimonials-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-track {
+    animation: none;
+  }
 }

@@ -21,6 +21,8 @@ const cardColors = [
 ] as const;
 
 export function TestimonialsSection({ testimonials, locale }: TestimonialsSectionProps) {
+  const scrollingItems = [...testimonials.items, ...testimonials.items];
+
   return (
     <section id="testimonials" className="section-shell space-y-6">
       <div className="space-y-2">
@@ -28,43 +30,45 @@ export function TestimonialsSection({ testimonials, locale }: TestimonialsSectio
         <h2 className="section-title">{testimonials.title}</h2>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        {testimonials.items.map((item, index) => (
-          <Card
-            key={item.slug}
-            className={`flex flex-col gap-5 p-6 border ${cardColors[index % cardColors.length]}`}
-          >
-            <blockquote className="flex-1 text-lg leading-8 text-ink/85 italic">
-              &ldquo;{item.quote}&rdquo;
-            </blockquote>
+      <div className="testimonials-marquee">
+        <div className="testimonials-track">
+          {scrollingItems.map((item, index) => (
+            <Card
+              key={`${item.slug}-${index}`}
+              className={`flex w-[17rem] shrink-0 flex-col gap-4 border p-5 sm:w-[18.5rem] ${cardColors[index % cardColors.length]}`}
+            >
+              <blockquote className="flex-1 text-base leading-7 text-ink/85 italic">
+                &ldquo;{item.quote}&rdquo;
+              </blockquote>
 
-            <div className="flex items-center gap-3">
-              {item.image ? (
-                <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={48}
-                    height={48}
-                    className="h-12 w-12 object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest/10 text-forest">
-                  <UserCircle className="h-8 w-8" />
-                </div>
-              )}
-              <div>
-                <p className="font-semibold text-forest">{item.name}</p>
-                {item.date && (
-                  <p className="text-sm text-ink/50">
-                    {new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(item.date))}
-                  </p>
+              <div className="flex items-center gap-3">
+                {item.image ? (
+                  <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest/10 text-forest">
+                    <UserCircle className="h-7 w-7" />
+                  </div>
                 )}
+                <div>
+                  <p className="text-sm font-semibold text-forest">{item.name}</p>
+                  {item.date && (
+                    <p className="text-xs text-ink/50">
+                      {new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(item.date))}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
   );
