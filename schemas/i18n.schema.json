@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["days", "nav", "hero", "about", "team", "specialties", "services", "news", "location", "footer"],
+  "properties": {
+    "days": { "type": "object" },
+    "nav": {
+      "type": "object",
+      "required": ["about", "team", "services", "news", "location"]
+    },
+    "hero": {
+      "type": "object",
+      "required": ["eyebrow", "title", "description", "primaryCta", "secondaryCta"]
+    },
+    "about": {
+      "type": "object",
+      "required": ["title", "detailLink", "body"]
+    },
+    "team": {
+      "type": "object",
+      "required": ["title", "intro", "detailLink", "members"]
+    },
+    "specialties": { "type": "object" },
+    "services": {
+      "type": "object",
+      "required": ["title", "intro", "pricePrefix", "detailLink"]
+    },
+    "news": {
+      "type": "object",
+      "required": ["title", "intro", "detailLink"]
+    },
+    "location": {
+      "type": "object",
+      "required": ["title", "intro", "detailLink", "addressLabel", "openingHoursLabel", "mapLabel"]
+    },
+    "footer": {
+      "type": "object",
+      "required": ["copyright", "contactKicker", "backLink", "detailKicker"]
+    }
+  },
+  "additionalProperties": false
+}

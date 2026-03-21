@@ -1,0 +1,31 @@
+name: Centre Bien-Être
+tagline:
+  de: Die Praxis für das ganzheitliche Wohlbefinden
+  fr: Le cabinet pour le bien-etre holistique
+address:
+  street:
+    de: Johann-Verresius-Strasse
+    fr: Rue Johann-Verresius
+  number: 15
+  postcode: 2502
+  city:
+    de: Biel
+    fr: Bienne
+contact:
+  phone: "+41 52 555 12 34"
+  email: info@centrebienetre.ch
+map:
+  embedUrl: "https://www.openstreetmap.org/export/embed.html?bbox=7.2400%2C47.1290%2C7.2515%2C47.1365&layer=mapnik&marker=47.13276%2C7.24593"
+  lat: 47.13276
+  lon: 7.24593
+openingHours:
+  - dayKey: monday
+    hours: "08:00 - 18:00"
+  - dayKey: tuesday
+    hours: "08:00 - 18:00"
+  - dayKey: wednesday
+    hours: "08:00 - 17:00"
+  - dayKey: thursday
+    hours: "08:00 - 20:00"
+  - dayKey: friday
+    hours: "08:00 - 16:00"

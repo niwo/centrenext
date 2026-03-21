@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "name",
+    "address",
+    "contact",
+    "map",
+    "openingHours"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "object",
+      "required": [
+        "street",
+        "number",
+        "postcode",
+        "city"
+      ],
+      "properties": {
+        "street": {
+          "anyOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "properties": {
+                "de": { "type": "string" },
+                "fr": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "number": {
+          "type": "integer"
+        },
+        "postcode": {
+          "type": "integer"
+        },
+        "city": {
+          "anyOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "properties": {
+                "de": { "type": "string" },
+                "fr": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "required": [
+        "phone",
+        "email"
+      ],
+      "properties": {
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "map": {
+      "type": "object",
+      "required": [
+        "embedUrl",
+        "lat",
+        "lon"
+      ],
+      "properties": {
+        "embedUrl": {
+          "type": "string"
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        }
+      }
+    },
+    "openingHours": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "dayKey",
+          "hours"
+        ],
+        "properties": {
+          "dayKey": {
+            "type": "string"
+          },
+          "hours": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "tagline": {
+      "type": "object",
+      "properties": {
+        "de": { "type": "string" },
+        "fr": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

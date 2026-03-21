@@ -1,0 +1,71 @@
+days:
+  monday: Montag
+  tuesday: Dienstag
+  wednesday: Mittwoch
+  thursday: Donnerstag
+  friday: Freitag
+
+nav:
+  about: Praxis
+  team: Team
+  services: Angebot
+  news: News
+  location: Standort
+
+hero:
+  eyebrow: Physiotherapie in Biel
+  title: Beweglichkeit, Entlastung und Vertrauen in einem klaren digitalen Auftritt.
+  description: Die neue Website präsentiert das Team, die Behandlungen, aktuelle Hinweise und den Standort in einer ruhigen, hochwertigen und einfach pflegbaren Struktur.
+  primaryCta: Angebote ansehen
+  secondaryCta: Standort entdecken
+
+about:
+  title: Die Praxis im Überblick
+  detailLink: Details zur Praxis
+  body: |
+    ### Centre bien-etre in Biel/Bienne
+
+    Im Centre bien-etre steht das Wohlbefinden im Zentrum. Die Praxis vereint Physiotherapie, Ernährungsberatung und Coaching in einer ruhigen und persönlichen Umgebung.
+
+    - Individuelle Begleitung statt Standardprogramm
+    - Verknüpfung von Körper, Bewegung und Alltag
+    - Kurze Wege durch ein kompaktes, interdisziplinäres Angebot
+
+team:
+  title: Team
+  intro: "Das ist das Team von Centre bien-etre. Wir freuen uns auf euch!"
+  detailLink: Details zum Team
+  members:
+    christa:
+      role: Dipl. Physiotherapeutin
+
+specialties:
+  physiotherapie: Physiotherapie
+  psych-k: Psych-K
+  sportphysiotherapie: Sportphysiotherapie
+  faszientechniken: Faszientechniken
+
+services:
+  title: Leistungen
+  intro: Leistungen werden als eigene Markdown-Dateien gepflegt und automatisch auf der Seite dargestellt.
+  pricePrefix: "ab CHF"
+  detailLink: Details zu Leistungen
+
+news:
+  title: Aktuelle Hinweise
+  intro: Alle News werden als einzelne Markdown-Beiträge im News-Ordner gepflegt und automatisch nach Datum sortiert.
+  detailLink: Alle News
+
+location:
+  title: Standort der Praxis
+  intro: Die Praxisadresse, Kontaktinformationen und Kartenansicht werden zentral verwaltet und in beide Sprachen eingebunden.
+  detailLink: Standortdetails
+  addressLabel: Adresse
+  openingHoursLabel: Öffnungszeiten
+  mapLabel: Kartenansicht
+
+footer:
+  copyright: "\xA9 2026 Centre Bien-Etre"
+  contactKicker: Kontakt
+  backLink: "Zurück zur Übersicht"
+  detailKicker: Detailseite

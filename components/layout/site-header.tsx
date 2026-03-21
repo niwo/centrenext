@@ -1,0 +1,116 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { Button } from "@/components/ui/button";
+
+type SiteHeaderProps = {
+  locale: string;
+  practiceName: string;
+  navigation: Array<{
+    label: string;
+    href: string;
+  }>;
+};
+
+export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps) {
+  const alternateLocale = locale === "de" ? "fr" : "de";
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const segments = (pathname ?? `/${locale}`).split("/").filter(Boolean);
+  const currentSection = segments[0] === locale ? segments[1] : segments[0];
+
+  const alternateLocaleHref = (() => {
+    const segments = (pathname ?? `/${locale}`).split("/").filter(Boolean);
+
+    if (segments.length === 0) {
+      return `/${alternateLocale}`;
+    }
+
+    if (segments[0] === locale) {
+      segments[0] = alternateLocale;
+      return `/${segments.join("/")}`;
+    }
+
+    return `/${alternateLocale}/${segments.join("/")}`;
+  })();
+
+  return (
+    <header className="section-shell sticky top-6 z-20 border border-[rgb(var(--color-clay)/0.25)] bg-gradient-to-r from-[rgb(var(--surface-shell)/0.95)] via-[rgb(var(--surface-elevated)/0.96)] to-[rgb(var(--surface-shell)/0.95)] py-4 shadow-[0_16px_40px_rgb(var(--color-forest)/0.12)]">
+      <div>
+        <div className="float-left flex h-12 items-center gap-3">
+          <Link
+            href={`/${locale}`}
+            aria-label="Startseite"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[rgb(var(--color-clay)/0.35)] bg-gradient-to-br from-[rgb(var(--color-clay)/0.9)] to-[rgb(var(--color-forest)/0.9)] text-center font-display text-sm leading-none tracking-normal text-sand shadow-sm transition-transform hover:scale-[1.03]"
+          >
+            CB
+          </Link>
+          <div className="flex h-12 items-center">
+            <Link href={`/${locale}`} className="block font-display text-2xl leading-none text-forest transition-opacity hover:opacity-75 sm:text-3xl">
+              {practiceName}
+            </Link>
+          </div>
+        </div>
+
+        <div className="float-right flex h-12 items-center gap-2.5 lg:hidden">
+          <ThemeToggle />
+          <Button
+            type="button"
+            variant="ghost"
+            size="default"
+            className="h-11 w-11 p-0 lg:hidden"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="site-navigation"
+            aria-label={isMobileMenuOpen ? "Navigation schliessen" : "Navigation oeffnen"}
+            onClick={() => setIsMobileMenuOpen((value) => !value)}
+          >
+            <span className="sr-only">Menu</span>
+            <span className="flex w-5 flex-col items-center gap-1.5" aria-hidden>
+              <span className={`h-0.5 w-full rounded-full bg-forest transition-transform ${isMobileMenuOpen ? "translate-y-2 rotate-45" : ""}`} />
+              <span className={`h-0.5 w-full rounded-full bg-forest transition-opacity ${isMobileMenuOpen ? "opacity-0" : "opacity-100"}`} />
+              <span className={`h-0.5 w-full rounded-full bg-forest transition-transform ${isMobileMenuOpen ? "-translate-y-2 -rotate-45" : ""}`} />
+            </span>
+          </Button>
+        </div>
+      </div>
+
+      <nav
+        id="site-navigation"
+        className={`${isMobileMenuOpen ? "mt-5 flex" : "hidden"} clear-both flex-col gap-2 text-ink/75 lg:clear-none lg:float-right lg:mt-0 lg:flex lg:h-12 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-3`}
+      >
+        {navigation.map((item) => {
+          const sectionKey = item.href.replace("/", "");
+          const isActive = currentSection === sectionKey;
+
+          return (
+            <Link
+              key={item.href}
+              href={`/${locale}${item.href}`}
+              aria-current={isActive ? "page" : undefined}
+              className={`rounded-full px-5 py-2.5 text-lg font-semibold transition-colors ${isActive ? "bg-forest text-sand" : "hover:bg-forest/5 hover:text-forest"}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+        <div className="mt-2 flex items-center gap-2 lg:mt-0">
+          <div className="hidden lg:block">
+            <ThemeToggle />
+          </div>
+          <Link
+            href={alternateLocaleHref}
+            className="rounded-full border border-forest/15 px-4 py-2 font-semibold text-forest transition-colors hover:bg-forest hover:text-sand"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {alternateLocale.toUpperCase()}
+          </Link>
+        </div>
+      </nav>
+    </header>
+  );
+}

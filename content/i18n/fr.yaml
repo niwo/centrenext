@@ -1,0 +1,71 @@
+days:
+  monday: Lundi
+  tuesday: Mardi
+  wednesday: Mercredi
+  thursday: Jeudi
+  friday: Vendredi
+
+nav:
+  about: Cabinet
+  team: Equipe
+  services: Prestations
+  news: Actualites
+  location: Acces
+
+hero:
+  eyebrow: "Physiotherapie a Bienne"
+  title: "Un site clair et bilingue pour presenter les soins, l'equipe et le cabinet."
+  description: "La nouvelle application met en avant les prestations, les prix, les nouvelles et les informations pratiques dans une base simple a maintenir."
+  primaryCta: Voir les prestations
+  secondaryCta: "Voir l'acces"
+
+about:
+  title: "Apercu du cabinet"
+  detailLink: "Decouvrir le cabinet"
+  body: |
+    ### Centre bien-etre a Bienne
+
+    Au Centre bien-etre, le bien-etre reste au coeur de la prise en charge. Le cabinet reunit physiotherapie, nutrition et coaching dans un cadre calme et humain.
+
+    - Accompagnement personnalise
+    - Vision globale du mouvement et de la sante
+    - Offre multidisciplinaire sous un meme toit
+
+team:
+  title: Les collaboratrices
+  intro: "Une equipe a taille humaine, avec des expertises complementaires et un suivi tres personnel."
+  detailLink: "Voir l'equipe"
+  members:
+    christa:
+      role: "Physiotherapeute diplomee"
+
+specialties:
+  physiotherapie: Physiotherapie
+  psych-k: Psych-K
+  sportphysiotherapie: "Physiotherapie du sport"
+  faszientechniken: Techniques fasciales
+
+services:
+  title: Prestations
+  intro: "Les prestations sont gerees sous forme de fichiers Markdown et affichees automatiquement."
+  pricePrefix: "des CHF"
+  detailLink: Voir les prestations
+
+news:
+  title: Informations recentes
+  intro: "Les actualites sont gerees sous forme d'articles Markdown et triees automatiquement par date."
+  detailLink: Toutes les actualites
+
+location:
+  title: "Location du cabinet"
+  intro: "L'adresse, les coordonnees et la carte sont gerees au meme endroit pour alimenter toutes les langues."
+  detailLink: "Voir l'acces"
+  addressLabel: Adresse
+  openingHoursLabel: Horaires
+  mapLabel: Carte
+
+footer:
+  copyright: "\xA9 2026 Centre Bien-Etre"
+  contactKicker: Contact
+  backLink: "Retour a l'accueil"
+  detailKicker: "Detail"

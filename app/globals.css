@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --color-sand: 244 239 230;
+  --color-clay: 198 107 78;
+  --color-forest: 23 53 47;
+  --color-ink: 20 33 30;
+  --color-mist: 216 228 222;
+  --surface-shell: 255 255 255;
+  --surface-card: 255 255 255;
+  --surface-elevated: 247 243 235;
+  --border-soft: 255 255 255;
+  --page-grad-start: 247 243 235;
+  --page-grad-end: 239 231 220;
+  --page-glow: 244 239 230;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-sand: 11 21 19;
+  --color-clay: 228 151 122;
+  --color-forest: 188 219 211;
+  --color-ink: 228 236 233;
+  --color-mist: 48 66 61;
+  --surface-shell: 17 31 28;
+  --surface-card: 21 38 34;
+  --surface-elevated: 28 49 44;
+  --border-soft: 74 98 92;
+  --page-grad-start: 8 15 14;
+  --page-grad-end: 13 24 22;
+  --page-glow: 29 51 46;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgb(var(--page-glow) / 0.62), rgb(var(--color-sand) / 1) 45%),
+    linear-gradient(180deg, rgb(var(--page-grad-start)) 0%, rgb(var(--page-grad-end)) 100%);
+}
+
+::selection {
+  background: rgb(var(--color-clay) / 0.2);
+}
+
+@layer base {
+  * {
+    border-color: rgb(var(--border-soft) / 0.5);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply rounded-[2rem] p-6 shadow-soft backdrop-blur sm:p-8;
+    border-color: rgb(var(--border-soft) / 0.5);
+    background-color: rgb(var(--surface-shell) / 0.8);
+  }
+
+  .section-title {
+    @apply font-display text-4xl text-forest sm:text-5xl;
+  }
+
+  .section-kicker {
+    @apply text-xs font-semibold uppercase tracking-[0.28em] text-clay;
+  }
+}
