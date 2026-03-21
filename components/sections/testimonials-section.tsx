@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { UserCircle } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import type { TestimonialItem } from "@/lib/content";
@@ -7,11 +8,17 @@ type TestimonialsSectionProps = {
   locale: string;
   testimonials: {
     title: string;
-    intro: string;
     kicker: string;
     items: TestimonialItem[];
   };
 };
+
+const cardColors = [
+  "bg-forest/5 border-forest/15",
+  "bg-[rgb(var(--color-clay)/0.07)] border-[rgb(var(--color-clay)/0.2)]",
+  "bg-[rgb(var(--color-mist)/0.5)] border-[rgb(var(--color-mist)/0.8)]",
+  "bg-[rgb(var(--surface-elevated)/0.9)] border-[rgb(var(--color-mist)/0.5)]",
+] as const;
 
 export function TestimonialsSection({ testimonials, locale }: TestimonialsSectionProps) {
   return (
@@ -19,16 +26,15 @@ export function TestimonialsSection({ testimonials, locale }: TestimonialsSectio
       <div className="space-y-2">
         <p className="section-kicker">{testimonials.kicker}</p>
         <h2 className="section-title">{testimonials.title}</h2>
-        <p className="max-w-2xl text-base leading-7 text-ink/75">{testimonials.intro}</p>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
-        {testimonials.items.map((item) => (
+        {testimonials.items.map((item, index) => (
           <Card
             key={item.slug}
-            className="flex flex-col gap-5 bg-[rgb(var(--surface-elevated)/0.72)] p-6"
+            className={`flex flex-col gap-5 p-6 border ${cardColors[index % cardColors.length]}`}
           >
-            <blockquote className="flex-1 text-base leading-7 text-ink/85 italic">
+            <blockquote className="flex-1 text-lg leading-8 text-ink/85 italic">
               &ldquo;{item.quote}&rdquo;
             </blockquote>
 
@@ -44,8 +50,8 @@ export function TestimonialsSection({ testimonials, locale }: TestimonialsSectio
                   />
                 </div>
               ) : (
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest/10 text-sm font-semibold text-forest">
-                  {item.name.charAt(0).toUpperCase()}
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-forest/10 text-forest">
+                  <UserCircle className="h-8 w-8" />
                 </div>
               )}
               <div>
