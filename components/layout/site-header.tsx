@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
@@ -36,12 +37,12 @@ export function SiteHeader({ locale, practiceName, navigation }: SiteHeaderProps
           <Link
             href={`/${locale}`}
             aria-label="Startseite"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[rgb(var(--color-clay)/0.35)] bg-gradient-to-br from-[rgb(var(--color-clay)/0.9)] to-[rgb(var(--color-forest)/0.9)] text-center font-display text-sm leading-none tracking-normal text-sand shadow-sm transition-transform hover:scale-[1.03]"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[rgb(var(--color-clay)/0.14)] shadow-sm transition-transform hover:scale-[1.03]"
           >
-            CB
+            <Image src="/img/logo.svg" alt="Centre bien-etre Logo" width={48} height={48} className="logo-pulsate h-10 w-10" priority />
           </Link>
           <div className="flex h-12 items-center">
-            <Link href={`/${locale}`} className="block font-display font-black text-2xl leading-none bg-gradient-to-r from-forest via-teal-700 to-forest bg-clip-text text-transparent transition-opacity hover:opacity-75 sm:text-3xl">
+            <Link href={`/${locale}`} className="block font-display font-black text-2xl leading-none text-clay transition-opacity hover:opacity-75 sm:text-3xl">
               {practiceName}
             </Link>
           </div>
