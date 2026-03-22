@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { Home } from "lucide-react";
+import { Check, Home, Newspaper, User, X } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card";
 import { getSiteContent, type SectionKey } from "@/lib/content";
 import { getCanonicalSection, getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
+import { cn, getServiceColorClasses } from "@/lib/utils";
 
 type PageProps = {
   params: Promise<{
@@ -34,6 +35,14 @@ function formatNewsDate(date: string, locale: string) {
   return new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(parsed);
 }
 
+function formatChfPrice(amountChf: number) {
+  if (Number.isInteger(amountChf)) {
+    return `CHF ${amountChf}.-`;
+  }
+
+  return `CHF ${amountChf.toFixed(2)}`;
+}
+
 export async function generateStaticParams() {
   const entries = await Promise.all(
     siteConfig.locales.map(async (locale) => {
@@ -43,22 +52,11 @@ export async function generateStaticParams() {
         services: getSectionSlug(locale, "services"),
         news: getSectionSlug(locale, "news"),
       };
-      const isTranslated = {
-        team: translatedSection.team !== "team",
-        services: translatedSection.services !== "services",
-        news: translatedSection.news !== "news",
-      };
 
       return [
-        ...(isTranslated.team
-          ? content.page.team.people.map((person) => ({ locale, section: translatedSection.team, slug: person.slug }))
-          : []),
-        ...(isTranslated.services
-          ? content.servicePosts.map((entry) => ({ locale, section: translatedSection.services, slug: entry.slug }))
-          : []),
-        ...(isTranslated.news
-          ? content.newsPosts.map((entry) => ({ locale, section: translatedSection.news, slug: entry.slug }))
-          : []),
+        ...content.page.team.people.map((person) => ({ locale, section: translatedSection.team, slug: person.slug })),
+        ...content.servicePosts.map((entry) => ({ locale, section: translatedSection.services, slug: entry.slug })),
+        ...content.newsPosts.map((entry) => ({ locale, section: translatedSection.news, slug: entry.slug })),
       ];
     }),
   );
@@ -92,7 +90,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
     }
 
     const relatedTeamMembers = content.page.team.people.filter((person) =>
-      person.specialtyKeys.some((tag) => servicePost.tags.includes(tag)),
+      person.tags.some((tag) => servicePost.tags.includes(tag)),
     );
     const relatedNewsPosts = content.newsPosts.filter((post) => post.tags.some((tag) => servicePost.tags.includes(tag)));
 
@@ -100,7 +98,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
       <main className="relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
         <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-          <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
+          <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
           <Card className="space-y-6 overflow-hidden p-0">
             <Image src={serviceCard.image} alt={serviceCard.name} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
@@ -120,7 +118,6 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
               <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
                 <div className="space-y-4">
-                  <p className="text-base font-semibold uppercase tracking-[0.24em] text-clay">{serviceCard.price}</p>
                   <p className="text-lg leading-8 text-ink/75">{servicePost.description}</p>
 
                   <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
@@ -128,42 +125,101 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                   </div>
                 </div>
 
-                {relatedTeamMembers.length > 0 || relatedNewsPosts.length > 0 ? (
-                  <aside className="space-y-4 lg:sticky lg:top-6">
-                    {relatedTeamMembers.length > 0 ? (
-                      <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.footer.contactKicker}</p>
-                        <ul className="mt-2 flex flex-wrap gap-2">
-                          {relatedTeamMembers.map((person) => (
-                            <li key={person.slug}>
-                              <Link
-                                href={getItemHref(localeValue, "team", person.slug)}
-                                className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
-                              >
-                                {person.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : null}
+                <aside className="space-y-4 lg:sticky lg:top-6">
+                  <div className="space-y-2 rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-4 py-3 text-sm text-ink/80">
+                    <p className="font-semibold uppercase tracking-[0.2em] text-clay">{content.page.services.priceLabel}</p>
+                    <ul className="space-y-2">
+                      {servicePost.prices.map((price, index) => (
+                        <li
+                          key={`${price.amountChf}-${price.unit}-${index}`}
+                          className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2"
+                        >
+                          <p className="text-base font-semibold text-forest">{formatChfPrice(price.amountChf)} / {price.unit}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-                    {relatedNewsPosts.length > 0 ? (
-                      <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
-                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.news.title}</p>
-                        <ul className="mt-2 space-y-2">
-                          {relatedNewsPosts.map((post) => (
-                            <li key={post.slug}>
-                              <Link href={getItemHref(localeValue, "news", post.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
-                                {post.title}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                  <div className="space-y-2 rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-4 py-3 text-sm text-ink/80">
+                    <p className="font-semibold uppercase tracking-[0.2em] text-clay">{content.page.services.insuranceLabel}</p>
+                    {servicePost.insurance.obligatory_coverage || servicePost.insurance.supplementary.covered ? (
+                      <div className="space-y-2">
+                        <div className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2">
+                          <p>
+                            <span className="font-semibold text-ink">{content.page.services.insuranceObligatoryLabel}:</span>{" "}
+                            {servicePost.insurance.obligatory_coverage ? (
+                              <span className="inline-flex items-center text-emerald-700 align-middle" aria-label={content.page.services.insuranceCoveredLabel}>
+                                <Check className="h-4 w-4" aria-hidden="true" />
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center text-rose-700 align-middle" aria-label={content.page.services.insuranceNotCoveredLabel}>
+                                <X className="h-4 w-4" aria-hidden="true" />
+                              </span>
+                            )}
+                          </p>
+                        </div>
+
+                        <div className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2">
+                          {servicePost.insurance.supplementary.covered ? (
+                            <div className="space-y-1">
+                              <p className="font-semibold text-ink">{content.page.services.insuranceSupplementaryLabel}:</p>
+                              <ul className="flex flex-wrap gap-2">
+                                {(servicePost.insurance.supplementary.insurers.length > 0
+                                  ? servicePost.insurance.supplementary.insurers
+                                  : ["all Insurances"]
+                                ).map((insurer) => (
+                                  <li key={insurer}>
+                                    <span className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-ink/85">
+                                      {insurer}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : (
+                            <p className="font-semibold text-ink">{content.page.services.insuranceSupplementaryLabel}</p>
+                          )}
+                        </div>
                       </div>
-                    ) : null}
-                  </aside>
-                ) : null}
+                    ) : (
+                      <p>{content.page.services.insuranceNoCoverageLabel}</p>
+                    )}
+                  </div>
+
+                  {relatedTeamMembers.length > 0 ? (
+                    <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.footer.contactKicker}</p>
+                      <ul className="mt-2 flex flex-wrap gap-2">
+                        {relatedTeamMembers.map((person) => (
+                          <li key={person.slug}>
+                            <Link
+                              href={getItemHref(localeValue, "team", person.slug)}
+                              className="inline-flex items-center gap-1.5 rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
+                            >
+                              <User className="h-3.5 w-3.5" aria-hidden />
+                              {person.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {relatedNewsPosts.length > 0 ? (
+                    <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.news.title}</p>
+                      <ul className="mt-2 space-y-2">
+                        {relatedNewsPosts.map((post) => (
+                          <li key={post.slug}>
+                            <Link href={getItemHref(localeValue, "news", post.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
+                              {post.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </aside>
               </div>
 
               <div className="mt-12 flex flex-wrap gap-3">
@@ -201,7 +257,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
       <main className="relative overflow-hidden">
         <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
         <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-          <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
+          <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
           <Card className="space-y-6 overflow-hidden p-0">
             <Image src="/images/DSC06642.webp" alt={post.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
@@ -229,10 +285,16 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                 {relatedServices.length > 0 ? (
                   <aside className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5 lg:sticky lg:top-6">
                     <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.services.title}</p>
-                    <ul className="mt-3 space-y-2">
+                    <ul className="mt-3 flex flex-wrap gap-2">
                       {relatedServices.map((servicePost) => (
                         <li key={servicePost.slug}>
-                          <Link href={getItemHref(localeValue, "services", servicePost.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
+                          <Link
+                            href={getItemHref(localeValue, "services", servicePost.slug)}
+                            className={cn(
+                              "inline-flex rounded-full border px-3 py-1 text-sm font-semibold transition",
+                              getServiceColorClasses(servicePost.tag_color, servicePost.tags),
+                            )}
+                          >
                             {servicePost.title}
                           </Link>
                         </li>
@@ -244,7 +306,10 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
               <div className="mt-12 flex flex-wrap gap-3">
                 <Button asChild>
-                  <Link href={getSectionHref(localeValue, "news")}>{content.page.news.detailLink}</Link>
+                  <Link href={getSectionHref(localeValue, "news")} className="inline-flex items-center gap-2">
+                    <Newspaper className="h-4 w-4" aria-hidden />
+                    {content.page.news.detailLink}
+                  </Link>
                 </Button>
                 <Button asChild variant="outline">
                   <Link href={`/${locale}`} className="inline-flex items-center gap-2">
@@ -270,10 +335,10 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
   }
 
   const relatedServices = content.servicePosts.filter((servicePost) =>
-    servicePost.tags.some((tag) => person.specialtyKeys.includes(tag)),
+    servicePost.tags.some((tag) => person.tags.includes(tag)),
   );
   const relatedNewsPosts = content.newsPosts.filter((post) =>
-    post.tags.some((tag) => person.specialtyKeys.includes(tag)),
+    post.tags.some((tag) => person.tags.includes(tag)),
   );
   const phoneHref = person.phone ? `tel:${person.phone.replace(/\s+/g, "")}` : undefined;
 
@@ -281,7 +346,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
           <div className="relative">
@@ -324,7 +389,10 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                         <li key={servicePost.slug}>
                           <Link
                             href={getItemHref(localeValue, "services", servicePost.slug)}
-                            className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
+                            className={cn(
+                              "inline-flex rounded-full border px-3 py-1 text-sm font-semibold transition",
+                              getServiceColorClasses(servicePost.tag_color, servicePost.tags),
+                            )}
                           >
                             {servicePost.title}
                           </Link>

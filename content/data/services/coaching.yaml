@@ -1,0 +1,15 @@
+id: coaching
+prices:
+  - amountChf: 55
+    unit: 30 min
+  - amountChf: 95
+    unit: 60 min
+insurance:
+  obligatory_coverage: false
+  supplementary:
+    covered: false
+image: /images/DSC06826.webp
+tags:
+  - coaching
+tag_color: clay
+highlight: false

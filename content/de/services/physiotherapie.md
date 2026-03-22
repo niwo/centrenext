@@ -1,11 +1,6 @@
 ---
 title: Klassische Physiotherapie
 description: Abklärung, Behandlung und Verlaufskontrolle bei akuten oder chronischen Beschwerden.
-priceChf: 68
-image: /images/DSC06813.webp
-tags:
-  - physiotherapie
-  - faszientechniken
 ---
 
 Die klassische Physiotherapie richtet sich an Menschen mit akuten oder chronischen Beschwerden am Bewegungsapparat.

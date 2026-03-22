@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["id", "prices", "insurance", "image", "tags", "tag_color", "highlight"],
+  "properties": {
+    "id": { "type": "string" },
+    "prices": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["amountChf", "unit"],
+        "properties": {
+          "amountChf": { "type": "number" },
+          "unit": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "insurance": {
+      "type": "object",
+      "required": ["obligatory_coverage", "supplementary"],
+      "properties": {
+        "obligatory_coverage": { "type": "boolean" },
+        "supplementary": {
+          "type": "object",
+          "required": ["covered"],
+          "properties": {
+            "covered": { "type": "boolean" },
+            "insurers": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "image": { "type": "string" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "tag_color": {
+      "type": "string",
+      "enum": ["forest", "ink", "clay", "mist"]
+    },
+    "highlight": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

@@ -11,10 +11,25 @@ const schemasDir = path.join(root, "schemas");
 
 const yamlSchemaByRelativePath = {
   "content/data/main.yaml": "data-main.schema.json",
-  "content/data/team.yaml": "data-team.schema.json",
   "content/i18n/de.yaml": "i18n.schema.json",
   "content/i18n/fr.yaml": "i18n.schema.json",
 };
+
+function getYamlSchemaName(relativePath) {
+  if (yamlSchemaByRelativePath[relativePath]) {
+    return yamlSchemaByRelativePath[relativePath];
+  }
+
+  if (/^content\/data\/team\/[^/]+\.ya?ml$/.test(relativePath)) {
+    return "data-team.schema.json";
+  }
+
+  if (/^content\/data\/services\/[^/]+\.ya?ml$/.test(relativePath)) {
+    return "data-service.schema.json";
+  }
+
+  return undefined;
+}
 
 async function walk(dirPath) {
   const entries = await fs.readdir(dirPath, { withFileTypes: true });
@@ -54,7 +69,7 @@ async function main() {
 
   for (const filePath of yamlFiles) {
     const relativePath = toRelative(filePath);
-    const schemaName = yamlSchemaByRelativePath[relativePath];
+    const schemaName = getYamlSchemaName(relativePath);
 
     if (!schemaName) {
       continue;

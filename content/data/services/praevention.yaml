@@ -1,0 +1,16 @@
+id: praevention
+prices:
+  - amountChf: 64
+    unit: 30 min
+  - amountChf: 118
+    unit: 60 min
+insurance:
+  obligatory_coverage: false
+  supplementary:
+    covered: false
+image: /images/DSC06768.webp
+tags:
+  - coaching
+  - praevention
+tag_color: clay
+highlight: false

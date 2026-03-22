@@ -1,10 +1,6 @@
 ---
 title: Conseil et coaching
 description: Accompagnement personnalise autour du mouvement, de la posture et des exercices autonomes.
-priceChf: 95
-image: /images/DSC06826.webp
-tags:
-  - coaching
 ---
 
 Le coaching permet d'identifier les habitudes qui entretiennent les tensions et de mettre en place des solutions concretes.

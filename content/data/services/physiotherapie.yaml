@@ -1,0 +1,20 @@
+id: physiotherapie
+prices:
+  - amountChf: 68
+    unit: 30 min
+  - amountChf: 124
+    unit: 60 min
+insurance:
+  obligatory_coverage: true
+  supplementary:
+    covered: true
+    insurers:
+      - Helsana
+      - CSS
+      - Groupe Mutuel
+image: /images/DSC06813.webp
+tags:
+  - physio
+  - fascias
+tag_color: forest
+highlight: true

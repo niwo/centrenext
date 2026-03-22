@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["landing", "days", "nav", "hero", "about", "team", "services", "news", "location", "footer", "testimonials"],
+  "required": ["landing", "days", "nav", "hero", "about", "team", "services", "posts", "location", "footer", "testimonials"],
   "properties": {
     "landing": {
       "type": "object",
@@ -10,7 +10,7 @@
     "days": { "type": "object" },
     "nav": {
       "type": "object",
-      "required": ["about", "team", "services", "news", "location"]
+      "required": ["about", "team", "services", "posts", "search", "location"]
     },
     "hero": {
       "type": "object",
@@ -27,9 +27,23 @@
     "specialties": { "type": "object" },
     "services": {
       "type": "object",
-      "required": ["title", "pricePrefix", "detailLink"]
+      "required": [
+        "title",
+        "pricePrefix",
+        "detailLink",
+        "priceLabel",
+        "unitLabel",
+        "unitSessionLabel",
+        "insuranceLabel",
+        "insuranceObligatoryLabel",
+        "insuranceSupplementaryLabel",
+        "insuranceNoCoverageLabel",
+        "insuranceSupplementaryInsurersLabel",
+        "insuranceCoveredLabel",
+        "insuranceNotCoveredLabel"
+      ]
     },
-    "news": {
+    "posts": {
       "type": "object",
       "required": ["title", "detailLink"]
     },

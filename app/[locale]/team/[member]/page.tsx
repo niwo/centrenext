@@ -11,6 +11,7 @@ import { Card } from "@/components/ui/card";
 import { getSiteContent } from "@/lib/content";
 import { getItemHref, getSectionHref } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
+import { cn, getServiceColorClasses } from "@/lib/utils";
 
 type PageProps = {
   params: Promise<{
@@ -47,10 +48,10 @@ export default async function TeamMemberPage({ params }: PageProps) {
   }
 
   const relatedServices = content.servicePosts.filter((servicePost) =>
-    servicePost.tags.some((tag) => person.specialtyKeys.includes(tag)),
+    servicePost.tags.some((tag) => person.tags.includes(tag)),
   );
   const relatedNewsPosts = content.newsPosts.filter((post) =>
-    post.tags.some((tag) => person.specialtyKeys.includes(tag)),
+    post.tags.some((tag) => person.tags.includes(tag)),
   );
   const phoneHref = person.phone ? `tel:${person.phone.replace(/\s+/g, "")}` : undefined;
 
@@ -58,7 +59,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
           <div className="relative">
@@ -101,7 +102,10 @@ export default async function TeamMemberPage({ params }: PageProps) {
                         <li key={servicePost.slug}>
                           <Link
                             href={getItemHref(localeValue, "services", servicePost.slug)}
-                            className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
+                            className={cn(
+                              "inline-flex rounded-full border px-3 py-1 text-sm font-semibold transition",
+                              getServiceColorClasses(servicePost.tag_color, servicePost.tags),
+                            )}
                           >
                             {servicePost.title}
                           </Link>

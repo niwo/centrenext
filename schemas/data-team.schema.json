@@ -1,68 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": [
-    "members"
-  ],
+  "required": ["id", "name", "email", "phone", "image", "tags"],
   "properties": {
-    "members": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "email": { "type": "string" },
+    "phone": { "type": "string" },
+    "image": { "type": "string" },
+    "headerImage": { "type": "string" },
+    "tags": {
       "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "name",
-          "email",
-          "phone",
-          "image",
-          "specialtyKeys"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "titles": {
-            "type": "object",
-            "properties": {
-              "de": { "type": "string" },
-              "fr": { "type": "string" }
-            },
-            "additionalProperties": false
-          },
-          "slogans": {
-            "type": "object",
-            "properties": {
-              "de": { "type": "string" },
-              "fr": { "type": "string" }
-            },
-            "additionalProperties": false
-          },
-          "email": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "image": {
-            "type": "string"
-          },
-          "headerImage": {
-            "type": "string"
-          },
-          "specialtyKeys": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "minItems": 1
-          }
-        },
-        "additionalProperties": false
-      }
+      "items": { "type": "string" },
+      "minItems": 1
     }
   },
   "additionalProperties": false

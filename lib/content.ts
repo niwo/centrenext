@@ -33,7 +33,7 @@ type TeamMember = {
   phone?: string;
   image?: string;
   headerImage?: string;
-  specialtyKeys: string[];
+  tags: string[];
 };
 
 export type TeamProfile = {
@@ -45,7 +45,6 @@ type ServiceItem = {
   slug: string;
   name: string;
   description: string;
-  price: string;
   image: string;
 };
 
@@ -53,9 +52,21 @@ export type ServicePost = {
   slug: string;
   title: string;
   description: string;
-  priceChf: number;
+  prices: Array<{
+    amountChf: number;
+    unit: string;
+  }>;
+  insurance: {
+    obligatory_coverage: boolean;
+    supplementary: {
+      covered: boolean;
+      insurers: string[];
+    };
+  };
   image: string;
   tags: string[];
+  tag_color?: string;
+  highlight: boolean;
   content: string;
 };
 
@@ -89,6 +100,7 @@ export type SearchIndexItem = {
 
 type PageContent = {
   navigation: NavigationLink[];
+  searchLabel: string;
   hero: {
     eyebrow: string;
     title: string;
@@ -112,6 +124,16 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    priceLabel: string;
+    unitLabel: string;
+    unitSessionLabel: string;
+    insuranceLabel: string;
+    insuranceObligatoryLabel: string;
+    insuranceSupplementaryLabel: string;
+    insuranceNoCoverageLabel: string;
+    insuranceSupplementaryInsurersLabel: string;
+    insuranceCoveredLabel: string;
+    insuranceNotCoveredLabel: string;
     items: ServiceItem[];
   };
   news: {
@@ -208,20 +230,6 @@ type PracticeData = {
   openingHours: Array<{ dayKey: string; hours: string }>;
 };
 
-type TeamData = {
-  members: Array<{
-    id: string;
-    name: string;
-    titles?: Partial<Record<Locale, string>>;
-    slogans?: Partial<Record<Locale, string>>;
-    email: string;
-    phone: string;
-    image: string;
-    headerImage?: string;
-    specialtyKeys: string[];
-  }>;
-};
-
 // ---------------------------------------------------------------------------
 // i18n translation type (stored in content/i18n/<locale>.yaml)
 // ---------------------------------------------------------------------------
@@ -231,7 +239,14 @@ type I18nData = {
     localeLinkLabel: string;
   };
   days: Record<string, string>;
-  nav: Record<string, string>;
+  nav: {
+    about: string;
+    team: string;
+    services: string;
+    posts: string;
+    search: string;
+    location: string;
+  };
   hero: {
     eyebrow: string;
     title: string;
@@ -249,8 +264,18 @@ type I18nData = {
     intro: string;
     pricePrefix: string;
     detailLink: string;
+    priceLabel: string;
+    unitLabel: string;
+    unitSessionLabel: string;
+    insuranceLabel: string;
+    insuranceObligatoryLabel: string;
+    insuranceSupplementaryLabel: string;
+    insuranceNoCoverageLabel: string;
+    insuranceSupplementaryInsurersLabel: string;
+    insuranceCoveredLabel: string;
+    insuranceNotCoveredLabel: string;
   };
-  news: {
+  posts: {
     title: string;
     intro: string;
     detailLink: string;
@@ -343,6 +368,7 @@ export async function getSiteSeoContent(): Promise<SiteSeoContent> {
 
 type NewsFrontmatter = {
   title?: string;
+  updated?: string;
   date?: string;
   excerpt?: string;
   tags?: string[];
@@ -351,15 +377,57 @@ type NewsFrontmatter = {
 type ServiceFrontmatter = {
   title?: string;
   description?: string;
-  priceChf?: number;
+};
+
+type ServiceDataFile = {
+  id?: string;
+  prices?: Array<{
+    amountChf?: number;
+    unit?: string;
+  }>;
+  insurance?: {
+    obligatory_coverage?: boolean;
+    supplementary?: {
+      covered?: boolean;
+      insurers?: string[];
+    };
+  };
   image?: string;
   tags?: string[];
+  tag_color?: string;
+  highlight?: boolean;
 };
 
 type TestimonialFrontmatter = {
   name?: string;
   date?: string;
   image?: string;
+};
+
+type TeamFrontmatter = {
+  role?: string;
+  slogan?: string;
+};
+
+type TeamDataFile = {
+  id?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  image?: string;
+  headerImage?: string;
+  tags?: string[];
+};
+
+type TeamProfileWithMeta = TeamProfile & {
+  name: string;
+  role: string;
+  slogan?: string;
+  email?: string;
+  phone?: string;
+  image?: string;
+  headerImage?: string;
+  tags: string[];
 };
 
 function normalizeTags(value: unknown) {
@@ -373,6 +441,30 @@ function normalizeTags(value: unknown) {
     .filter((entry) => entry.length > 0);
 }
 
+function normalizeStringList(value: unknown) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter((entry): entry is string => typeof entry === "string")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+}
+
+function normalizeServicePrices(value: ServiceDataFile["prices"]) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((entry) => ({
+      amountChf: typeof entry?.amountChf === "number" ? entry.amountChf : 0,
+      unit: typeof entry?.unit === "string" ? entry.unit.trim() : "",
+    }))
+    .filter((entry) => entry.amountChf > 0 && entry.unit.length > 0);
+}
+
 function compareNewsByDateDesc(a: NewsPost, b: NewsPost) {
   return new Date(b.date).getTime() - new Date(a.date).getTime();
 }
@@ -382,6 +474,14 @@ function compareByDateDesc(a: { date: string }, b: { date: string }) {
 }
 
 function compareServicesBySlug(a: ServicePost, b: ServicePost) {
+  if (a.highlight !== b.highlight) {
+    return a.highlight ? -1 : 1;
+  }
+
+  return a.slug.localeCompare(b.slug);
+}
+
+function compareTeamBySlug(a: TeamProfileWithMeta, b: TeamProfileWithMeta) {
   return a.slug.localeCompare(b.slug);
 }
 
@@ -415,7 +515,7 @@ async function readNewsPosts(newsDir: string): Promise<NewsPost[]> {
       (entry) =>
         entry.isFile() &&
         entry.name.toLowerCase().endsWith(".md") &&
-        entry.name.toLowerCase() !== "index.md",
+        entry.name.toLowerCase() !== "_index.md",
     )
     .map((entry) => entry.name);
 
@@ -430,7 +530,7 @@ async function readNewsPosts(newsDir: string): Promise<NewsPost[]> {
       return {
         slug,
         title: frontmatter.title ?? slug,
-        date: frontmatter.date ?? "",
+        date: frontmatter.updated ?? frontmatter.date ?? "",
         excerpt: frontmatter.excerpt ?? "",
         tags: normalizeTags(frontmatter.tags),
         content: parsed.content.trim(),
@@ -453,7 +553,7 @@ async function readTestimonialPosts(testimonialsDir: string): Promise<Testimonia
       (entry) =>
         entry.isFile() &&
         entry.name.toLowerCase().endsWith(".md") &&
-        entry.name.toLowerCase() !== "index.md",
+        entry.name.toLowerCase() !== "_index.md",
     )
     .map((entry) => entry.name);
 
@@ -478,7 +578,7 @@ async function readTestimonialPosts(testimonialsDir: string): Promise<Testimonia
   return items.sort(compareByDateDesc);
 }
 
-async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
+async function readServicePosts(servicesDir: string, servicesDataDir: string): Promise<ServicePost[]> {
   const entries = await fs.readdir(servicesDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") {
       return [];
@@ -490,7 +590,7 @@ async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
       (entry) =>
         entry.isFile() &&
         entry.name.toLowerCase().endsWith(".md") &&
-        entry.name.toLowerCase() !== "index.md",
+        entry.name.toLowerCase() !== "_index.md",
     )
     .map((entry) => entry.name);
 
@@ -501,14 +601,25 @@ async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
       const parsed = matter(raw);
       const frontmatter = parsed.data as ServiceFrontmatter;
       const slug = fileName.replace(/\.md$/i, "");
+      const serviceDataPath = path.join(servicesDataDir, `${slug}.yaml`);
+      const serviceData = await parseYamlFile<ServiceDataFile>(serviceDataPath);
 
       return {
         slug,
         title: frontmatter.title ?? slug,
         description: frontmatter.description ?? "",
-        priceChf: typeof frontmatter.priceChf === "number" ? frontmatter.priceChf : 0,
-        image: frontmatter.image ?? "/images/DSC06840.webp",
-        tags: normalizeTags(frontmatter.tags),
+        prices: normalizeServicePrices(serviceData.prices),
+        insurance: {
+          obligatory_coverage: Boolean(serviceData.insurance?.obligatory_coverage),
+          supplementary: {
+            covered: Boolean(serviceData.insurance?.supplementary?.covered),
+            insurers: normalizeStringList(serviceData.insurance?.supplementary?.insurers),
+          },
+        },
+        image: serviceData.image ?? "/images/DSC06840.webp",
+        tags: normalizeTags(serviceData.tags),
+        tag_color: serviceData.tag_color,
+        highlight: Boolean(serviceData.highlight),
         content: parsed.content.trim(),
       };
     }),
@@ -517,22 +628,68 @@ async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
   return posts.sort(compareServicesBySlug);
 }
 
+async function readTeamProfiles(teamDir: string, teamDataDir: string): Promise<TeamProfileWithMeta[]> {
+  const entries = await fs.readdir(teamDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
+    if (error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  });
+
+  const markdownFiles = entries
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        entry.name.toLowerCase().endsWith(".md") &&
+        entry.name.toLowerCase() !== "_index.md",
+    )
+    .map((entry) => entry.name);
+
+  const profiles = await Promise.all(
+    markdownFiles.map(async (fileName) => {
+      const filePath = path.join(teamDir, fileName);
+      const raw = await readTextFile(filePath);
+      const parsed = matter(raw);
+      const frontmatter = parsed.data as TeamFrontmatter;
+      const slug = fileName.replace(/\.md$/i, "");
+      const teamDataPath = path.join(teamDataDir, `${slug}.yaml`);
+      const teamData = await parseYamlFile<TeamDataFile>(teamDataPath);
+
+      return {
+        slug,
+        name: teamData.name ?? slug,
+        role: frontmatter.role ?? slug,
+        slogan: frontmatter.slogan,
+        email: teamData.email,
+        phone: teamData.phone,
+        image: teamData.image,
+        headerImage: teamData.headerImage,
+        tags: normalizeTags(teamData.tags),
+        content: parsed.content.trim(),
+      };
+    }),
+  );
+
+  return profiles.sort(compareTeamBySlug);
+}
+
 // ---------------------------------------------------------------------------
 // getSiteContent — merges language-neutral data with locale translations
 // ---------------------------------------------------------------------------
 
 export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const dataDir = path.join(process.cwd(), "content", "data");
+  const teamDataDir = path.join(dataDir, "team");
+  const servicesDataDir = path.join(dataDir, "services");
   const i18nDir = path.join(process.cwd(), "content", "i18n");
   const localeDir = path.join(process.cwd(), "content", locale);
   const teamDir = path.join(process.cwd(), "content", locale, "team");
   const servicesDir = path.join(process.cwd(), "content", locale, "services");
-  const newsDir = path.join(process.cwd(), "content", locale, "news");
+  const postsDir = path.join(process.cwd(), "content", locale, "posts");
   const testimonialsDir = path.join(process.cwd(), "content", locale, "testimonials");
 
-  const [practiceData, teamData, i18n, detailEntries, servicePosts, newsPosts, testimonialItems] = await Promise.all([
+  const [practiceData, i18n, detailEntries, teamProfilesWithMeta, servicePosts, newsPosts, testimonialItems] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
-    parseYamlFile<TeamData>(path.join(dataDir, "team.yaml")),
     parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`)),
     Promise.all(
       sectionKeys.map(async (key) => {
@@ -540,30 +697,26 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
         if (key === "about" || key === "location") {
           filePath = path.join(localeDir, `${key}.md`);
         } else if (key === "team") {
-          filePath = path.join(teamDir, "index.md");
+          filePath = path.join(teamDir, "_index.md");
         } else if (key === "services") {
-          filePath = path.join(servicesDir, "index.md");
+          filePath = path.join(servicesDir, "_index.md");
         } else if (key === "news") {
-          filePath = path.join(newsDir, "index.md");
+          filePath = path.join(postsDir, "_index.md");
         } else {
           filePath = path.join(localeDir, `${key}.md`);
         }
         return [key, await parseMarkdownFile(filePath)] as const;
       }),
     ),
-    readServicePosts(servicesDir),
-    readNewsPosts(newsDir),
+    readTeamProfiles(teamDir, teamDataDir),
+    readServicePosts(servicesDir, servicesDataDir),
+    readNewsPosts(postsDir),
     readTestimonialPosts(testimonialsDir),
   ]);
 
   const details = Object.fromEntries(detailEntries) as Record<SectionKey, string>;
 
-  const teamProfiles = await Promise.all(
-    teamData.members.map(async (member) => ({
-      slug: member.id,
-      content: await parseMarkdownFile(path.join(teamDir, `${member.id}.md`)).catch(() => details.team),
-    })),
-  );
+  const teamProfiles: TeamProfile[] = teamProfilesWithMeta.map(({ slug, content }) => ({ slug, content }));
 
   // Merge practice data + day-name translations
   const practice: PracticeContent = {
@@ -584,24 +737,23 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     })),
   };
 
-  // Merge team data + role/specialty translations
-  const teamPeople = teamData.members.map((member) => ({
-    slug: member.id,
+  // Merge team data from locale markdown frontmatter
+  const teamPeople = teamProfilesWithMeta.map((member) => ({
+    slug: member.slug,
     name: member.name,
-    slogan: member.slogans?.[locale],
-    role: member.titles?.[locale] ?? member.id,
+    slogan: member.slogan,
+    role: member.role,
     email: member.email,
     phone: member.phone,
     image: member.image,
     headerImage: member.headerImage,
-    specialtyKeys: member.specialtyKeys,
+    tags: member.tags,
   }));
 
   const serviceItems = servicePosts.map((item) => ({
     slug: item.slug,
     name: item.title,
     description: item.description,
-    price: `${i18n.services.pricePrefix} ${item.priceChf}`,
     image: item.image,
   }));
 
@@ -613,10 +765,18 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   }));
 
   // Build navigation from i18n nav keys (order follows sectionKeys)
-  const navigation = sectionKeys.map((k) => ({ label: i18n.nav[k] ?? k, href: `/${getSectionSlug(locale, k)}` }));
+  const navigationLabels: Record<SectionKey, string> = {
+    about: i18n.nav.about,
+    team: i18n.nav.team,
+    services: i18n.nav.services,
+    news: i18n.nav.posts,
+    location: i18n.nav.location,
+  };
+  const navigation = sectionKeys.map((k) => ({ label: navigationLabels[k], href: `/${getSectionSlug(locale, k)}` }));
 
   const page: PageContent = {
     navigation,
+    searchLabel: i18n.nav.search,
     hero: {
       eyebrow: i18n.hero.eyebrow,
       title: i18n.hero.title,
@@ -640,13 +800,23 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: i18n.services.intro,
       kicker: i18n.nav.services,
       detailLink: i18n.services.detailLink,
+      priceLabel: i18n.services.priceLabel,
+      unitLabel: i18n.services.unitLabel,
+      unitSessionLabel: i18n.services.unitSessionLabel,
+      insuranceLabel: i18n.services.insuranceLabel,
+      insuranceObligatoryLabel: i18n.services.insuranceObligatoryLabel,
+      insuranceSupplementaryLabel: i18n.services.insuranceSupplementaryLabel,
+      insuranceNoCoverageLabel: i18n.services.insuranceNoCoverageLabel,
+      insuranceSupplementaryInsurersLabel: i18n.services.insuranceSupplementaryInsurersLabel,
+      insuranceCoveredLabel: i18n.services.insuranceCoveredLabel,
+      insuranceNotCoveredLabel: i18n.services.insuranceNotCoveredLabel,
       items: serviceItems,
     },
     news: {
-      title: i18n.news.title,
-      intro: i18n.news.intro,
-      kicker: i18n.nav.news,
-      detailLink: i18n.news.detailLink,
+      title: i18n.posts.title,
+      intro: i18n.posts.intro,
+      kicker: i18n.nav.posts,
+      detailLink: i18n.posts.detailLink,
       items: newsItems,
     },
     location: {

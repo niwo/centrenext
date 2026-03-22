@@ -36,7 +36,7 @@ export default async function LocalePage({ params }: PageProps) {
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[32rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
         <HeroSection hero={content.page.hero} locale={locale} tagline={content.practice.tagline} />
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <AboutSection locale={localeValue} about={content.about} title={content.page.about.title} kicker={content.page.about.kicker} tagline={content.practice.tagline} detailLink={content.page.about.detailLink} />

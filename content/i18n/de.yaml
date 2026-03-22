@@ -12,7 +12,8 @@ nav:
   about: Praxis
   team: Team
   services: Angebote
-  news: News
+  posts: News
+  search: Suche
   location: Kontakt
 
 hero:
@@ -34,10 +35,20 @@ services:
   title: Angebote
   pricePrefix: "ab CHF"
   detailLink: Details zu Angeboten
+  priceLabel: Kosten für Selbstzahler
+  unitLabel: Einheit
+  unitSessionLabel: Sitzung
+  insuranceLabel: Kostenübernahme
+  insuranceObligatoryLabel: Obligatorische Krankenversicherung
+  insuranceSupplementaryLabel: Zusatzversicherung
+  insuranceNoCoverageLabel: Wird nicht von der Krankenversicherung gedeckt
+  insuranceSupplementaryInsurersLabel: Gedeckt durch
+  insuranceCoveredLabel: Ja
+  insuranceNotCoveredLabel: Nein
 
-news:
-  title: Aktuelle News
-  detailLink: Alle News
+posts:
+  title: Alle Beiträge
+  detailLink: Alle Beiträge
 
 location:
   title: Kontakt

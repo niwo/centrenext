@@ -43,7 +43,7 @@ export function NewsSection({ news, locale }: NewsSectionProps) {
       </div>
 
       <div className="grid gap-4">
-        {news.items.map((item) => (
+        {news.items.slice(0, 2).map((item) => (
           <Link id={item.slug} key={item.slug} href={getItemHref(locale, "news", item.slug)}>
             <Card className="bg-[rgb(var(--surface-elevated)/0.7)] transition hover:bg-[rgb(var(--surface-elevated)/0.9)]">
               <Image
