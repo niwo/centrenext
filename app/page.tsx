@@ -47,7 +47,7 @@ export default async function Home() {
             {content.introByLocale.map((entry) => (
               <section
                 key={entry.locale}
-                className="flex h-full flex-col rounded-3xl border border-forest/10 bg-white/70 p-6 shadow-soft backdrop-blur-sm"
+                className="flex h-full flex-col rounded-3xl border border-forest/10 bg-white/70 p-6 shadow-soft backdrop-blur-sm dark:border-mist/25 dark:bg-[rgb(var(--surface-card)/0.94)]"
               >
                 <div className="flex flex-1 flex-col justify-center">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-forest/60">

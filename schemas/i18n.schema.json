@@ -45,7 +45,7 @@
     },
     "posts": {
       "type": "object",
-      "required": ["title", "detailLink"]
+      "required": ["title", "sectionTitle", "detailLink"]
     },
     "location": {
       "type": "object",

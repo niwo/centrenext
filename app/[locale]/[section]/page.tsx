@@ -39,7 +39,7 @@ function getSectionTitle(section: SectionKey, content: Awaited<ReturnType<typeof
   if (section === "about") return content.page.about.title;
   if (section === "team") return content.page.team.title;
   if (section === "services") return content.page.services.title;
-  if (section === "news") return content.page.news.title;
+  if (section === "news") return content.page.news.sectionTitle;
   return content.page.location.title;
 }
 
@@ -150,29 +150,34 @@ export default async function SectionPage({ params }: PageProps) {
                 </div>
               </>
             ) : isServicesSection ? (
-              <div className="grid gap-5 sm:grid-cols-2">
-                {content.page.services.items.map((service) => (
-                  <Link
-                    key={service.slug}
-                    href={getItemHref(localeValue, "services", service.slug)}
-                    className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
-                  >
-                    <div className="flex items-center gap-5">
-                      <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
-                        <Image
-                          src={service.image}
-                          alt={service.name}
-                          width={96}
-                          height={96}
-                          className="h-[96px] w-[96px] object-cover"
-                        />
+              <div className="space-y-8">
+                <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
+                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {content.page.services.items.map((service) => (
+                    <Link
+                      key={service.slug}
+                      href={getItemHref(localeValue, "services", service.slug)}
+                      className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
+                    >
+                      <div className="flex items-center gap-5">
+                        <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
+                          <Image
+                            src={service.image}
+                            alt={service.name}
+                            width={96}
+                            height={96}
+                            className="h-[96px] w-[96px] object-cover"
+                          />
+                        </div>
+                        <div>
+                          <span className="text-2xl font-semibold text-forest">{service.name}</span>
+                        </div>
                       </div>
-                      <div>
-                        <span className="text-2xl font-semibold text-forest">{service.name}</span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
+                </div>
               </div>
             ) : isNewsSection ? (
               <div className="grid gap-5 sm:grid-cols-2">
@@ -236,7 +241,7 @@ export default async function SectionPage({ params }: PageProps) {
                   </Link>
                 </Button>
                 <div className="overflow-hidden rounded-[1.75rem] border border-[rgb(var(--border-soft)/0.6)] bg-[rgb(var(--surface-card)/0.9)] shadow-soft">
-                  <div className="border-b border-stone-200 px-5 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
+                  <div className="border-b border-[rgb(var(--border-soft)/0.75)] px-5 py-4 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
                     {content.page.location.mapLabel}
                   </div>
                   <iframe

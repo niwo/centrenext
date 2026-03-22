@@ -117,7 +117,7 @@ export default async function TeamMemberPage({ params }: PageProps) {
 
                 {relatedNewsPosts.length > 0 ? (
                   <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.news.title}</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.news.sectionTitle}</p>
                     <ul className="mt-3 space-y-2">
                       {relatedNewsPosts.map((post) => (
                         <li key={post.slug}>

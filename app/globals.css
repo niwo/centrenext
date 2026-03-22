@@ -95,6 +95,14 @@ body {
     @apply text-xs font-semibold uppercase tracking-[0.28em] text-clay;
   }
 
+  .dark .prose :where(ul > li, ol > li) {
+    color: rgb(var(--color-ink) / 0.92);
+  }
+
+  .dark .prose :where(ul > li, ol > li)::marker {
+    color: rgb(var(--color-clay) / 0.85);
+  }
+
   .testimonials-marquee {
     position: relative;
     overflow: hidden;

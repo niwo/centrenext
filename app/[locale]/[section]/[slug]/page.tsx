@@ -132,7 +132,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                       {servicePost.prices.map((price, index) => (
                         <li
                           key={`${price.amountChf}-${price.unit}-${index}`}
-                          className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2"
+                          className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2 dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-card)/0.98)]"
                         >
                           <p className="text-base font-semibold text-forest">{formatChfPrice(price.amountChf)} / {price.unit}</p>
                         </li>
@@ -144,7 +144,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                     <p className="font-semibold uppercase tracking-[0.2em] text-clay">{content.page.services.insuranceLabel}</p>
                     {servicePost.insurance.obligatory_coverage || servicePost.insurance.supplementary.covered ? (
                       <div className="space-y-2">
-                        <div className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2">
+                        <div className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2 dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-card)/0.98)]">
                           <p>
                             <span className="font-semibold text-ink">{content.page.services.insuranceObligatoryLabel}:</span>{" "}
                             {servicePost.insurance.obligatory_coverage ? (
@@ -159,7 +159,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                           </p>
                         </div>
 
-                        <div className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2">
+                        <div className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2 dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-card)/0.98)]">
                           {servicePost.insurance.supplementary.covered ? (
                             <div className="space-y-1">
                               <p className="font-semibold text-ink">{content.page.services.insuranceSupplementaryLabel}:</p>
@@ -169,7 +169,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                                   : ["all Insurances"]
                                 ).map((insurer) => (
                                   <li key={insurer}>
-                                    <span className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-ink/85">
+                                    <span className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-ink/85 dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-shell)/0.98)] dark:text-ink">
                                       {insurer}
                                     </span>
                                   </li>
@@ -194,7 +194,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                           <li key={person.slug}>
                             <Link
                               href={getItemHref(localeValue, "team", person.slug)}
-                              className="inline-flex items-center gap-1.5 rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white"
+                              className="inline-flex items-center gap-1.5 rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-shell)/0.98)] dark:text-ink dark:hover:bg-[rgb(var(--surface-card)/1)]"
                             >
                               <User className="h-3.5 w-3.5" aria-hidden />
                               {person.name}
@@ -207,7 +207,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
                   {relatedNewsPosts.length > 0 ? (
                     <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.news.title}</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.news.sectionTitle}</p>
                       <ul className="mt-2 space-y-2">
                         {relatedNewsPosts.map((post) => (
                           <li key={post.slug}>
@@ -268,7 +268,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                 </Link>
                 <span aria-hidden="true" className="text-clay/60">/</span>
                 <Link href={getSectionHref(localeValue, "news")} className="hover:text-forest">
-                  {content.page.news.title}
+                  {content.page.news.sectionTitle}
                 </Link>
                 <span aria-hidden="true" className="text-clay/60">/</span>
                 <span className="text-forest">{post.title}</span>
@@ -404,7 +404,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
                 {relatedNewsPosts.length > 0 ? (
                   <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.news.title}</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.news.sectionTitle}</p>
                     <ul className="mt-3 space-y-2">
                       {relatedNewsPosts.map((post) => (
                         <li key={post.slug}>

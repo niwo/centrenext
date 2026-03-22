@@ -138,6 +138,7 @@ type PageContent = {
   };
   news: {
     title: string;
+    sectionTitle: string;
     intro: string;
     kicker: string;
     detailLink: string;
@@ -277,6 +278,7 @@ type I18nData = {
   };
   posts: {
     title: string;
+    sectionTitle: string;
     intro: string;
     detailLink: string;
   };
@@ -814,6 +816,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     },
     news: {
       title: i18n.posts.title,
+      sectionTitle: i18n.posts.sectionTitle,
       intro: i18n.posts.intro,
       kicker: i18n.nav.posts,
       detailLink: i18n.posts.detailLink,

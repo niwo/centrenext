@@ -75,7 +75,7 @@ export default async function NewsPostPage({ params }: PageProps) {
               </Link>
               <span aria-hidden="true" className="text-clay/60">/</span>
               <Link href={getSectionHref(localeValue, "news")} className="hover:text-forest">
-                {content.page.news.title}
+                {content.page.news.sectionTitle}
               </Link>
               <span aria-hidden="true" className="text-clay/60">/</span>
               <span className="text-forest">{newsPost.title}</span>

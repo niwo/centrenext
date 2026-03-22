@@ -47,7 +47,8 @@ services:
   insuranceNotCoveredLabel: Non
 
 posts:
-  title: Articles recents
+  title: Actualites recentes
+  sectionTitle: Actualites
   detailLink: Tous les articles
 
 location:
