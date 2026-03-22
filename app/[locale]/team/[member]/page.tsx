@@ -62,13 +62,14 @@ export default async function TeamMemberPage({ params }: PageProps) {
 
         <Card className="space-y-6 p-0 overflow-hidden">
           <div className="relative">
-            <Image src={person.headerImage ?? person.image ?? "/images/team/christa.jpg"} alt={person.name} width={1500} height={560} className="h-72 w-full object-cover" />
+            <Image src={person.headerImage ?? person.image ?? "/images/team/christa.webp"} alt={person.name} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-72 w-full object-cover" />
             <div className="absolute -bottom-14 left-6 sm:left-10">
               <Image
-                src={person.image ?? "/images/team/christa.jpg"}
+                src={person.image ?? "/images/team/christa.webp"}
                 alt={person.name}
                 width={112}
                 height={112}
+                sizes="112px"
                 className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-md"
               />
             </div>

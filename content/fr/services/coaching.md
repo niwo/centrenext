@@ -2,7 +2,7 @@
 title: Conseil et coaching
 description: Accompagnement personnalise autour du mouvement, de la posture et des exercices autonomes.
 priceChf: 95
-image: /images/DSC06826.jpg
+image: /images/DSC06826.webp
 tags:
   - coaching
 ---

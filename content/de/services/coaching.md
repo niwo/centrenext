@@ -2,7 +2,7 @@
 title: Beratung und Coaching
 description: Individuelle Begleitung zu Haltung, Bewegung im Alltag und eigenständigem Üben.
 priceChf: 95
-image: /images/DSC06826.jpg
+image: /images/DSC06826.webp
 tags:
   - coaching
 ---

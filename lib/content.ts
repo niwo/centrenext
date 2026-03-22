@@ -337,7 +337,7 @@ export async function getSiteSeoContent(): Promise<SiteSeoContent> {
 
   return {
     siteName: practiceData.name,
-    defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.jpg",
+    defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.webp",
   };
 }
 
@@ -507,7 +507,7 @@ async function readServicePosts(servicesDir: string): Promise<ServicePost[]> {
         title: frontmatter.title ?? slug,
         description: frontmatter.description ?? "",
         priceChf: typeof frontmatter.priceChf === "number" ? frontmatter.priceChf : 0,
-        image: frontmatter.image ?? "/images/DSC06840.jpg",
+        image: frontmatter.image ?? "/images/DSC06840.webp",
         tags: normalizeTags(frontmatter.tags),
         content: parsed.content.trim(),
       };
@@ -575,7 +575,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     ],
     mapEmbedUrl: practiceData.map.embedUrl,
     seo: {
-      defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.jpg",
+      defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.webp",
     },
     contact: practiceData.contact,
     openingHours: practiceData.openingHours.map((slot) => ({

@@ -2,7 +2,7 @@
 title: Funktionelle Rehabilitation
 description: Zielgerichtete Rückkehr in Beruf, Sport und Alltag mit klaren Therapieetappen.
 priceChf: 82
-image: /images/DSC06840.jpg
+image: /images/DSC06840.webp
 tags:
   - physiotherapie
   - sportphysiotherapie

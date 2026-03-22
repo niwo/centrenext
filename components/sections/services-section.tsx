@@ -40,7 +40,7 @@ export function ServicesSection({ services, locale }: ServicesSectionProps) {
           <Link id={service.slug} key={service.slug} href={getItemHref(locale, "services", service.slug)}>
             <Card className="flex h-full flex-col gap-3 bg-[rgb(var(--surface-card)/0.88)] p-3 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]">
               <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-                <Image src={service.image} alt={service.name} fill className="object-cover" />
+                <Image src={service.image} alt={service.name} fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover" />
               </div>
               <div className="space-y-2 px-1 pb-1 flex-grow flex flex-col">
                 <h3 className="text-2xl font-semibold text-forest">{service.name}</h3>

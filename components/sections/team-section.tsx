@@ -39,10 +39,11 @@ export function TeamSection({ team, locale }: TeamSectionProps) {
             <Card className="flex flex-col items-center gap-5 bg-[rgb(var(--surface-elevated)/0.72)] p-8 transition hover:bg-[rgb(var(--surface-card)/0.92)]">
               <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                 <Image
-                  src={person.image ?? "/images/team/christa.jpg"}
+                  src={person.image ?? "/images/team/christa.webp"}
                   alt={person.name}
                   width={128}
                   height={128}
+                  sizes="128px"
                   className="h-[128px] w-[128px] object-cover"
                 />
               </div>

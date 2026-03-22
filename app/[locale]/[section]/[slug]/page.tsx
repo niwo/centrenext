@@ -103,7 +103,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
           <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
           <Card className="space-y-6 overflow-hidden p-0">
-            <Image src={serviceCard.image} alt={serviceCard.name} width={1500} height={560} className="h-64 w-full object-cover" />
+            <Image src={serviceCard.image} alt={serviceCard.name} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
             <div className="space-y-4 px-6 pb-8 sm:px-8">
               <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
                 <Link href={`/${locale}`} className="hover:text-forest">
@@ -204,7 +204,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
           <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
           <Card className="space-y-6 overflow-hidden p-0">
-            <Image src="/images/DSC06642.jpg" alt={post.title} width={1500} height={560} className="h-64 w-full object-cover" />
+            <Image src="/images/DSC06642.webp" alt={post.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
             <div className="space-y-4 px-6 pb-8 sm:px-8">
               <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
                 <Link href={`/${locale}`} className="hover:text-forest">
@@ -285,13 +285,14 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
         <Card className="space-y-6 p-0 overflow-hidden">
           <div className="relative">
-            <Image src={person.headerImage ?? person.image ?? "/images/team/christa.jpg"} alt={person.name} width={1500} height={560} className="h-72 w-full object-cover" />
+            <Image src={person.headerImage ?? person.image ?? "/images/team/christa.webp"} alt={person.name} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-72 w-full object-cover" />
             <div className="absolute -bottom-14 left-6 sm:left-10">
               <Image
-                src={person.image ?? "/images/team/christa.jpg"}
+                src={person.image ?? "/images/team/christa.webp"}
                 alt={person.name}
                 width={112}
                 height={112}
+                sizes="112px"
                 className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-md"
               />
             </div>

@@ -20,7 +20,7 @@ export function AboutSection({ locale, title, kicker, tagline, detailLink, about
     <section id="about" className="section-shell space-y-0 overflow-hidden p-0">
       <div className="relative h-40 overflow-hidden">
         <Image
-          src="/images/DSC06768.jpg"
+          src="/images/DSC06768.webp"
           alt="Praxisraum"
           fill
           className="object-cover"

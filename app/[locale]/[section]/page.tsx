@@ -21,18 +21,18 @@ type PageProps = {
 };
 
 const sectionImageByKey: Record<SectionKey, string> = {
-  about: "/images/DSC06768.jpg",
-  team: "/images/team/christa.jpg",
-  services: "/images/DSC06840.jpg",
-  news: "/images/DSC06642.jpg",
-  location: "/images/DSC06768.jpg",
+  about: "/images/DSC06768.webp",
+  team: "/images/team/christa.webp",
+  services: "/images/DSC06840.webp",
+  news: "/images/DSC06642.webp",
+  location: "/images/DSC06768.webp",
 };
 
 const aboutGalleryImages = [
-  "/images/DSC06642.jpg",
-  "/images/DSC06768.jpg",
-  "/images/DSC06813.jpg",
-  "/images/DSC06840.jpg",
+  "/images/DSC06642.webp",
+  "/images/DSC06768.webp",
+  "/images/DSC06813.webp",
+  "/images/DSC06840.webp",
 ];
 
 function getSectionTitle(section: SectionKey, content: Awaited<ReturnType<typeof getSiteContent>>) {
@@ -89,7 +89,7 @@ export default async function SectionPage({ params }: PageProps) {
         <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
-          <Image src={sectionImageByKey[canonicalSection]} alt={title} width={1500} height={560} className="h-64 w-full object-cover" />
+          <Image src={sectionImageByKey[canonicalSection]} alt={title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
           <div className="space-y-4 px-6 pb-8 sm:px-8">
             <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
               <Link href={`/${locale}`} className="hover:text-forest">
@@ -141,6 +141,7 @@ export default async function SectionPage({ params }: PageProps) {
                           alt={`${title} Bild ${index + 1}`}
                           width={960}
                           height={640}
+                          sizes="(max-width: 640px) 100vw, 50vw"
                           className="h-52 w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
                         />
                       </div>
@@ -186,10 +187,11 @@ export default async function SectionPage({ params }: PageProps) {
                     <div className="flex items-center gap-7">
                       <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                         <Image
-                          src="/images/DSC06642.jpg"
+                          src="/images/DSC06642.webp"
                           alt={post.title}
                           width={96}
                           height={96}
+                          sizes="96px"
                           className="h-[96px] w-[96px] object-cover"
                         />
                       </div>
@@ -262,10 +264,11 @@ export default async function SectionPage({ params }: PageProps) {
                       <div className="flex items-center gap-5">
                         <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                           <Image
-                            src={person.image ?? "/images/team/christa.jpg"}
+                            src={person.image ?? "/images/team/christa.webp"}
                             alt={person.name}
                             width={96}
                             height={96}
+                            sizes="96px"
                             className="h-[96px] w-[96px] object-cover"
                           />
                         </div>
