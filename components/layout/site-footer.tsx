@@ -1,4 +1,4 @@
-import { BarChart3, Cloud, Github, Mail, Phone } from "lucide-react";
+import { Github, Mail, Phone } from "lucide-react";
 
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 
@@ -41,34 +41,14 @@ export function SiteFooter({ footer, practice }: SiteFooterProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-5 pt-2 text-sm font-semibold text-sand/80">
-        <a
-          href="https://www.netlify.com"
-          target="_blank"
-          rel="noreferrer"
-          title="Netlify"
-          aria-label="Netlify"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-sand/10 hover:text-sand"
-        >
-          <Cloud className="h-4 w-4" />
-        </a>
-        <a
-          href="https://centrebienetre.goatcounter.com"
-          target="_blank"
-          rel="noreferrer"
-          title="GoatCounter"
-          aria-label="GoatCounter"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-sand/10 hover:text-sand"
-        >
-          <BarChart3 className="h-4 w-4" />
-        </a>
+      <div className="flex items-center justify-end gap-3 pt-2">
         <a
           href="https://github.com/niwo/centrenext"
           target="_blank"
           rel="noreferrer"
           title="GitHub Repo"
           aria-label="GitHub Repo"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-sand/10 hover:text-sand"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-full text-sand/80 hover:bg-sand/10 hover:text-sand"
         >
           <Github className="h-4 w-4" />
         </a>

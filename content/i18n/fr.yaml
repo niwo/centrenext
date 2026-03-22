@@ -12,7 +12,8 @@ nav:
   about: Cabinet
   team: Equipe
   services: Prestations
-  news: Actualites
+  posts: Articles
+  search: Recherche
   location: Contact
 
 hero:
@@ -34,10 +35,20 @@ services:
   title: Prestations
   pricePrefix: "des CHF"
   detailLink: Voir les prestations
+  priceLabel: Tarifs pour paiements directs
+  unitLabel: Unite
+  unitSessionLabel: Seance
+  insuranceLabel: Prise en charge
+  insuranceObligatoryLabel: Assurance obligatoire
+  insuranceSupplementaryLabel: Assurance complementaire
+  insuranceNoCoverageLabel: Pas pris en charge par l'assurance maladie
+  insuranceSupplementaryInsurersLabel: Pris en charge par
+  insuranceCoveredLabel: Oui
+  insuranceNotCoveredLabel: Non
 
-news:
-  title: Informations recentes
-  detailLink: Toutes les actualites
+posts:
+  title: Articles recents
+  detailLink: Tous les articles
 
 location:
   title: Contact

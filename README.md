@@ -1,5 +1,8 @@
 # Centre Bien-Etre
 
+[![GoatCounter](https://img.shields.io/badge/Analytics-GoatCounter-7c3aed)](https://centrebienetre.goatcounter.com)
+[![Netlify](https://img.shields.io/badge/Hosted%20on-Netlify-00C7B7?logo=netlify&logoColor=white)](https://www.netlify.com)
+
 Das vorliegende Projekt implementiert die Webseite für **Centre bien-être**.
 
 ## Stack
@@ -18,6 +21,26 @@ Das vorliegende Projekt implementiert die Webseite für **Centre bien-être**.
 npm install
 npm run dev
 ```
+
+### Entwicklung mit Dev Container
+
+Voraussetzungen:
+
+- Docker Desktop oder Docker Engine
+- VS Code mit Erweiterung **Dev Containers** (`ms-vscode-remote.remote-containers`)
+
+Projekt im Container starten:
+
+1. Repository in VS Code oeffnen.
+2. Command Palette oeffnen und `Dev Containers: Reopen in Container` ausfuehren.
+3. Beim ersten Start wird der Container gebaut und `npm install` automatisch ausgefuehrt (`postCreateCommand`).
+4. Entwicklungsserver im Container starten:
+
+```bash
+npm run dev
+```
+
+Der Container nutzt das Image `mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm`.
 
 ## Projektstruktur
 

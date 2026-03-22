@@ -1,0 +1,19 @@
+id: reha
+prices:
+  - amountChf: 82
+    unit: 30 min
+  - amountChf: 148
+    unit: 60 min
+insurance:
+  obligatory_coverage: true
+  supplementary:
+    covered: true
+    insurers:
+      - Visana
+      - Swica
+image: /images/DSC06840.webp
+tags:
+  - physio
+  - sportphysio
+tag_color: ink
+highlight: true

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { Home } from "lucide-react";
+import { Home, Newspaper } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -11,11 +11,12 @@ import { Card } from "@/components/ui/card";
 import { getSiteContent } from "@/lib/content";
 import { getItemHref, getSectionHref } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
+import { cn, getServiceColorClasses } from "@/lib/utils";
 
 type PageProps = {
   params: Promise<{
     locale: string;
-    news: string;
+    post: string;
   }>;
 };
 
@@ -33,7 +34,7 @@ export async function generateStaticParams() {
   const entries = await Promise.all(
     siteConfig.locales.map(async (locale) => {
       const content = await getSiteContent(locale);
-      return content.newsPosts.map((entry) => ({ locale, news: entry.slug }));
+      return content.newsPosts.map((entry) => ({ locale, post: entry.slug }));
     }),
   );
 
@@ -41,7 +42,7 @@ export async function generateStaticParams() {
 }
 
 export default async function NewsPostPage({ params }: PageProps) {
-  const { locale, news } = await params;
+  const { locale, post } = await params;
 
   if (!isLocale(locale)) {
     notFound();
@@ -49,24 +50,24 @@ export default async function NewsPostPage({ params }: PageProps) {
 
   const localeValue: Locale = locale;
   const content = await getSiteContent(localeValue);
-  const post = content.newsPosts.find((entry) => entry.slug === news);
+  const newsPost = content.newsPosts.find((entry) => entry.slug === post);
 
-  if (!post) {
+  if (!newsPost) {
     notFound();
   }
 
   const relatedServices = content.servicePosts.filter((servicePost) =>
-    servicePost.tags.some((tag) => post.tags.includes(tag)),
+    servicePost.tags.some((tag) => newsPost.tags.includes(tag)),
   );
 
   return (
     <main className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-hero-glow opacity-90" />
       <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-4 sm:px-6 lg:px-8">
-        <SiteHeader locale={localeValue} practiceName={content.practice.name} navigation={content.page.navigation} searchItems={content.searchIndex} />
+        <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
         <Card className="space-y-6 overflow-hidden p-0">
-          <Image src="/images/DSC06642.webp" alt={post.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
+          <Image src="/images/DSC06642.webp" alt={newsPost.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
           <div className="space-y-4 px-6 pb-8 sm:px-8">
             <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
               <Link href={`/${locale}`} className="hover:text-forest">
@@ -77,24 +78,30 @@ export default async function NewsPostPage({ params }: PageProps) {
                 {content.page.news.title}
               </Link>
               <span aria-hidden="true" className="text-clay/60">/</span>
-              <span className="text-forest">{post.title}</span>
+              <span className="text-forest">{newsPost.title}</span>
             </nav>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-clay">{formatNewsDate(post.date, locale)}</p>
-            <h1 className="section-title">{post.title}</h1>
-            <p className="text-lg leading-8 text-ink/75">{post.excerpt}</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-clay">{formatNewsDate(newsPost.date, locale)}</p>
+            <h1 className="section-title">{newsPost.title}</h1>
+            <p className="text-lg leading-8 text-ink/75">{newsPost.excerpt}</p>
 
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
               <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                <ReactMarkdown>{post.content}</ReactMarkdown>
+                <ReactMarkdown>{newsPost.content}</ReactMarkdown>
               </div>
 
               {relatedServices.length > 0 ? (
                 <aside className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5 lg:sticky lg:top-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.services.title}</p>
-                  <ul className="mt-3 space-y-2">
+                  <ul className="mt-3 flex flex-wrap gap-2">
                     {relatedServices.map((servicePost) => (
                       <li key={servicePost.slug}>
-                        <Link href={getItemHref(localeValue, "services", servicePost.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
+                        <Link
+                          href={getItemHref(localeValue, "services", servicePost.slug)}
+                          className={cn(
+                            "inline-flex rounded-full border px-3 py-1 text-sm font-semibold transition",
+                            getServiceColorClasses(servicePost.tag_color, servicePost.tags),
+                          )}
+                        >
                           {servicePost.title}
                         </Link>
                       </li>
@@ -106,7 +113,10 @@ export default async function NewsPostPage({ params }: PageProps) {
 
             <div className="mt-12 flex flex-wrap gap-3">
               <Button asChild>
-                <Link href={getSectionHref(localeValue, "news")}>{content.page.news.detailLink}</Link>
+                <Link href={getSectionHref(localeValue, "news")} className="inline-flex items-center gap-2">
+                  <Newspaper className="h-4 w-4" aria-hidden />
+                  {content.page.news.detailLink}
+                </Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/${locale}`} className="inline-flex items-center gap-2">

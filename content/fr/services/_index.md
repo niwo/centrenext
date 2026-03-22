@@ -9,6 +9,6 @@ Les prestations sont concues pour relier traitement, prevention et autonomie au 
 
 **Tarifs pour paiements directs**
 
-- 30 minutes: CHF 65
-- 45 minutes: CHF 98
-- 60 minutes: CHF 130
+- 30 minutes: CHF 65.-
+- 45 minutes: CHF 98.-
+- 60 minutes: CHF 130.-

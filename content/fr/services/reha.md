@@ -1,11 +1,6 @@
 ---
 title: Reeducation fonctionnelle
 description: Retour progressif au travail, au sport et aux activites quotidiennes.
-priceChf: 82
-image: /images/DSC06840.webp
-tags:
-  - physiotherapie
-  - sportphysiotherapie
 ---
 
 La reeducation fonctionnelle accompagne la reprise apres une blessure ou une intervention.

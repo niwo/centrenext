@@ -15,6 +15,7 @@ import type { Locale } from "@/lib/site-config";
 type SiteHeaderProps = {
   locale: Locale;
   practiceName: string;
+  searchLabel: string;
   navigation: Array<{
     label: string;
     href: string;
@@ -89,9 +90,8 @@ function highlightNodeText(node: ReactNode, query: string): ReactNode {
   return node;
 }
 
-export function SiteHeader({ locale, practiceName, navigation, searchItems }: SiteHeaderProps) {
+export function SiteHeader({ locale, practiceName, searchLabel, navigation, searchItems }: SiteHeaderProps) {
   const alternateLocale = locale === "de" ? "fr" : "de";
-  const searchLabel = locale === "de" ? "Suche" : "Recherche";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -114,7 +114,7 @@ export function SiteHeader({ locale, practiceName, navigation, searchItems }: Si
   const searchTypeLabels = {
     team: locale === "de" ? "Team" : "Equipe",
     services: locale === "de" ? "Angebote" : "Prestations",
-    news: locale === "de" ? "News" : "Actualites",
+    news: locale === "de" ? "Artikel" : "Articles",
     about: locale === "de" ? "Praxis" : "Cabinet",
     location: locale === "de" ? "Kontakt" : "Contact",
   };

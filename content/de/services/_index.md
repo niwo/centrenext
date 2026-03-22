@@ -9,6 +9,6 @@ Das Angebot orientiert sich am Alltag der Patientinnen und Patienten und verbind
 
 **Preise für Selbstzahler**
 
-- 30 Minuten: CHF 65
-- 45 Minuten: CHF 98
-- 60 Minuten: CHF 130
+- 30 Minuten: CHF 65.-
+- 45 Minuten: CHF 98.-
+- 60 Minuten: CHF 130.-
