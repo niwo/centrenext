@@ -52,7 +52,8 @@ export function ThemeToggle() {
       variant="ghost"
       size="default"
       className="h-9 w-9 p-0 text-sand hover:bg-sand/10"
-      aria-label={isDark ? "Hellmodus aktivieren" : "Darkmode aktivieren"}
+      aria-label="Theme Toggle"
+      title="Theme Toggle"
       onClick={toggleTheme}
     >
       {isMounted && isDark ? <Sun className="h-5 w-5" aria-hidden /> : <Moon className="h-5 w-5" aria-hidden />}
