@@ -1,6 +1,6 @@
 # Centre Bien-Etre
 
-Grundgeruest fuer eine statisch deploybare Next.js-Landing-Page mit lokal gepflegten Inhalten.
+Das vorliegende Projekt implementiert die Webseite für **Centre bien-être**.
 
 ## Stack
 
@@ -10,6 +10,7 @@ Grundgeruest fuer eine statisch deploybare Next.js-Landing-Page mit lokal gepfle
 - shadcn-ui kompatible Komponentenbasis
 - Inhalte in Markdown und YAML
 - JSON Schema Validierung fuer YAML-Inhalte
+- Deployment als statische Webseite auf [Netlify](https://www.netlify.com/)
 
 ## Lokale Entwicklung
 
