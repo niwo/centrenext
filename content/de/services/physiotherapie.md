@@ -2,7 +2,7 @@
 title: Klassische Physiotherapie
 description: Abklärung, Behandlung und Verlaufskontrolle bei akuten oder chronischen Beschwerden.
 priceChf: 68
-image: /images/DSC06813.jpg
+image: /images/DSC06813.webp
 tags:
   - physiotherapie
   - faszientechniken

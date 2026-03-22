@@ -2,7 +2,7 @@
 title: Physiotherapie classique
 description: Evaluation, traitement et suivi pour les douleurs aigues ou chroniques.
 priceChf: 68
-image: /images/DSC06813.jpg
+image: /images/DSC06813.webp
 tags:
   - physiotherapie
   - faszientechniken
