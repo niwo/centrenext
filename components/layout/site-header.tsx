@@ -161,7 +161,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
 
         <nav
           id="site-navigation"
-          className={`${isMobileMenuOpen ? "mt-5 flex" : "hidden"} clear-both flex-col gap-2 text-ink/75 lg:clear-none lg:float-right lg:mt-0 lg:flex lg:h-12 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-3`}
+          className={`${isMobileMenuOpen ? "mt-5 flex" : "hidden"} clear-both flex-col gap-2 text-ink/85 dark:text-ink lg:clear-none lg:float-right lg:mt-0 lg:flex lg:h-12 lg:flex-row lg:flex-wrap lg:items-center lg:justify-end lg:gap-3`}
         >
           {navigation.map((item) => {
             const sectionKey = getCanonicalSection(locale, item.href.replace("/", ""));
@@ -172,7 +172,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
                 key={item.href}
                 href={`/${locale}${item.href}`}
                 aria-current={isActive ? "page" : undefined}
-                className={`rounded-full px-5 py-2.5 text-lg font-semibold transition-colors ${isActive ? "bg-forest text-sand" : "hover:bg-forest/5 hover:text-forest"}`}
+                className={`rounded-full px-5 py-2.5 text-lg font-semibold transition-colors ${isActive ? "bg-forest text-sand dark:bg-clay dark:text-sand" : "text-ink/85 hover:bg-forest/5 hover:text-forest dark:text-ink dark:hover:bg-white/10 dark:hover:text-ink"}`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
@@ -181,7 +181,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
           })}
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-lg font-semibold transition-colors hover:bg-forest/5 hover:text-forest"
+            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-lg font-semibold text-ink/85 transition-colors hover:bg-forest/5 hover:text-forest dark:text-ink dark:hover:bg-white/10 dark:hover:text-ink"
             onClick={() => {
               setIsMobileMenuOpen(false);
               setIsSearchOpen(true);
@@ -193,7 +193,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
           <div className="mt-2 flex items-center gap-2 lg:mt-0">
             <Link
               href={alternateLocaleHref}
-              className="rounded-full border border-forest/15 px-4 py-2 font-semibold text-forest transition-colors hover:bg-forest hover:text-sand"
+              className="rounded-full border border-forest/15 px-4 py-2 font-semibold text-forest transition-colors hover:bg-forest hover:text-sand dark:border-mist/55 dark:text-ink dark:hover:bg-clay dark:hover:text-sand"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {alternateLocale.toUpperCase()}
@@ -203,18 +203,18 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
       </header>
 
       {isSearchOpen ? (
-        <div className="fixed inset-0 z-50 bg-ink/35 p-4 backdrop-blur-sm sm:p-6" role="dialog" aria-modal="true">
+        <div className="fixed inset-0 z-50 bg-ink/35 p-4 backdrop-blur-sm dark:bg-ink/60 sm:p-6" role="dialog" aria-modal="true">
           <div className="mx-auto max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-3xl border border-[rgb(var(--color-mist)/0.45)] bg-[rgb(var(--surface-shell)/0.98)] shadow-[0_18px_50px_rgb(var(--color-forest)/0.2)]">
             <div className="flex items-center gap-3 border-b border-[rgb(var(--border-soft)/0.9)] px-4 py-4 sm:px-6">
               <div className="relative flex-1">
-                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45" />
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45 dark:text-ink/70" />
                 <input
                   type="search"
                   autoFocus
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
                   placeholder={searchLabel}
-                  className="h-12 w-full rounded-full border border-[rgb(var(--border-soft)/0.9)] bg-[rgb(var(--surface-card)/0.85)] pl-11 pr-4 text-base text-ink outline-none transition focus:border-forest/45 focus:ring-2 focus:ring-forest/20"
+                  className="h-12 w-full rounded-full border border-[rgb(var(--border-soft)/0.9)] bg-[rgb(var(--surface-card)/0.85)] pl-11 pr-4 text-base text-ink outline-none transition focus:border-forest/45 focus:ring-2 focus:ring-forest/20 dark:border-[rgb(var(--border-soft)/0.95)] dark:bg-[rgb(var(--surface-elevated)/0.98)] dark:text-ink dark:focus:border-mist/70 dark:focus:ring-mist/30"
                 />
               </div>
               <Button
@@ -233,14 +233,14 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
 
             <div className="max-h-[68vh] overflow-y-auto p-4 sm:p-6">
               {!shouldShowResults ? null : filteredSearchItems.length === 0 ? (
-                <p className="rounded-2xl bg-[rgb(var(--surface-card)/0.8)] px-4 py-6 text-center text-ink/70">{searchEmptyText}</p>
+                <p className="rounded-2xl bg-[rgb(var(--surface-card)/0.8)] px-4 py-6 text-center text-ink/75 dark:text-ink/90">{searchEmptyText}</p>
               ) : (
                 <ul className="space-y-3">
                   {filteredSearchItems.map((item) => (
                     <li key={`${item.type}-${item.href}`}>
                       <Link
                         href={item.href}
-                        className="block rounded-2xl border border-[rgb(var(--color-mist)/0.45)] bg-[rgb(var(--surface-card)/0.82)] p-4 transition hover:border-forest/25 hover:bg-[rgb(var(--surface-elevated)/0.9)]"
+                        className="block rounded-2xl border border-[rgb(var(--color-mist)/0.45)] bg-[rgb(var(--surface-card)/0.82)] p-4 transition hover:border-forest/25 hover:bg-[rgb(var(--surface-elevated)/0.9)] dark:hover:border-mist/70 dark:hover:bg-[rgb(var(--surface-elevated)/1)]"
                         onClick={() => {
                           setIsSearchOpen(false);
                           setSearchQuery("");
@@ -272,7 +272,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
                 </ul>
               )}
               {!shouldShowResults ? (
-                <p className="rounded-2xl bg-[rgb(var(--surface-card)/0.8)] px-4 py-6 text-center text-ink/70">{searchIntroText}</p>
+                <p className="rounded-2xl bg-[rgb(var(--surface-card)/0.8)] px-4 py-6 text-center text-ink/75 dark:text-ink/90">{searchIntroText}</p>
               ) : null}
             </div>
           </div>

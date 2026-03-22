@@ -51,7 +51,7 @@ export function ThemeToggle() {
       type="button"
       variant="ghost"
       size="default"
-      className="h-9 w-9 p-0 text-sand hover:bg-sand/10"
+      className="h-9 w-9 p-0 text-sand hover:bg-sand/10 dark:text-ink dark:hover:bg-white/10"
       aria-label="Theme Toggle"
       title="Theme Toggle"
       onClick={toggleTheme}

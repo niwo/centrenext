@@ -9,9 +9,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-forest text-sand shadow-soft hover:bg-forest/90",
-        outline: "border border-forest/20 bg-[rgb(var(--surface-card)/0.82)] text-forest hover:bg-[rgb(var(--surface-elevated)/0.9)]",
-        ghost: "text-forest hover:bg-forest/5",
+        default: "bg-forest text-sand shadow-soft hover:bg-forest/90 dark:bg-clay dark:text-sand dark:hover:bg-clay/90",
+        outline:
+          "border border-forest/20 bg-[rgb(var(--surface-card)/0.82)] text-forest hover:bg-[rgb(var(--surface-elevated)/0.9)] dark:border-mist/60 dark:bg-[rgb(var(--surface-elevated)/0.95)] dark:text-ink dark:hover:bg-[rgb(var(--surface-card)/1)]",
+        ghost: "text-forest hover:bg-forest/5 dark:text-ink dark:hover:bg-white/10",
       },
       size: {
         default: "h-11 px-5",

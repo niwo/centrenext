@@ -47,7 +47,8 @@ services:
   insuranceNotCoveredLabel: Nein
 
 posts:
-  title: Alle Beiträge
+  title: Aktuelle News
+  sectionTitle: News
   detailLink: Alle Beiträge
 
 location:

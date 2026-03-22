@@ -18,10 +18,10 @@ type TestimonialsSectionProps = {
 };
 
 const cardColors = [
-  "bg-forest/5 border-forest/15",
-  "bg-[rgb(var(--color-clay)/0.07)] border-[rgb(var(--color-clay)/0.2)]",
-  "bg-[rgb(var(--color-mist)/0.5)] border-[rgb(var(--color-mist)/0.8)]",
-  "bg-[rgb(var(--surface-elevated)/0.9)] border-[rgb(var(--color-mist)/0.5)]",
+  "bg-forest/5 border-forest/15 dark:bg-[rgb(var(--surface-card)/0.94)] dark:border-[rgb(var(--border-soft)/0.65)]",
+  "bg-[rgb(var(--color-clay)/0.07)] border-[rgb(var(--color-clay)/0.2)] dark:bg-[rgb(var(--surface-elevated)/0.94)] dark:border-[rgb(var(--border-soft)/0.65)]",
+  "bg-[rgb(var(--color-mist)/0.5)] border-[rgb(var(--color-mist)/0.8)] dark:bg-[rgb(var(--surface-card)/0.9)] dark:border-[rgb(var(--border-soft)/0.7)]",
+  "bg-[rgb(var(--surface-elevated)/0.9)] border-[rgb(var(--color-mist)/0.5)] dark:bg-[rgb(var(--surface-elevated)/0.96)] dark:border-[rgb(var(--border-soft)/0.7)]",
 ] as const;
 
 export function TestimonialsSection({ testimonials, locale }: TestimonialsSectionProps) {
@@ -167,14 +167,14 @@ export function TestimonialsSection({ testimonials, locale }: TestimonialsSectio
                       />
                     </div>
                   ) : (
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest/10 text-forest">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-forest/10 text-forest dark:bg-white/10 dark:text-ink">
                       <UserCircle className="h-7 w-7" />
                     </div>
                   )}
                   <div>
                     <p className="text-sm font-semibold text-forest">{item.name}</p>
                     {item.date && (
-                      <p className="text-xs text-ink/50">
+                      <p className="text-xs text-ink/50 dark:text-ink/70">
                         {new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(item.date))}
                       </p>
                     )}

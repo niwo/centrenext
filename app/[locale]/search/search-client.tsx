@@ -76,13 +76,13 @@ export function SearchClient({ locale, items }: SearchClientProps) {
 
       <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
         <label className="relative block">
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45" />
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/45 dark:text-ink/70" />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder={t.placeholder}
-            className="h-12 w-full rounded-full border border-[rgb(var(--border-soft)/0.9)] bg-[rgb(var(--surface-card)/0.85)] pl-11 pr-4 text-base text-ink outline-none transition focus:border-forest/45 focus:ring-2 focus:ring-forest/20"
+            className="h-12 w-full rounded-full border border-[rgb(var(--border-soft)/0.9)] bg-[rgb(var(--surface-card)/0.85)] pl-11 pr-4 text-base text-ink outline-none transition focus:border-forest/45 focus:ring-2 focus:ring-forest/20 dark:border-[rgb(var(--border-soft)/0.95)] dark:bg-[rgb(var(--surface-elevated)/0.98)] dark:text-ink dark:focus:border-mist/70 dark:focus:ring-mist/30"
           />
         </label>
 
@@ -93,7 +93,9 @@ export function SearchClient({ locale, items }: SearchClientProps) {
               type="button"
               onClick={() => setFilter(value)}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                filter === value ? "bg-forest text-sand" : "bg-[rgb(var(--surface-card)/0.85)] text-forest hover:bg-forest/10"
+                filter === value
+                  ? "bg-forest text-sand dark:bg-clay dark:text-sand"
+                  : "bg-[rgb(var(--surface-card)/0.85)] text-forest hover:bg-forest/10 dark:bg-[rgb(var(--surface-elevated)/0.95)] dark:text-ink dark:hover:bg-white/10"
               }`}
             >
               {t[value]}

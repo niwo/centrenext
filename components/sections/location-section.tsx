@@ -42,7 +42,7 @@ export function LocationSection({ location, practice, locale }: LocationSectionP
       </div>
 
       <div className="overflow-hidden rounded-[1.75rem] border border-[rgb(var(--border-soft)/0.6)] bg-[rgb(var(--surface-card)/0.9)] shadow-soft">
-        <div className="border-b border-stone-200 px-5 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-clay">
+        <div className="border-b border-[rgb(var(--border-soft)/0.75)] px-5 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-clay">
           {location.mapLabel}
         </div>
         <iframe
