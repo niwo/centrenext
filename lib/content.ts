@@ -142,6 +142,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    showAllLabel: string;
     items: NewsItem[];
   };
   location: {
@@ -163,6 +164,8 @@ type PageContent = {
     contactKicker: string;
     backLink: string;
     detailKicker: string;
+    emailLabel: string;
+    phoneLabel: string;
   };
 };
 
@@ -281,6 +284,7 @@ type I18nData = {
     sectionTitle: string;
     intro: string;
     detailLink: string;
+    showAllLabel: string;
   };
   location: {
     title: string;
@@ -300,6 +304,8 @@ type I18nData = {
     contactKicker: string;
     backLink: string;
     detailKicker: string;
+    emailLabel: string;
+    phoneLabel: string;
   };
 };
 
@@ -820,6 +826,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: i18n.posts.intro,
       kicker: i18n.nav.posts,
       detailLink: i18n.posts.detailLink,
+      showAllLabel: i18n.posts.showAllLabel,
       items: newsItems,
     },
     location: {

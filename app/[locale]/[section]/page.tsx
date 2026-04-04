@@ -189,7 +189,7 @@ export default async function SectionPage({ params }: PageProps) {
                     className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
                   >
                     <div className="flex items-center gap-7">
-                      <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
+                      <div className="shrink-0 overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                         <Image
                           src="/images/DSC06642.webp"
                           alt={post.title}

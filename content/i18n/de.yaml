@@ -50,6 +50,7 @@ posts:
   title: Aktuelle News
   sectionTitle: News
   detailLink: Alle Beiträge
+  showAllLabel: Alle anzeigen
 
 location:
   title: Kontakt
@@ -63,6 +64,8 @@ footer:
   contactKicker: Kontakt
   backLink: "Zurück zur Übersicht"
   detailKicker: Detailseite
+  emailLabel: E-Mail
+  phoneLabel: Telefon
 
 testimonials:
   kicker: Erfahrungsberichte
