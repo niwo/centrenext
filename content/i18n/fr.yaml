@@ -50,6 +50,7 @@ posts:
   title: Actualites recentes
   sectionTitle: Actualites
   detailLink: Tous les articles
+  showAllLabel: Tout afficher
 
 location:
   title: Contact
@@ -63,6 +64,8 @@ footer:
   contactKicker: Contact
   backLink: "Retour a l'accueil"
   detailKicker: "Detail"
+  emailLabel: E-mail
+  phoneLabel: "Telephone"
 
 testimonials:
   kicker: Temoignages

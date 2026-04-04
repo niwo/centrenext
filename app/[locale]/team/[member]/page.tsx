@@ -6,6 +6,7 @@ import { Home } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ExpandableNewsList } from "@/components/expandable-news-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getSiteContent } from "@/lib/content";
@@ -76,19 +77,44 @@ export default async function TeamMemberPage({ params }: PageProps) {
             </div>
           </div>
           <div className="px-6 pb-10 pt-16 sm:px-10">
-            <div className="flow-root">
-              <aside className="mb-6 w-full space-y-4 lg:float-right lg:mb-4 lg:ml-8 lg:w-[22rem]">
+            <div className="flex flex-col gap-8 lg:flex-row">
+              <div className="min-w-0 flex-1 space-y-6">
+                <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
+                  <Link href={`/${locale}`} className="hover:text-forest">
+                    Start
+                  </Link>
+                  <span aria-hidden="true" className="text-clay/60">/</span>
+                  <Link href={getSectionHref(localeValue, "team")} className="hover:text-forest">
+                    {content.page.team.title}
+                  </Link>
+                  <span aria-hidden="true" className="text-clay/60">/</span>
+                  <span className="text-forest">{person.name}</span>
+                </nav>
+                <h1 className="section-title font-black bg-gradient-to-r from-forest via-teal-700 to-forest bg-clip-text text-transparent">{person.name}</h1>
+                <p className="text-lg font-semibold uppercase tracking-[0.24em] text-clay">{person.role}</p>
+                {person.slogan ? (
+                  <blockquote className="border-l-4 border-forest pl-6 py-2 italic text-2xl text-ink/80">
+                    &ldquo;{person.slogan}&rdquo;
+                  </blockquote>
+                ) : null}
+
+                <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/85 prose-strong:text-forest">
+                  <ReactMarkdown>{profile.content}</ReactMarkdown>
+                </div>
+              </div>
+
+              <aside className="w-full shrink-0 space-y-4 lg:w-[22rem]">
                 <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-6 py-5 shadow-sm">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{content.page.footer.contactKicker}</p>
                   <div className="space-y-2 text-lg text-ink/80">
                     {person.email ? (
                       <p>
-                        E-Mail: <a href={`mailto:${person.email}`} className="font-semibold text-forest underline-offset-4 hover:underline">{person.email}</a>
+                        {content.page.footer.emailLabel}: <a href={`mailto:${person.email}`} className="font-semibold text-forest underline-offset-4 hover:underline">{person.email}</a>
                       </p>
                     ) : null}
                     {person.phone && phoneHref ? (
                       <p>
-                        Telefon: <a href={phoneHref} className="font-semibold text-forest underline-offset-4 hover:underline">{person.phone}</a>
+                        {content.page.footer.phoneLabel}: <a href={phoneHref} className="font-semibold text-forest underline-offset-4 hover:underline">{person.phone}</a>
                       </p>
                     ) : null}
                   </div>
@@ -116,45 +142,17 @@ export default async function TeamMemberPage({ params }: PageProps) {
                 ) : null}
 
                 {relatedNewsPosts.length > 0 ? (
-                  <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.news.sectionTitle}</p>
-                    <ul className="mt-3 space-y-2">
-                      {relatedNewsPosts.map((post) => (
-                        <li key={post.slug}>
-                          <Link href={getItemHref(localeValue, "news", post.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
-                            {post.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <ExpandableNewsList
+                    title={content.page.news.sectionTitle}
+                    showAllLabel={content.page.news.showAllLabel}
+                    items={relatedNewsPosts.map((post) => ({
+                      slug: post.slug,
+                      title: post.title,
+                      href: getItemHref(localeValue, "news", post.slug),
+                    }))}
+                  />
                 ) : null}
               </aside>
-
-              <div className="space-y-6">
-                <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
-                  <Link href={`/${locale}`} className="hover:text-forest">
-                    Start
-                  </Link>
-                  <span aria-hidden="true" className="text-clay/60">/</span>
-                  <Link href={getSectionHref(localeValue, "team")} className="hover:text-forest">
-                    {content.page.team.title}
-                  </Link>
-                  <span aria-hidden="true" className="text-clay/60">/</span>
-                  <span className="text-forest">{person.name}</span>
-                </nav>
-                <h1 className="section-title font-black bg-gradient-to-r from-forest via-teal-700 to-forest bg-clip-text text-transparent">{person.name}</h1>
-                <p className="text-lg font-semibold uppercase tracking-[0.24em] text-clay">{person.role}</p>
-                {person.slogan ? (
-                  <blockquote className="border-l-4 border-forest pl-6 py-2 italic text-2xl text-ink/80">
-                    &ldquo;{person.slogan}&rdquo;
-                  </blockquote>
-                ) : null}
-
-                <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/85 prose-strong:text-forest">
-                  <ReactMarkdown>{profile.content}</ReactMarkdown>
-                </div>
-              </div>
             </div>
 
             <div className="mt-12 flex flex-wrap gap-3">

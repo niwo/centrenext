@@ -45,7 +45,7 @@
     },
     "posts": {
       "type": "object",
-      "required": ["title", "sectionTitle", "detailLink"]
+      "required": ["title", "sectionTitle", "detailLink", "showAllLabel"]
     },
     "location": {
       "type": "object",
@@ -53,7 +53,7 @@
     },
     "footer": {
       "type": "object",
-      "required": ["contactKicker", "backLink", "detailKicker"]
+      "required": ["contactKicker", "backLink", "detailKicker", "emailLabel", "phoneLabel"]
     },
     "testimonials": {
       "type": "object",

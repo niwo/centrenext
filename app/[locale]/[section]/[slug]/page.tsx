@@ -252,6 +252,9 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
     const relatedServices = content.servicePosts.filter((servicePost) =>
       servicePost.tags.some((tag) => post.tags.includes(tag)),
     );
+    const relatedTeamMembers = content.page.team.people.filter((person) =>
+      person.tags.some((tag) => post.tags.includes(tag)),
+    );
 
     return (
       <main className="relative overflow-hidden">
@@ -282,24 +285,47 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                   <ReactMarkdown>{post.content}</ReactMarkdown>
                 </div>
 
-                {relatedServices.length > 0 ? (
-                  <aside className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5 lg:sticky lg:top-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.services.title}</p>
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {relatedServices.map((servicePost) => (
-                        <li key={servicePost.slug}>
-                          <Link
-                            href={getItemHref(localeValue, "services", servicePost.slug)}
-                            className={cn(
-                              "inline-flex rounded-full border px-3 py-1 text-sm font-semibold transition",
-                              getServiceColorClasses(servicePost.tag_color, servicePost.tags),
-                            )}
-                          >
-                            {servicePost.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                {relatedServices.length > 0 || relatedTeamMembers.length > 0 ? (
+                  <aside className="space-y-4 lg:sticky lg:top-6">
+                    {relatedServices.length > 0 ? (
+                      <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.services.title}</p>
+                        <ul className="mt-3 flex flex-wrap gap-2">
+                          {relatedServices.map((servicePost) => (
+                            <li key={servicePost.slug}>
+                              <Link
+                                href={getItemHref(localeValue, "services", servicePost.slug)}
+                                className={cn(
+                                  "inline-flex rounded-full border px-3 py-1 text-sm font-semibold transition",
+                                  getServiceColorClasses(servicePost.tag_color, servicePost.tags),
+                                )}
+                              >
+                                {servicePost.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+
+                    {relatedTeamMembers.length > 0 ? (
+                      <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-clay/80">{content.page.footer.contactKicker}</p>
+                        <ul className="mt-2 flex flex-wrap gap-2">
+                          {relatedTeamMembers.map((person) => (
+                            <li key={person.slug}>
+                              <Link
+                                href={getItemHref(localeValue, "team", person.slug)}
+                                className="inline-flex items-center gap-1.5 rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-forest transition hover:bg-white dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-shell)/0.98)] dark:text-ink dark:hover:bg-[rgb(var(--surface-card)/1)]"
+                              >
+                                <User className="h-3.5 w-3.5" aria-hidden />
+                                {person.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
                   </aside>
                 ) : null}
               </div>
@@ -370,12 +396,12 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                   <div className="space-y-2 text-lg text-ink/80">
                     {person.email ? (
                       <p>
-                        E-Mail: <a href={`mailto:${person.email}`} className="font-semibold text-forest underline-offset-4 hover:underline">{person.email}</a>
+                        {content.page.footer.emailLabel}: <a href={`mailto:${person.email}`} className="font-semibold text-forest underline-offset-4 hover:underline">{person.email}</a>
                       </p>
                     ) : null}
                     {person.phone && phoneHref ? (
                       <p>
-                        Telefon: <a href={phoneHref} className="font-semibold text-forest underline-offset-4 hover:underline">{person.phone}</a>
+                        {content.page.footer.phoneLabel}: <a href={phoneHref} className="font-semibold text-forest underline-offset-4 hover:underline">{person.phone}</a>
                       </p>
                     ) : null}
                   </div>
