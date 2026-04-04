@@ -24,6 +24,10 @@ type CallToAction = {
   href: string;
 };
 
+type SchedulePeriod = "morning" | "afternoon";
+type ScheduleDayKey = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+type WorkingDay = { day: ScheduleDayKey; periods: SchedulePeriod[] };
+
 type TeamMember = {
   slug: string;
   name: string;
@@ -31,6 +35,11 @@ type TeamMember = {
   role: string;
   email?: string;
   phone?: string;
+  socialLinks?: Array<{
+    platform: "website" | "instagram" | "linkedin";
+    href: string;
+  }>;
+  schedule?: WorkingDay[];
   image?: string;
   headerImage?: string;
   tags: string[];
@@ -117,6 +126,9 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    scheduleTitle: string;
+    scheduleMorningLabel: string;
+    scheduleAfternoonLabel: string;
     people: TeamMember[];
   };
   services: {
@@ -193,6 +205,7 @@ export type PracticeContent = {
 
 export type SiteContent = {
   page: PageContent;
+  days: Record<string, string>;
   about: string;
   details: Record<SectionKey, string>;
   practice: PracticeContent;
@@ -270,6 +283,11 @@ type I18nData = {
     title: string;
     detailLink: string;
     intro: string;
+    schedule: {
+      title: string;
+      morning: string;
+      afternoon: string;
+    };
   };
   services: {
     title: string;
@@ -430,6 +448,14 @@ type TeamDataFile = {
   name?: string;
   email?: string;
   phone?: string;
+  socialLinks?: Array<{
+    platform?: "website" | "instagram" | "linkedin";
+    href?: string;
+  }>;
+  schedule?: Array<{
+    day?: string;
+    periods?: string[];
+  }>;
   image?: string;
   headerImage?: string;
   tags?: string[];
@@ -441,6 +467,11 @@ type TeamProfileWithMeta = TeamProfile & {
   slogan?: string;
   email?: string;
   phone?: string;
+  socialLinks?: Array<{
+    platform: "website" | "instagram" | "linkedin";
+    href: string;
+  }>;
+  schedule?: WorkingDay[];
   image?: string;
   headerImage?: string;
   tags: string[];
@@ -479,6 +510,41 @@ function normalizeServicePrices(value: ServiceDataFile["prices"]) {
       unit: typeof entry?.unit === "string" ? entry.unit.trim() : "",
     }))
     .filter((entry) => entry.amountChf > 0 && entry.unit.length > 0);
+}
+
+const VALID_SCHEDULE_DAYS = new Set<string>(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]);
+const VALID_SCHEDULE_PERIODS = new Set<string>(["morning", "afternoon"]);
+
+function normalizeTeamSchedule(value: TeamDataFile["schedule"]): WorkingDay[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((entry) => ({
+      day: typeof entry?.day === "string" && VALID_SCHEDULE_DAYS.has(entry.day) ? (entry.day as ScheduleDayKey) : undefined,
+      periods: Array.isArray(entry?.periods)
+        ? (entry.periods.filter((p) => typeof p === "string" && VALID_SCHEDULE_PERIODS.has(p)) as SchedulePeriod[])
+        : [],
+    }))
+    .filter((entry): entry is WorkingDay => entry.day !== undefined && entry.periods.length > 0);
+}
+
+function normalizeTeamSocialLinks(value: TeamDataFile["socialLinks"]) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((entry) => ({
+      platform:
+        entry?.platform === "website" || entry?.platform === "instagram" || entry?.platform === "linkedin"
+          ? entry.platform
+          : undefined,
+      href: typeof entry?.href === "string" ? entry.href.trim() : "",
+    }))
+    .filter(
+      (entry): entry is { platform: "website" | "instagram" | "linkedin"; href: string } =>
+        Boolean(entry.platform) && entry.href.length > 0,
+    );
 }
 
 function compareNewsByDateDesc(a: NewsPost, b: NewsPost) {
@@ -678,6 +744,8 @@ async function readTeamProfiles(teamDir: string, teamDataDir: string): Promise<T
         slogan: frontmatter.slogan,
         email: teamData.email,
         phone: teamData.phone,
+        socialLinks: normalizeTeamSocialLinks(teamData.socialLinks),
+        schedule: normalizeTeamSchedule(teamData.schedule),
         image: teamData.image,
         headerImage: teamData.headerImage,
         tags: normalizeTags(teamData.tags),
@@ -762,6 +830,8 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     role: member.role,
     email: member.email,
     phone: member.phone,
+    socialLinks: member.socialLinks,
+    schedule: member.schedule,
     image: member.image,
     headerImage: member.headerImage,
     tags: member.tags,
@@ -810,6 +880,9 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: i18n.team.intro,
       kicker: i18n.nav.team,
       detailLink: i18n.team.detailLink,
+      scheduleTitle: i18n.team.schedule.title,
+      scheduleMorningLabel: i18n.team.schedule.morning,
+      scheduleAfternoonLabel: i18n.team.schedule.afternoon,
       people: teamPeople,
     },
     services: {
@@ -907,5 +980,5 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
 
   const searchIndex = [...teamSearchItems, ...serviceSearchItems, ...newsSearchItems, aboutSearchItem, locationSearchItem];
 
-  return { page, about: details.about, details, practice, teamProfiles, servicePosts, newsPosts, searchIndex };
+  return { page, days: i18n.days, about: details.about, details, practice, teamProfiles, servicePosts, newsPosts, searchIndex };
 }

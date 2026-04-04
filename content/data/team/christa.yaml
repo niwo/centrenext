@@ -2,6 +2,24 @@ id: christa
 name: Christa Wolfgramm
 email: christa@centrebienetre.ch
 phone: "+41 76 568 00 65"
+schedule:
+  - day: monday
+    periods: [morning, afternoon]
+  - day: tuesday
+    periods: [morning]
+  - day: wednesday
+    periods: [morning, afternoon]
+  - day: thursday
+    periods: [morning]
+  - day: friday
+    periods: [morning, afternoon]
+socialLinks:
+  - platform: website
+    href: https://centrebienetre.ch
+  - platform: instagram
+    href: https://instagram.com/centrebienetre
+  - platform: linkedin
+    href: https://linkedin.com/company/centrebienetre
 image: /images/team/christa.webp
 headerImage: /images/DSC06813.webp
 tags:

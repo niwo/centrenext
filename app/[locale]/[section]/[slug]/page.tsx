@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { Check, Home, Newspaper, User, X } from "lucide-react";
+import { Check, Globe, HeartPulse, Home, Instagram, Linkedin, Mail, Newspaper, Phone, User, Users, X } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ExpandableNewsList } from "@/components/expandable-news-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { WeeklySchedule } from "@/components/ui/weekly-schedule";
 import { getSiteContent, type SectionKey } from "@/lib/content";
 import { getCanonicalSection, getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
@@ -224,7 +226,10 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
               <div className="mt-12 flex flex-wrap gap-3">
                 <Button asChild>
-                  <Link href={getSectionHref(localeValue, "services")}>{content.page.services.detailLink}</Link>
+                  <Link href={getSectionHref(localeValue, "services")} className="inline-flex items-center gap-2">
+                    <HeartPulse className="h-4 w-4" aria-hidden />
+                    {content.page.services.detailLink}
+                  </Link>
                 </Button>
                 <Button asChild variant="outline">
                   <Link href={`/${locale}`} className="inline-flex items-center gap-2">
@@ -367,6 +372,17 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
     post.tags.some((tag) => person.tags.includes(tag)),
   );
   const phoneHref = person.phone ? `tel:${person.phone.replace(/\s+/g, "")}` : undefined;
+  const socialIconByPlatform = {
+    website: Globe,
+    instagram: Instagram,
+    linkedin: Linkedin,
+  } as const;
+  const socialLabelByPlatform = {
+    website: "Website",
+    instagram: "Instagram",
+    linkedin: "LinkedIn",
+  } as const;
+  const formatSocialLinkText = (href: string) => href.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
   return (
     <main className="relative overflow-hidden">
@@ -393,19 +409,59 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
               <aside className="mb-6 w-full space-y-4 lg:float-right lg:mb-4 lg:ml-8 lg:w-[22rem]">
                 <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-6 py-5 shadow-sm">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{content.page.footer.contactKicker}</p>
-                  <div className="space-y-2 text-lg text-ink/80">
+                  <div className="space-y-2 text-base text-ink/80">
                     {person.email ? (
-                      <p>
-                        {content.page.footer.emailLabel}: <a href={`mailto:${person.email}`} className="font-semibold text-forest underline-offset-4 hover:underline">{person.email}</a>
-                      </p>
+                      <a href={`mailto:${person.email}`} className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline">
+                        <Mail className="h-4 w-4" aria-hidden />
+                        {person.email}
+                      </a>
                     ) : null}
                     {person.phone && phoneHref ? (
-                      <p>
-                        {content.page.footer.phoneLabel}: <a href={phoneHref} className="font-semibold text-forest underline-offset-4 hover:underline">{person.phone}</a>
-                      </p>
+                      <a href={phoneHref} className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline">
+                        <Phone className="h-4 w-4" aria-hidden />
+                        {person.phone}
+                      </a>
                     ) : null}
                   </div>
+
+                  {person.socialLinks && person.socialLinks.length > 0 ? (
+                    <div className="mt-4 space-y-2 text-base text-ink/80">
+                      {person.socialLinks.map((social) => {
+                        const SocialIcon = socialIconByPlatform[social.platform];
+                        const socialLabel = socialLabelByPlatform[social.platform];
+
+                        return (
+                          <a
+                            key={`${social.platform}-${social.href}`}
+                            href={social.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={socialLabel}
+                            title={socialLabel}
+                            className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline"
+                          >
+                            <SocialIcon className="h-4 w-4" aria-hidden />
+                            {formatSocialLinkText(social.href)}
+                          </a>
+                        );
+                      })}
+                    </div>
+                  ) : null}
                 </div>
+
+                {person.schedule && person.schedule.length > 0 ? (
+                  <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-6 py-5 shadow-sm">
+                    <p className="mb-4 text-xs font-semibold uppercase tracking-[0.24em] text-clay">
+                      {content.page.team.scheduleTitle}
+                    </p>
+                    <WeeklySchedule
+                      schedule={person.schedule}
+                      dayLabels={content.days}
+                      morningLabel={content.page.team.scheduleMorningLabel}
+                      afternoonLabel={content.page.team.scheduleAfternoonLabel}
+                    />
+                  </div>
+                ) : null}
 
                 {relatedServices.length > 0 ? (
                   <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
@@ -429,18 +485,15 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                 ) : null}
 
                 {relatedNewsPosts.length > 0 ? (
-                  <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] p-5">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-clay">{content.page.news.sectionTitle}</p>
-                    <ul className="mt-3 space-y-2">
-                      {relatedNewsPosts.map((post) => (
-                        <li key={post.slug}>
-                          <Link href={getItemHref(localeValue, "news", post.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
-                            {post.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <ExpandableNewsList
+                    title={content.page.news.sectionTitle}
+                    showAllLabel={content.page.news.showAllLabel}
+                    items={relatedNewsPosts.map((post) => ({
+                      slug: post.slug,
+                      title: post.title,
+                      href: getItemHref(localeValue, "news", post.slug),
+                    }))}
+                  />
                 ) : null}
               </aside>
 
@@ -472,7 +525,10 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
             <div className="mt-12 flex flex-wrap gap-3">
               <Button asChild>
-                <Link href={getSectionHref(localeValue, "team")}>{content.page.team.detailLink}</Link>
+                <Link href={getSectionHref(localeValue, "team")} className="inline-flex items-center gap-2">
+                  <Users className="h-4 w-4" aria-hidden />
+                  {content.page.team.detailLink}
+                </Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/${locale}`} className="inline-flex items-center gap-2">

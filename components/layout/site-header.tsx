@@ -4,7 +4,7 @@ import { cloneElement, Fragment, isValidElement, useState, type ReactNode } from
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Search, Users, Briefcase, Newspaper, X } from "lucide-react";
+import { Search, Users, HeartPulse, Newspaper, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ type SiteHeaderProps = {
 
 function SearchTypeIcon({ type }: { type: SearchIndexItem["type"] }) {
   if (type === "team") return <Users className="h-4 w-4" aria-hidden />;
-  if (type === "services") return <Briefcase className="h-4 w-4" aria-hidden />;
+  if (type === "services") return <HeartPulse className="h-4 w-4" aria-hidden />;
   if (type === "about") return <Search className="h-4 w-4" aria-hidden />;
   if (type === "location") return <Search className="h-4 w-4" aria-hidden />;
   return <Newspaper className="h-4 w-4" aria-hidden />;
