@@ -130,7 +130,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
             aria-label="Startseite"
             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[rgb(var(--color-clay)/0.14)] shadow-sm transition-transform hover:scale-[1.03]"
           >
-            <Image src="/img/logo.svg" alt="Centre bien-etre Logo" width={48} height={48} className="logo-pulsate h-10 w-10" priority />
+            <Image src="/logo.svg" alt="Centre bien-etre Logo" width={48} height={48} className="logo-pulsate h-10 w-10" priority />
           </Link>
           <div className="flex h-12 items-center">
             <Link href={`/${locale}`} className="block font-display font-black text-2xl leading-none text-clay transition-opacity hover:opacity-75 sm:text-3xl">
