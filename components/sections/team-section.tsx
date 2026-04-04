@@ -36,7 +36,7 @@ export function TeamSection({ team, locale }: TeamSectionProps) {
       <div className="grid gap-5">
         {team.people.map((person) => (
           <Link key={person.slug} href={getItemHref(locale, "team", person.slug)}>
-            <Card className="flex flex-col items-center gap-5 bg-[rgb(var(--surface-elevated)/0.72)] p-8 transition hover:bg-[rgb(var(--surface-card)/0.92)]">
+            <Card className="flex flex-col items-center gap-5 border-[rgb(var(--color-clay)/0.26)] bg-[rgb(var(--surface-card)/0.97)] p-8 shadow-[0_8px_24px_rgb(var(--color-forest)/0.08)] transition hover:border-[rgb(var(--color-clay)/0.38)] hover:bg-white dark:border-[rgb(var(--border-soft)/0.65)] dark:bg-[rgb(var(--surface-elevated)/0.72)] dark:hover:bg-[rgb(var(--surface-card)/0.92)]">
               <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                 <Image
                   src={person.image ?? "/images/team/christa.webp"}
@@ -49,6 +49,7 @@ export function TeamSection({ team, locale }: TeamSectionProps) {
               </div>
               <div className="text-center">
                 <h3 className="text-2xl font-semibold text-forest">{person.name}</h3>
+                <p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-clay">{person.role}</p>
                 {person.slogan ? <p className="mt-1 text-base text-ink/70">{person.slogan}</p> : null}
               </div>
             </Card>

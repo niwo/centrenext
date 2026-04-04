@@ -7,8 +7,42 @@
     "name": { "type": "string" },
     "email": { "type": "string" },
     "phone": { "type": "string" },
+    "socialLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["platform", "href"],
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": ["website", "instagram", "linkedin"]
+          },
+          "href": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
     "image": { "type": "string" },
     "headerImage": { "type": "string" },
+    "schedule": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["day", "periods"],
+        "properties": {
+          "day": {
+            "type": "string",
+            "enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          },
+          "periods": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["morning", "afternoon"] },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "tags": {
       "type": "array",
       "items": { "type": "string" },

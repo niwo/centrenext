@@ -7,6 +7,8 @@ days:
   wednesday: Mercredi
   thursday: Jeudi
   friday: Vendredi
+  saturday: Samedi
+  sunday: Dimanche
 
 nav:
   about: Cabinet
@@ -30,11 +32,15 @@ team:
   title: Les collaboratrices
   intro: "Une equipe a taille humaine, avec des expertises complementaires et un suivi tres personnel."
   detailLink: "Voir l'equipe"
+  schedule:
+    title: Jours de travail
+    morning: Matin
+    afternoon: "Apres-midi"
 
 services:
   title: Prestations
   pricePrefix: "des CHF"
-  detailLink: Voir les prestations
+  detailLink: Toutes les prestations
   priceLabel: Tarifs pour paiements directs
   unitLabel: Unite
   unitSessionLabel: Seance
@@ -62,7 +68,7 @@ location:
 
 footer:
   contactKicker: Contact
-  backLink: "Retour a l'accueil"
+  backLink: "Retour a la page d'accueil"
   detailKicker: "Detail"
   emailLabel: E-mail
   phoneLabel: "Telephone"

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Briefcase, Newspaper, Search, Users } from "lucide-react";
+import { HeartPulse, Newspaper, Search, Users } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 
@@ -48,7 +48,7 @@ function normalize(value: string) {
 
 function TypeIcon({ type }: { type: SearchItemType }) {
   if (type === "team") return <Users className="h-4 w-4" aria-hidden="true" />;
-  if (type === "services") return <Briefcase className="h-4 w-4" aria-hidden="true" />;
+  if (type === "services") return <HeartPulse className="h-4 w-4" aria-hidden="true" />;
   return <Newspaper className="h-4 w-4" aria-hidden="true" />;
 }
 

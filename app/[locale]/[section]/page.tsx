@@ -159,7 +159,7 @@ export default async function SectionPage({ params }: PageProps) {
                     <Link
                       key={service.slug}
                       href={getItemHref(localeValue, "services", service.slug)}
-                      className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
+                      className="rounded-2xl border border-[rgb(var(--color-clay)/0.28)] bg-[rgb(var(--surface-card)/0.98)] p-6 shadow-[0_8px_24px_rgb(var(--color-forest)/0.08)] transition hover:border-[rgb(var(--color-clay)/0.4)] hover:bg-white dark:border-[rgb(var(--border-soft)/0.85)] dark:bg-[rgb(var(--surface-shell)/0.98)] dark:hover:bg-[rgb(var(--surface-card)/1)]"
                     >
                       <div className="flex items-center gap-5">
                         <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
@@ -172,7 +172,7 @@ export default async function SectionPage({ params }: PageProps) {
                           />
                         </div>
                         <div>
-                          <span className="text-2xl font-semibold text-forest">{service.name}</span>
+                          <span className="text-2xl font-semibold text-forest dark:text-ink">{service.name}</span>
                         </div>
                       </div>
                     </Link>
@@ -186,7 +186,7 @@ export default async function SectionPage({ params }: PageProps) {
                     id={post.slug}
                     key={post.slug}
                     href={getItemHref(localeValue, "news", post.slug)}
-                    className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
+                    className="rounded-2xl border border-[rgb(var(--color-clay)/0.28)] bg-[rgb(var(--surface-card)/0.98)] p-6 shadow-[0_8px_24px_rgb(var(--color-forest)/0.08)] transition hover:border-[rgb(var(--color-clay)/0.4)] hover:bg-white dark:border-[rgb(var(--border-soft)/0.65)] dark:bg-[rgb(var(--surface-card)/0.88)] dark:hover:bg-[rgb(var(--surface-elevated)/0.85)]"
                   >
                     <div className="flex items-center gap-7">
                       <div className="shrink-0 overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
@@ -263,7 +263,7 @@ export default async function SectionPage({ params }: PageProps) {
                     <Link
                       key={person.slug}
                       href={getItemHref(localeValue, "team", person.slug)}
-                      className="rounded-2xl border border-[rgb(var(--border-soft)/0.65)] bg-[rgb(var(--surface-card)/0.88)] p-6 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]"
+                      className="rounded-2xl border border-[rgb(var(--color-clay)/0.28)] bg-[rgb(var(--surface-card)/0.98)] p-6 shadow-[0_8px_24px_rgb(var(--color-forest)/0.08)] transition hover:border-[rgb(var(--color-clay)/0.4)] hover:bg-white dark:border-[rgb(var(--border-soft)/0.65)] dark:bg-[rgb(var(--surface-card)/0.88)] dark:hover:bg-[rgb(var(--surface-elevated)/0.85)]"
                     >
                       <div className="flex items-center gap-5">
                         <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
@@ -278,6 +278,7 @@ export default async function SectionPage({ params }: PageProps) {
                         </div>
                         <div>
                           <span className="text-2xl font-semibold text-forest">{person.name}</span>
+                          <p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em] text-clay">{person.role}</p>
                           {person.slogan ? <p className="mt-1 text-lg text-ink/70">{person.slogan}</p> : null}
                         </div>
                       </div>

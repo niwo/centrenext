@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import { Building2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { getSectionHref } from "@/lib/routes";
@@ -38,7 +39,10 @@ export function AboutSection({ locale, title, kicker, tagline, detailLink, about
           <ReactMarkdown>{about}</ReactMarkdown>
         </div>
         <Button asChild variant="outline" className="mt-auto self-start">
-          <Link href={getSectionHref(locale, "about")}>{detailLink}</Link>
+          <Link href={getSectionHref(locale, "about")} className="inline-flex items-center gap-2">
+            <Building2 className="h-4 w-4" aria-hidden />
+            {detailLink}
+          </Link>
         </Button>
       </div>
     </section>

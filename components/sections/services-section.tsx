@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Briefcase, ChevronLeft, ChevronRight } from "lucide-react";
+import { HeartPulse, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -60,13 +60,13 @@ export function ServicesSection({ services, locale }: ServicesSectionProps) {
                 href={getItemHref(locale, "services", service.slug)}
                 className="min-w-[16rem] snap-start sm:min-w-[18rem] lg:min-w-[calc((100%-2rem)/3)]"
               >
-                <Card className="flex h-full flex-col gap-3 bg-[rgb(var(--surface-card)/0.88)] p-3 transition hover:bg-[rgb(var(--surface-elevated)/0.85)]">
+                <Card className="flex h-full flex-col gap-3 border-[rgb(var(--color-clay)/0.26)] bg-[rgb(var(--surface-card)/0.98)] p-3 shadow-[0_8px_24px_rgb(var(--color-forest)/0.08)] transition hover:border-[rgb(var(--color-clay)/0.38)] hover:bg-white dark:border-[rgb(var(--border-soft)/0.85)] dark:bg-[rgb(var(--surface-shell)/0.98)] dark:hover:bg-[rgb(var(--surface-card)/1)]">
                   <div className="relative aspect-video w-full overflow-hidden rounded-xl">
                     <Image src={service.image} alt={service.name} fill sizes="(max-width: 1024px) 50vw, 33vw" className="object-cover" />
                   </div>
                   <div className="space-y-2 px-1 pb-1 flex-grow flex flex-col">
-                    <h3 className="text-2xl font-semibold text-forest">{service.name}</h3>
-                    <p className="text-base leading-6 text-ink/75 flex-grow">{service.description}</p>
+                    <h3 className="text-2xl font-semibold text-forest dark:text-ink">{service.name}</h3>
+                    <p className="text-base leading-6 text-ink/75 dark:text-ink/88 flex-grow">{service.description}</p>
                   </div>
                 </Card>
               </Link>
@@ -97,7 +97,7 @@ export function ServicesSection({ services, locale }: ServicesSectionProps) {
       </div>
       <Button asChild variant="outline" className="mt-auto self-start">
         <Link href={getSectionHref(locale, "services")} className="inline-flex items-center gap-2">
-          <Briefcase className="h-4 w-4" aria-hidden />
+          <HeartPulse className="h-4 w-4" aria-hidden />
           {services.detailLink}
         </Link>
       </Button>
