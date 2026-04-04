@@ -82,6 +82,23 @@
         }
       }
     },
+    "socialLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["platform", "href"],
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": ["github", "instagram", "facebook", "linkedin", "youtube", "x"]
+          },
+          "href": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "map": {
       "type": "object",
       "required": [

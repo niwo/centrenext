@@ -181,6 +181,10 @@ export type PracticeContent = {
     phone: string;
     email: string;
   };
+  socialLinks?: Array<{
+    platform: "github" | "instagram" | "facebook" | "linkedin" | "youtube" | "x";
+    href: string;
+  }>;
   openingHours: Array<{
     day: string;
     hours: string;
@@ -230,6 +234,10 @@ type PracticeData = {
   };
   address: { street: LocalizedField; number: number; postcode: number; city: LocalizedField };
   contact: { phone: string; email: string };
+  socialLinks?: Array<{
+    platform: "github" | "instagram" | "facebook" | "linkedin" | "youtube" | "x";
+    href: string;
+  }>;
   map: { embedUrl: string; lat: number; lon: number };
   openingHours: Array<{ dayKey: string; hours: string }>;
 };
@@ -739,6 +747,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.webp",
     },
     contact: practiceData.contact,
+    socialLinks: practiceData.socialLinks,
     openingHours: practiceData.openingHours.map((slot) => ({
       day: i18n.days[slot.dayKey] ?? slot.dayKey,
       hours: slot.hours,
