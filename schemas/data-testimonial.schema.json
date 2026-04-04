@@ -1,9 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["id", "date", "profile"],
+  "required": ["id", "name", "date", "profile"],
   "properties": {
     "id": { "type": "string" },
+    "name": { "type": "string" },
     "date": { "type": "string" },
     "image": { "type": "string" },
     "profile": {
@@ -11,18 +12,16 @@
       "properties": {
         "de": {
           "type": "object",
-          "required": ["name", "quote"],
+          "required": ["quote"],
           "properties": {
-            "name": { "type": "string" },
             "quote": { "type": "string" }
           },
           "additionalProperties": false
         },
         "fr": {
           "type": "object",
-          "required": ["name", "quote"],
+          "required": ["quote"],
           "properties": {
-            "name": { "type": "string" },
             "quote": { "type": "string" }
           },
           "additionalProperties": false
