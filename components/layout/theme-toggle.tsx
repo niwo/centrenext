@@ -26,7 +26,7 @@ function applyTheme(theme: Theme) {
   document.documentElement.classList.toggle("dark", theme === "dark");
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({ onClick }: { onClick?: () => void }) {
   const [isMounted, setIsMounted] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
 
@@ -42,6 +42,7 @@ export function ThemeToggle() {
     setTheme(nextTheme);
     applyTheme(nextTheme);
     window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    onClick?.();
   };
 
   const isDark = theme === "dark";
@@ -51,12 +52,12 @@ export function ThemeToggle() {
       type="button"
       variant="ghost"
       size="default"
-      className="h-9 w-9 p-0 text-sand hover:bg-sand/10 dark:text-ink dark:hover:bg-white/10"
+      className="h-8 w-8 p-0 text-forest hover:bg-forest/5 dark:text-ink dark:hover:bg-white/10"
       aria-label="Theme Toggle"
       title="Theme Toggle"
       onClick={toggleTheme}
     >
-      {isMounted && isDark ? <Sun className="h-5 w-5" aria-hidden /> : <Moon className="h-5 w-5" aria-hidden />}
+      {isMounted && isDark ? <Sun className="h-4 w-4" aria-hidden /> : <Moon className="h-4 w-4" aria-hidden />}
     </Button>
   );
 }
