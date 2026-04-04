@@ -53,9 +53,23 @@ Der Container nutzt das Image `mcr.microsoft.com/devcontainers/javascript-node:1
 
 ## Inhalte pflegen
 
-- Freitext pro Sprache in `content/de/about.md` und `content/fr/about.md`
-- Strukturierte Inhalte pro Sprache in `content/<locale>/page.yaml`
+- Bereichsinhalte mehrsprachig in `content/data/pages/*.yaml`
+- Strukturierte Inhalte fuer Team, Angebote, News und Testimonials in `content/data/*/*.yaml`
 - Gemeinsame Standortdaten in `content/data/main.yaml`
+
+## Decap CMS
+
+- Das Admin-Interface ist unter `/admin/index.html` verfuegbar und wird aus `public/admin/` statisch mit ausgeliefert.
+- Die CMS-Konfiguration verwaltet Inhalte in Markdown und YAML fuer Praxisdaten, Uebersetzungen, Team, Angebote, News, Testimonials und Bereichseinleitungen.
+- Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden:
+
+```bash
+npx decap-server
+```
+
+- Die URL der produktiven Netlify-Site kann in `public/admin/settings.js` als `siteUrl` hinterlegt werden. Auf `localhost` wird dann automatisch zur gehosteten Admin-Seite weitergeleitet.
+- Fuer die produktive Nutzung auf Netlify muessen **Netlify Identity** und **Git Gateway** aktiviert sein, da das CMS mit dem `git-gateway` Backend konfiguriert ist.
+- Nach dem Aktivieren von Identity sollten Redakteurinnen und Redakteure ueber Netlify eingeladen werden, damit der Login unter `/admin/index.html` funktioniert.
 
 ## SEO und Tracking
 

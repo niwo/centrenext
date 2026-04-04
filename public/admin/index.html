@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Centre bien-etre CMS</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #f6f2ea;
+        color: #1d1a17;
+      }
+
+      .cms-setup {
+        display: none;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .cms-setup.is-visible {
+        display: flex;
+      }
+
+      .cms-card {
+        width: min(100%, 680px);
+        border-radius: 24px;
+        background: #fffaf3;
+        box-shadow: 0 20px 60px rgba(29, 26, 23, 0.12);
+        padding: 28px;
+      }
+
+      .cms-card h1 {
+        margin: 0 0 12px;
+        font-size: 2rem;
+      }
+
+      .cms-card p {
+        margin: 0 0 14px;
+        line-height: 1.5;
+      }
+
+      .cms-card code {
+        font-family: ui-monospace, monospace;
+      }
+
+      .cms-card label {
+        display: block;
+        font-weight: 600;
+        margin: 18px 0 8px;
+      }
+
+      .cms-card input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 14px;
+        border: 1px solid #d8cfc2;
+        border-radius: 12px;
+        font: inherit;
+        background: #ffffff;
+      }
+
+      .cms-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .cms-button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        background: #214c43;
+        color: #fffaf3;
+      }
+
+      .cms-button.is-secondary {
+        background: #e9dfd0;
+        color: #1d1a17;
+      }
+
+      #nc-root {
+        min-height: 100vh;
+      }
+    </style>
+    <script src="/admin/settings.js"></script>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      window.CMS_MANUAL_INIT = true;
+    </script>
+  </head>
+  <body>
+    <div id="cms-setup" class="cms-setup">
+      <div class="cms-card">
+        <h1>CMS Setup</h1>
+        <p>
+          Auf <code>localhost</code> braucht Decap entweder das lokale Backend via <code>npx decap-server</code>
+          oder die URL Ihrer veroeffentlichten Netlify-Site mit aktiviertem Identity Service und Git Gateway.
+        </p>
+        <p>
+          Hinterlegen Sie die Netlify-URL einmalig hier. Danach wird die gehostete Admin-Seite verwendet.
+        </p>
+        <label for="cms-site-url">Netlify Site URL</label>
+        <input id="cms-site-url" type="url" placeholder="https://centrebienetre2.netlify.app" />
+        <div class="cms-actions">
+          <button id="cms-save-url" class="cms-button" type="button">URL speichern und Admin oeffnen</button>
+          <button id="cms-open-local" class="cms-button is-secondary" type="button">Lokales Backend verwenden</button>
+        </div>
+      </div>
+    </div>
+    <div id="nc-root"></div>
+    <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
+    <script>
+      (function () {
+        var storageKey = "centrenext-cms-site-url";
+        var runtimeConfig = window.CENTRENEXT_CMS_CONFIG || {};
+        var searchParams = new URLSearchParams(window.location.search);
+        var savedSiteUrl = window.localStorage.getItem(storageKey);
+        var configuredSiteUrl = searchParams.get("site_url") || runtimeConfig.siteUrl || savedSiteUrl || "";
+        var useLocalBackend = searchParams.get("local_backend") === "1";
+        var isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+        var setupRoot = document.getElementById("cms-setup");
+        var siteUrlInput = document.getElementById("cms-site-url");
+        var saveUrlButton = document.getElementById("cms-save-url");
+        var openLocalButton = document.getElementById("cms-open-local");
+
+        function normalizeSiteUrl(value) {
+          return value.replace(/\/+$/, "");
+        }
+
+        function getAdminUrl(baseUrl) {
+          return normalizeSiteUrl(baseUrl) + "/admin/index.html";
+        }
+
+        if (configuredSiteUrl) {
+          configuredSiteUrl = normalizeSiteUrl(configuredSiteUrl);
+          window.localStorage.setItem(storageKey, configuredSiteUrl);
+        }
+
+        if (siteUrlInput && configuredSiteUrl) {
+          siteUrlInput.value = configuredSiteUrl;
+        }
+
+        if (saveUrlButton) {
+          saveUrlButton.addEventListener("click", function () {
+            var nextValue = siteUrlInput && siteUrlInput.value ? normalizeSiteUrl(siteUrlInput.value.trim()) : "";
+
+            if (!nextValue) {
+              return;
+            }
+
+            window.localStorage.setItem(storageKey, nextValue);
+            window.location.href = getAdminUrl(nextValue);
+          });
+        }
+
+        if (openLocalButton) {
+          openLocalButton.addEventListener("click", function () {
+            var url = new URL(window.location.href);
+            url.searchParams.set("local_backend", "1");
+            window.location.href = url.toString();
+          });
+        }
+
+        if (isLocalhost && configuredSiteUrl && !useLocalBackend) {
+          window.location.replace(getAdminUrl(configuredSiteUrl));
+          return;
+        }
+
+        if (isLocalhost && !configuredSiteUrl && !useLocalBackend) {
+          if (setupRoot) {
+            setupRoot.classList.add("is-visible");
+          }
+
+          return;
+        }
+
+        if (window.netlifyIdentity) {
+          window.netlifyIdentity.on("init", function (user) {
+            if (!user) {
+              window.netlifyIdentity.on("login", function () {
+                document.location.href = "/admin/index.html";
+              });
+            }
+          });
+        }
+
+        if (typeof window.initCMS !== "function") {
+          return;
+        }
+
+        var publicSiteUrl = configuredSiteUrl || window.location.origin;
+        window.initCMS({
+          config: {
+            site_url: publicSiteUrl,
+            display_url: publicSiteUrl,
+          },
+        });
+      })();
+    </script>
+  </body>
+</html>

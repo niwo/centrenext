@@ -24,47 +24,15 @@ hero:
   primaryCta: Angebote ansehen
   secondaryCta: Kontakt entdecken
 
-about:
-  title: Die Praxis im Überblick
-  detailLink: Details zur Praxis
+about: {}
 
-team:
-  title: Team
-  intro: "Das ist das Team von Centre bien-être. Wir freuen uns auf euch!"
-  detailLink: Zum Team
-  schedule:
-    title: Arbeitstage
-    morning: Vormittag
-    afternoon: Nachmittag
+team: {}
 
-services:
-  title: Angebote
-  pricePrefix: "ab CHF"
-  detailLink: Alle Angebote
-  priceLabel: Kosten für Selbstzahler
-  unitLabel: Einheit
-  unitSessionLabel: Sitzung
-  insuranceLabel: Kostenübernahme
-  insuranceObligatoryLabel: Obligatorische Krankenversicherung
-  insuranceSupplementaryLabel: Zusatzversicherung
-  insuranceNoCoverageLabel: Wird nicht von der Krankenversicherung gedeckt
-  insuranceSupplementaryInsurersLabel: Gedeckt durch
-  insuranceCoveredLabel: Ja
-  insuranceNotCoveredLabel: Nein
+services: {}
 
-posts:
-  title: Aktuelle News
-  sectionTitle: News
-  detailLink: Alle Beiträge
-  showAllLabel: Alle anzeigen
+posts: {}
 
-location:
-  title: Kontakt
-  detailLink: Kontaktdetails
-  practiceDetailLink: Detail zur Praxis
-  addressLabel: Adresse
-  openingHoursLabel: Öffnungszeiten
-  mapLabel: Kartenansicht
+location: {}
 
 footer:
   contactKicker: Kontakt
@@ -72,6 +40,7 @@ footer:
   detailKicker: Detailseite
   emailLabel: E-Mail
   phoneLabel: Telefon
+  adminLabel: CMS Admin
 
 testimonials:
   kicker: Erfahrungsberichte

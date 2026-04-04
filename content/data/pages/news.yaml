@@ -1,0 +1,15 @@
+id: news
+de:
+  title: Aktuelle News
+  sectionTitle: News
+  intro: ""
+  detailLink: Alle Beiträge
+  showAllLabel: Alle anzeigen
+  content: ""
+fr:
+  title: Actualites recentes
+  sectionTitle: Actualites
+  intro: ""
+  detailLink: Tous les articles
+  showAllLabel: Tout afficher
+  content: ""

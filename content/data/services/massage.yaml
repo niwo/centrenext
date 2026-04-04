@@ -1,4 +1,19 @@
 id: massage
+profile:
+  de:
+    title: Medizinische Massage
+    description: Lockerung von Muskelspannungen und gezielte Behandlung von Triggerpunkten.
+    content: |
+      Die medizinische Massage kombiniert klassische Techniken mit einer strukturierten Befunderhebung.
+
+      Sie eignet sich besonders bei Verspannungen, lokalen Schmerzpunkten und zur Regeneration nach Belastung.
+  fr:
+    title: Massage therapeutique
+    description: Relachement musculaire et traitement cible des points de tension.
+    content: |
+      Le massage therapeutique associe des techniques manuelles precises a une evaluation fonctionnelle claire.
+
+      Il est indique en cas de tensions persistantes, de douleurs localisees et pour la recuperation apres effort.
 prices:
   - amountChf: 72
     unit: 30 min

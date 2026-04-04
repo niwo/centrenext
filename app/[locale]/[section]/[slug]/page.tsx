@@ -6,7 +6,7 @@ import { Check, Globe, HeartPulse, Home, Instagram, Linkedin, Mail, Newspaper, P
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { ExpandableNewsList } from "@/components/expandable-news-list";
+import { ExpandableNewsList } from "@/components/ui/expandable-news-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { WeeklySchedule } from "@/components/ui/weekly-schedule";

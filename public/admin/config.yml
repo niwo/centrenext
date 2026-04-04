@@ -1,0 +1,771 @@
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: Create {{collection}} "{{slug}}"
+    update: Update {{collection}} "{{slug}}"
+    delete: Delete {{collection}} "{{slug}}"
+    uploadMedia: Upload "{{path}}"
+    deleteMedia: Delete "{{path}}"
+
+local_backend: true
+media_folder: public/images/uploads
+public_folder: /images/uploads
+locale: de
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: settings
+    label: "⚙️ Einstellungen"
+    editor:
+      preview: false
+    files:
+      - name: practice
+        label: "🏢 Praxis"
+        file: content/data/main.yaml
+        format: yaml
+        fields:
+          - label: Name
+            name: name
+            widget: string
+          - label: Tagline
+            name: tagline
+            widget: object
+            fields:
+              - label: Deutsch
+                name: de
+                widget: string
+              - label: Francais
+                name: fr
+                widget: string
+          - label: SEO
+            name: seo
+            widget: object
+            required: false
+            fields:
+              - label: Standardbild
+                name: defaultImage
+                widget: image
+                required: false
+          - label: Adresse
+            name: address
+            widget: object
+            fields:
+              - label: Strasse
+                name: street
+                widget: object
+                fields:
+                  - label: Deutsch
+                    name: de
+                    widget: string
+                  - label: Francais
+                    name: fr
+                    widget: string
+              - label: Hausnummer
+                name: number
+                widget: number
+                value_type: int
+              - label: Postleitzahl
+                name: postcode
+                widget: number
+                value_type: int
+              - label: Ort
+                name: city
+                widget: object
+                fields:
+                  - label: Deutsch
+                    name: de
+                    widget: string
+                  - label: Francais
+                    name: fr
+                    widget: string
+          - label: Kontakt
+            name: contact
+            widget: object
+            fields:
+              - label: Telefon
+                name: phone
+                widget: string
+              - label: E-Mail
+                name: email
+                widget: string
+          - label: Social Links
+            name: socialLinks
+            widget: list
+            required: false
+            fields:
+              - label: Plattform
+                name: platform
+                widget: select
+                options:
+                  - github
+                  - instagram
+                  - facebook
+                  - linkedin
+                  - youtube
+                  - x
+              - label: URL
+                name: href
+                widget: string
+          - label: Karte
+            name: map
+            widget: object
+            fields:
+              - label: Embed URL
+                name: embedUrl
+                widget: string
+              - label: Breitengrad
+                name: lat
+                widget: number
+                value_type: float
+              - label: Laengengrad
+                name: lon
+                widget: number
+                value_type: float
+          - label: Oeffnungszeiten
+            name: openingHours
+            widget: list
+            fields:
+              - label: Tag
+                name: dayKey
+                widget: select
+                options:
+                  - monday
+                  - tuesday
+                  - wednesday
+                  - thursday
+                  - friday
+                  - saturday
+                  - sunday
+              - label: Zeiten
+                name: hours
+                widget: string
+      - name: about
+        label: "📄 Ueber uns"
+        file: content/data/pages/about.yaml
+        format: yaml
+        fields:
+          - { name: id, widget: hidden, default: about }
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - { label: Landingpage - Titel, name: title, widget: string }
+              - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Detailseite }
+              - { label: Detailseite - Inhalt, name: content, widget: markdown }
+          - label: Français
+            name: fr
+            widget: object
+            fields:
+              - { label: Landing page - Titre, name: title, widget: string }
+              - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page detaillee }
+              - { label: Page detail - Contenu, name: content, widget: markdown }
+      - name: location
+        label: "📍 Standort"
+        file: content/data/pages/location.yaml
+        format: yaml
+        fields:
+          - { name: id, widget: hidden, default: location }
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - { label: Landingpage - Titel, name: title, widget: string }
+              - { label: Landingpage - Intro, name: intro, widget: text, required: false }
+              - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Kontakt-Detailseite }
+              - { label: Landingpage - Praxislink, name: practiceDetailLink, widget: string, hint: Text fuer den Link zur Praxis-Detailseite }
+              - { label: Landingpage - Label Adresse, name: addressLabel, widget: string }
+              - { label: Landingpage - Label Oeffnungszeiten, name: openingHoursLabel, widget: string }
+              - { label: Landingpage - Label Karte, name: mapLabel, widget: string }
+              - { label: Detailseite - Inhalt, name: content, widget: markdown }
+          - label: Français
+            name: fr
+            widget: object
+            fields:
+              - { label: Landing page - Titre, name: title, widget: string }
+              - { label: Landing page - Intro, name: intro, widget: text, required: false }
+              - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page contact detaillee }
+              - { label: Landing page - Lien cabinet, name: practiceDetailLink, widget: string, hint: Texte du lien vers la page cabinet detaillee }
+              - { label: Landing page - Label adresse, name: addressLabel, widget: string }
+              - { label: Landing page - Label horaires, name: openingHoursLabel, widget: string }
+              - { label: Landing page - Label carte, name: mapLabel, widget: string }
+              - { label: Page detail - Contenu, name: content, widget: markdown }
+      - name: team
+        label: "👥 Team"
+        file: content/data/pages/team.yaml
+        format: yaml
+        fields:
+          - { name: id, widget: hidden, default: team }
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - { label: Landingpage - Titel, name: title, widget: string }
+              - { label: Landingpage - Intro, name: intro, widget: text }
+              - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Team-Detailseite }
+              - label: Arbeitstage
+                name: schedule
+                widget: object
+                fields:
+                  - { label: Landingpage - Titel Arbeitstage, name: title, widget: string }
+                  - { label: Landingpage - Label Vormittag, name: morning, widget: string }
+                  - { label: Landingpage - Label Nachmittag, name: afternoon, widget: string }
+              - { label: Detailseite - Inhalt, name: content, widget: markdown }
+          - label: Français
+            name: fr
+            widget: object
+            fields:
+              - { label: Landing page - Titre, name: title, widget: string }
+              - { label: Landing page - Intro, name: intro, widget: text }
+              - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page equipe detaillee }
+              - label: Jours de travail
+                name: schedule
+                widget: object
+                fields:
+                  - { label: Landing page - Titre jours de travail, name: title, widget: string }
+                  - { label: Landing page - Label matin, name: morning, widget: string }
+                  - { label: Landing page - Label apres-midi, name: afternoon, widget: string }
+              - { label: Page detail - Contenu, name: content, widget: markdown }
+      - name: services
+        label: "💓 Angebote"
+        file: content/data/pages/services.yaml
+        format: yaml
+        fields:
+          - { name: id, widget: hidden, default: services }
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - { label: Landingpage - Titel, name: title, widget: string }
+              - { label: Landingpage - Intro, name: intro, widget: text }
+              - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Angebots-Detailseite }
+              - { label: Landingpage - Label Preis, name: priceLabel, widget: string }
+              - { label: Landingpage - Label Einheit, name: unitLabel, widget: string }
+              - { label: Landingpage - Label Sitzung, name: unitSessionLabel, widget: string }
+              - { label: Landingpage - Label Versicherung, name: insuranceLabel, widget: string }
+              - { label: Landingpage - Label Obligatorium, name: insuranceObligatoryLabel, widget: string }
+              - { label: Landingpage - Label Zusatzversicherung, name: insuranceSupplementaryLabel, widget: string }
+              - { label: Landingpage - Label Keine Deckung, name: insuranceNoCoverageLabel, widget: string }
+              - { label: Landingpage - Label Versicherer, name: insuranceSupplementaryInsurersLabel, widget: string }
+              - { label: Landingpage - Label Ja, name: insuranceCoveredLabel, widget: string }
+              - { label: Landingpage - Label Nein, name: insuranceNotCoveredLabel, widget: string }
+              - { label: Detailseite - Inhalt, name: content, widget: markdown }
+          - label: Français
+            name: fr
+            widget: object
+            fields:
+              - { label: Landing page - Titre, name: title, widget: string }
+              - { label: Landing page - Intro, name: intro, widget: text }
+              - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page des prestations }
+              - { label: Landing page - Label prix, name: priceLabel, widget: string }
+              - { label: Landing page - Label unite, name: unitLabel, widget: string }
+              - { label: Landing page - Label seance, name: unitSessionLabel, widget: string }
+              - { label: Landing page - Label assurance, name: insuranceLabel, widget: string }
+              - { label: Landing page - Label assurance obligatoire, name: insuranceObligatoryLabel, widget: string }
+              - { label: Landing page - Label assurance complementaire, name: insuranceSupplementaryLabel, widget: string }
+              - { label: Landing page - Label sans couverture, name: insuranceNoCoverageLabel, widget: string }
+              - { label: Landing page - Label assureurs, name: insuranceSupplementaryInsurersLabel, widget: string }
+              - { label: Landing page - Label oui, name: insuranceCoveredLabel, widget: string }
+              - { label: Landing page - Label non, name: insuranceNotCoveredLabel, widget: string }
+              - { label: Page detail - Contenu, name: content, widget: markdown }
+      - name: news
+        label: "📰 News"
+        file: content/data/pages/news.yaml
+        format: yaml
+        fields:
+          - { name: id, widget: hidden, default: news }
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - { label: Landingpage - Titel, name: title, widget: string }
+              - { label: Landingpage - Bereichstitel, name: sectionTitle, widget: string }
+              - { label: Landingpage - Intro, name: intro, widget: text, required: false }
+              - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur News-Detailseite }
+              - { label: Landingpage - Label Alle anzeigen, name: showAllLabel, widget: string }
+              - { label: Detailseite - Inhalt, name: content, widget: markdown, required: false }
+          - label: Français
+            name: fr
+            widget: object
+            fields:
+              - { label: Landing page - Titre, name: title, widget: string }
+              - { label: Landing page - Titre de section, name: sectionTitle, widget: string }
+              - { label: Landing page - Intro, name: intro, widget: text, required: false }
+              - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page des actualites }
+              - { label: Landing page - Label tout afficher, name: showAllLabel, widget: string }
+              - { label: Page detail - Contenu, name: content, widget: markdown, required: false }
+      - name: i18n_de
+        label: "🇩🇪 Übersetzungen DE"
+        file: content/i18n/de.yaml
+        format: yaml
+        fields:
+          - label: Landing
+            name: landing
+            widget: object
+            fields:
+              - label: Sprachwechsel-Label
+                name: localeLinkLabel
+                widget: string
+          - label: Wochentage
+            name: days
+            widget: object
+            fields:
+              - { label: Montag, name: monday, widget: string }
+              - { label: Dienstag, name: tuesday, widget: string }
+              - { label: Mittwoch, name: wednesday, widget: string }
+              - { label: Donnerstag, name: thursday, widget: string }
+              - { label: Freitag, name: friday, widget: string }
+              - { label: Samstag, name: saturday, widget: string }
+              - { label: Sonntag, name: sunday, widget: string }
+          - label: Navigation
+            name: nav
+            widget: object
+            fields:
+              - { label: Praxis, name: about, widget: string }
+              - { label: Team, name: team, widget: string }
+              - { label: Angebote, name: services, widget: string }
+              - { label: News, name: posts, widget: string }
+              - { label: Suche, name: search, widget: string }
+              - { label: Kontakt, name: location, widget: string }
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Titel, name: title, widget: text }
+              - { label: Primaerer CTA, name: primaryCta, widget: string }
+              - { label: Sekundaerer CTA, name: secondaryCta, widget: string }
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Kontakt-Kicker, name: contactKicker, widget: string }
+              - { label: Back-Link, name: backLink, widget: string }
+              - { label: Detail-Kicker, name: detailKicker, widget: string }
+              - { label: E-Mail-Label, name: emailLabel, widget: string }
+              - { label: Telefon-Label, name: phoneLabel, widget: string }
+              - { label: CMS-Admin-Label, name: adminLabel, widget: string }
+          - label: Testimonials
+            name: testimonials
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Titel, name: title, widget: string }
+              - { label: Intro, name: intro, widget: text, required: false }
+      - name: i18n_fr
+        label: "🇫🇷 Übersetzungen FR"
+        file: content/i18n/fr.yaml
+        format: yaml
+        fields:
+          - label: Landing
+            name: landing
+            widget: object
+            fields:
+              - label: Label du lien de langue
+                name: localeLinkLabel
+                widget: string
+          - label: Jours
+            name: days
+            widget: object
+            fields:
+              - { label: Lundi, name: monday, widget: string }
+              - { label: Mardi, name: tuesday, widget: string }
+              - { label: Mercredi, name: wednesday, widget: string }
+              - { label: Jeudi, name: thursday, widget: string }
+              - { label: Vendredi, name: friday, widget: string }
+              - { label: Samedi, name: saturday, widget: string }
+              - { label: Dimanche, name: sunday, widget: string }
+          - label: Navigation
+            name: nav
+            widget: object
+            fields:
+              - { label: Cabinet, name: about, widget: string }
+              - { label: Equipe, name: team, widget: string }
+              - { label: Prestations, name: services, widget: string }
+              - { label: Articles, name: posts, widget: string }
+              - { label: Recherche, name: search, widget: string }
+              - { label: Contact, name: location, widget: string }
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Eyebrow, name: eyebrow, widget: string }
+              - { label: Titre, name: title, widget: text }
+              - { label: CTA primaire, name: primaryCta, widget: string }
+              - { label: CTA secondaire, name: secondaryCta, widget: string }
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Kicker contact, name: contactKicker, widget: string }
+              - { label: Lien retour, name: backLink, widget: string }
+              - { label: Kicker detail, name: detailKicker, widget: string }
+              - { label: Label e-mail, name: emailLabel, widget: string }
+              - { label: Label telephone, name: phoneLabel, widget: string }
+              - { label: Label admin CMS, name: adminLabel, widget: string }
+          - label: Testimonials
+            name: testimonials
+            widget: object
+            fields:
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Titre, name: title, widget: string }
+              - { label: Intro, name: intro, widget: text, required: false }
+
+  - name: team_data
+    label: "👥 Team"
+    label_singular: Member
+    folder: content/data/team
+    create: true
+    delete: true
+    extension: yaml
+    format: yaml
+    identifier_field: id
+    slug: "{{fields.id}}"
+    summary: "👤 {{name}}"
+    editor:
+      preview: false
+    fields:
+      - label: Slug
+        name: id
+        widget: string
+        hint: Muss mit den Slugs in den lokalen Teamprofilen uebereinstimmen.
+        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
+      - label: Name
+        name: name
+        widget: string
+      - label: Profil
+        name: profile
+        widget: object
+        fields:
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - label: Rolle
+                name: role
+                widget: string
+              - label: Slogan
+                name: slogan
+                widget: string
+                required: false
+              - label: Profilinhalt
+                name: content
+                widget: markdown
+          - label: Francais
+            name: fr
+            widget: object
+            fields:
+              - label: Role
+                name: role
+                widget: string
+              - label: Slogan
+                name: slogan
+                widget: string
+                required: false
+              - label: Contenu du profil
+                name: content
+                widget: markdown
+      - label: E-Mail
+        name: email
+        widget: string
+        required: false
+      - label: Telefon
+        name: phone
+        widget: string
+        required: false
+      - label: Arbeitstage
+        name: schedule
+        widget: list
+        required: false
+        fields:
+          - label: Tag
+            name: day
+            widget: select
+            options:
+              - monday
+              - tuesday
+              - wednesday
+              - thursday
+              - friday
+              - saturday
+              - sunday
+          - label: Zeitfenster
+            name: periods
+            widget: select
+            multiple: true
+            options:
+              - morning
+              - afternoon
+      - label: Social Links
+        name: socialLinks
+        widget: list
+        required: false
+        fields:
+          - label: Plattform
+            name: platform
+            widget: select
+            options:
+              - website
+              - instagram
+              - linkedin
+          - label: URL
+            name: href
+            widget: string
+      - label: Profilbild
+        name: image
+        widget: image
+        required: false
+      - label: Headerbild
+        name: headerImage
+        widget: image
+        required: false
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        field:
+          label: Tag
+          name: tag
+          widget: string
+
+  - name: service_data
+    label: "💓 Angebote"
+    label_singular: Angebot
+    folder: content/data/services
+    create: true
+    delete: true
+    extension: yaml
+    format: yaml
+    identifier_field: id
+    slug: "{{fields.id}}"
+    summary: "💓 {{profile.de.title}}"
+    editor:
+      preview: false
+    fields:
+      - label: Slug
+        name: id
+        widget: string
+        hint: Muss mit den Slugs in den lokalen Angebotsseiten uebereinstimmen.
+        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
+      - label: Profil
+        name: profile
+        widget: object
+        fields:
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - label: Titel
+                name: title
+                widget: string
+              - label: Kurzbeschreibung
+                name: description
+                widget: text
+                required: false
+              - label: Inhalt
+                name: content
+                widget: markdown
+          - label: Francais
+            name: fr
+            widget: object
+            fields:
+              - label: Titre
+                name: title
+                widget: string
+              - label: Description courte
+                name: description
+                widget: text
+                required: false
+              - label: Contenu
+                name: content
+                widget: markdown
+      - label: Preise
+        name: prices
+        widget: list
+        required: false
+        fields:
+          - label: Betrag in CHF
+            name: amountChf
+            widget: number
+            value_type: int
+          - label: Einheit
+            name: unit
+            widget: string
+      - label: Versicherung
+        name: insurance
+        widget: object
+        fields:
+          - label: Obligatorium gedeckt
+            name: obligatory_coverage
+            widget: boolean
+            default: false
+            required: false
+          - label: Zusatzversicherung
+            name: supplementary
+            widget: object
+            fields:
+              - label: Gedeckt
+                name: covered
+                widget: boolean
+                default: false
+                required: false
+              - label: Versicherer
+                name: insurers
+                widget: list
+                required: false
+                field:
+                  label: Versicherer
+                  name: insurer
+                  widget: string
+      - label: Bild
+        name: image
+        widget: image
+        required: false
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        field:
+          label: Tag
+          name: tag
+          widget: string
+      - label: Tag-Farbe
+        name: tag_color
+        widget: select
+        required: false
+        options:
+          - clay
+          - forest
+          - ink
+          - mist
+      - label: Highlight
+        name: highlight
+        widget: boolean
+        default: false
+        required: false
+
+  - name: news_data
+    label: "📰 News"
+    label_singular: News-Beitrag
+    folder: content/data/news
+    create: true
+    delete: true
+    extension: yaml
+    format: yaml
+    identifier_field: id
+    slug: "{{fields.id}}"
+    summary: "📰 {{profile.de.title}}"
+    editor:
+      preview: false
+    fields:
+      - label: ID
+        name: id
+        widget: string
+        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
+      - label: Datum
+        name: updated
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        field:
+          label: Tag
+          name: tag
+          widget: string
+      - label: Profil
+        name: profile
+        widget: object
+        fields:
+          - label: Deutsch
+            name: de
+            widget: object
+            fields:
+              - label: Slug
+                name: slug
+                widget: string
+                pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
+              - label: Titel
+                name: title
+                widget: string
+              - label: Excerpt
+                name: excerpt
+                widget: text
+              - label: Inhalt
+                name: content
+                widget: markdown
+          - label: Francais
+            name: fr
+            widget: object
+            fields:
+              - label: Slug
+                name: slug
+                widget: string
+                pattern: ['^[a-z0-9-]+$', 'Utiliser uniquement des lettres minuscules, des chiffres et des tirets.']
+              - label: Titre
+                name: title
+                widget: string
+              - label: Extrait
+                name: excerpt
+                widget: text
+              - label: Contenu
+                name: content
+                widget: markdown
+
+  - name: testimonials_data
+    label: "👍 Testimonials"
+    label_singular: Testimonial
+    folder: content/data/testimonials
+    create: true
+    delete: true
+    extension: yaml
+    format: yaml
+    identifier_field: id
+    slug: "{{fields.id}}"
+    summary: "👤 {{name}}"
+    editor:
+      preview: false
+    fields:
+      - label: ID
+        name: id
+        widget: string
+        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
+      - label: Name
+        name: name
+        widget: string
+      - label: Datum
+        name: date
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+      - label: Bild
+        name: image
+        widget: image
+        required: false
+      - label: Profil
+        name: profile
+        widget: object
+        fields:
+          - label: Deutsch
+            name: de
+            widget: object
+            required: false
+            fields:
+              - label: Zitat
+                name: quote
+                widget: text
+          - label: Francais
+            name: fr
+            widget: object
+            required: false
+            fields:
+              - label: Citation
+                name: quote
+                widget: text

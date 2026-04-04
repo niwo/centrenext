@@ -1,1 +1,0 @@
-Erfahre mehr zu unseren Angeboten und Therapien.

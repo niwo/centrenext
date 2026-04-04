@@ -1,0 +1,21 @@
+id: neue-website
+updated: "2026-03-22"
+tags:
+  - physio
+profile:
+  de:
+    slug: 2026-03-21-neue-website
+    title: Neue Website in Vorbereitung
+    excerpt: Das neue Frontend wird auf statische Auslieferung, gute Wartbarkeit und zweisprachige Inhalte ausgelegt.
+    content: |
+      Wir bauen den digitalen Auftritt der Praxis schrittweise neu auf. Die Inhalte bleiben lokal versioniert und koennen pro Sprache separat gepflegt werden.
+
+      In den naechsten Schritten folgen optimierte Team- und Angebotsseiten sowie weitere News-Beitraege in derselben Struktur.
+  fr:
+    slug: 2026-03-21-nouveau-site
+    title: Nouvelle presence web en construction
+    excerpt: Le projet vise une publication statique, une maintenance locale et une disponibilite immediate en deux langues.
+    content: |
+      Le cabinet renouvelle progressivement sa presence en ligne. Les contenus restent versionnes localement et sont maintenus de maniere claire pour chaque langue.
+
+      Les prochaines etapes incluent des pages enrichies pour l'equipe, les prestations et les actualites.

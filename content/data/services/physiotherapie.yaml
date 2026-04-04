@@ -1,4 +1,19 @@
 id: physiotherapie
+profile:
+  de:
+    title: Klassische Physiotherapie
+    description: Abklaerung, Behandlung und Verlaufskontrolle bei akuten oder chronischen Beschwerden.
+    content: |
+      Die klassische Physiotherapie richtet sich an Menschen mit akuten oder chronischen Beschwerden am Bewegungsapparat.
+
+      Der Fokus liegt auf einer klaren Befunderhebung, gezielten manuellen Techniken und einem Uebungsprogramm, das in den Alltag integrierbar ist.
+  fr:
+    title: Physiotherapie classique
+    description: Evaluation, traitement et suivi pour les douleurs aigues ou chroniques.
+    content: |
+      La physiotherapie classique s'adresse aux personnes qui presentent des douleurs aigues ou chroniques du systeme musculo-squelettique.
+
+      L'accompagnement combine un bilan precis, des techniques manuelles ciblees et des exercices simples a integrer au quotidien.
 prices:
   - amountChf: 68
     unit: 30 min

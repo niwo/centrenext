@@ -18,42 +18,33 @@
     },
     "about": {
       "type": "object",
-      "required": ["title", "detailLink"]
+      "additionalProperties": false,
+      "properties": {}
     },
     "team": {
       "type": "object",
-      "required": ["title", "intro", "detailLink"]
+      "additionalProperties": false,
+      "properties": {}
     },
     "specialties": { "type": "object" },
     "services": {
       "type": "object",
-      "required": [
-        "title",
-        "pricePrefix",
-        "detailLink",
-        "priceLabel",
-        "unitLabel",
-        "unitSessionLabel",
-        "insuranceLabel",
-        "insuranceObligatoryLabel",
-        "insuranceSupplementaryLabel",
-        "insuranceNoCoverageLabel",
-        "insuranceSupplementaryInsurersLabel",
-        "insuranceCoveredLabel",
-        "insuranceNotCoveredLabel"
-      ]
+      "additionalProperties": false,
+      "properties": {}
     },
     "posts": {
       "type": "object",
-      "required": ["title", "sectionTitle", "detailLink", "showAllLabel"]
+      "additionalProperties": false,
+      "properties": {}
     },
     "location": {
       "type": "object",
-      "required": ["title", "detailLink", "addressLabel", "openingHoursLabel", "mapLabel"]
+      "additionalProperties": false,
+      "properties": {}
     },
     "footer": {
       "type": "object",
-      "required": ["contactKicker", "backLink", "detailKicker", "emailLabel", "phoneLabel"]
+      "required": ["contactKicker", "backLink", "detailKicker", "emailLabel", "phoneLabel", "adminLabel"]
     },
     "testimonials": {
       "type": "object",
