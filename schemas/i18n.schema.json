@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["landing", "days", "nav", "hero", "about", "team", "services", "posts", "location", "footer", "testimonials"],
+  "required": ["landing", "days", "nav", "hero", "footer", "testimonials"],
   "properties": {
     "landing": {
       "type": "object",
@@ -15,32 +15,6 @@
     "hero": {
       "type": "object",
       "required": ["eyebrow", "title", "primaryCta", "secondaryCta"]
-    },
-    "about": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {}
-    },
-    "team": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {}
-    },
-    "specialties": { "type": "object" },
-    "services": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {}
-    },
-    "posts": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {}
-    },
-    "location": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {}
     },
     "footer": {
       "type": "object",
