@@ -24,16 +24,6 @@ hero:
   primaryCta: Angebote ansehen
   secondaryCta: Kontakt entdecken
 
-about: {}
-
-team: {}
-
-services: {}
-
-posts: {}
-
-location: {}
-
 footer:
   contactKicker: Kontakt
   backLink: "Zurück zur Startseite"
