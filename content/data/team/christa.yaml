@@ -1,5 +1,20 @@
 id: christa
 name: Christa Wolfgramm
+profile:
+  de:
+    role: Dipl. Physiotherapeutin
+    slogan: Persoenlich und an Ihrer Seite
+    content: |
+      Seit uber 15 Jahren arbeitet Christa als Physiotherapeutin. Seit 2008 verfugt sie uber einen Abschluss als Sportphysiotherapeutin.
+
+      Erganzend zur klassischen Physiotherapie arbeitet sie mit osteopathischen und faszialen Techniken und bietet Psych-K Coachings an.
+  fr:
+    role: Physiotherapeute diplomee
+    slogan: A l'ecoute et a vos cotes
+    content: |
+      Christa exerce la physiotherapie depuis plus de 15 ans. Elle est diplomee en physiotherapie du sport depuis 2008.
+
+      En plus de la physiotherapie classique, elle utilise des techniques osteopathiques et fasciales et propose egalement des coachings Psych-K.
 email: christa@centrebienetre.ch
 phone: "+41 76 568 00 65"
 schedule:
@@ -17,9 +32,9 @@ socialLinks:
   - platform: website
     href: https://centrebienetre.ch
   - platform: instagram
-    href: https://instagram.com/centrebienetre
+    href: https://instagram.com/centrebienetrebienne
   - platform: linkedin
-    href: https://linkedin.com/company/centrebienetre
+    href: https://linkedin.com/company/centrebienetrebienne
 image: /images/team/christa.webp
 headerImage: /images/DSC06813.webp
 tags:

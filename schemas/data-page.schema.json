@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["id", "de", "fr"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "de": {
+      "type": "object",
+      "required": ["content"],
+      "additionalProperties": false,
+      "properties": {
+        "content": { "type": "string" },
+        "title": { "type": "string" },
+        "intro": { "type": "string" },
+        "detailLink": { "type": "string" },
+        "sectionTitle": { "type": "string" },
+        "showAllLabel": { "type": "string" },
+        "practiceDetailLink": { "type": "string" },
+        "addressLabel": { "type": "string" },
+        "openingHoursLabel": { "type": "string" },
+        "mapLabel": { "type": "string" },
+        "schedule": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "title": { "type": "string" },
+            "morning": { "type": "string" },
+            "afternoon": { "type": "string" }
+          }
+        },
+        "priceLabel": { "type": "string" },
+        "unitLabel": { "type": "string" },
+        "unitSessionLabel": { "type": "string" },
+        "insuranceLabel": { "type": "string" },
+        "insuranceObligatoryLabel": { "type": "string" },
+        "insuranceSupplementaryLabel": { "type": "string" },
+        "insuranceNoCoverageLabel": { "type": "string" },
+        "insuranceSupplementaryInsurersLabel": { "type": "string" },
+        "insuranceCoveredLabel": { "type": "string" },
+        "insuranceNotCoveredLabel": { "type": "string" }
+      }
+    },
+    "fr": {
+      "type": "object",
+      "required": ["content"],
+      "additionalProperties": false,
+      "properties": {
+        "content": { "type": "string" },
+        "title": { "type": "string" },
+        "intro": { "type": "string" },
+        "detailLink": { "type": "string" },
+        "sectionTitle": { "type": "string" },
+        "showAllLabel": { "type": "string" },
+        "practiceDetailLink": { "type": "string" },
+        "addressLabel": { "type": "string" },
+        "openingHoursLabel": { "type": "string" },
+        "mapLabel": { "type": "string" },
+        "schedule": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "title": { "type": "string" },
+            "morning": { "type": "string" },
+            "afternoon": { "type": "string" }
+          }
+        },
+        "priceLabel": { "type": "string" },
+        "unitLabel": { "type": "string" },
+        "unitSessionLabel": { "type": "string" },
+        "insuranceLabel": { "type": "string" },
+        "insuranceObligatoryLabel": { "type": "string" },
+        "insuranceSupplementaryLabel": { "type": "string" },
+        "insuranceNoCoverageLabel": { "type": "string" },
+        "insuranceSupplementaryInsurersLabel": { "type": "string" },
+        "insuranceCoveredLabel": { "type": "string" },
+        "insuranceNotCoveredLabel": { "type": "string" }
+      }
+    }
+  }
+}

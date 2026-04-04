@@ -28,6 +28,18 @@ function getYamlSchemaName(relativePath) {
     return "data-service.schema.json";
   }
 
+  if (/^content\/data\/news\/[^/]+\.ya?ml$/.test(relativePath)) {
+    return "data-news.schema.json";
+  }
+
+  if (/^content\/data\/testimonials\/[^/]+\.ya?ml$/.test(relativePath)) {
+    return "data-testimonial.schema.json";
+  }
+
+  if (/^content\/data\/pages\/[^/]+\.ya?ml$/.test(relativePath)) {
+    return "data-page.schema.json";
+  }
+
   return undefined;
 }
 

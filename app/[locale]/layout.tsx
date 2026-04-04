@@ -12,6 +12,10 @@ type LocaleLayoutProps = {
   }>;
 };
 
+export function generateStaticParams() {
+  return siteConfig.locales.map((locale) => ({ locale }));
+}
+
 export async function generateMetadata({ params }: LocaleLayoutProps): Promise<Metadata> {
   const { locale } = await params;
 

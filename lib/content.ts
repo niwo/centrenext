@@ -178,6 +178,7 @@ type PageContent = {
     detailKicker: string;
     emailLabel: string;
     phoneLabel: string;
+    adminLabel: string;
   };
 };
 
@@ -278,48 +279,51 @@ type I18nData = {
     primaryCta: string;
     secondaryCta: string;
   };
-  about: { title: string; detailLink: string };
+  about: {
+    title?: string;
+    detailLink?: string;
+  };
   team: {
-    title: string;
-    detailLink: string;
-    intro: string;
-    schedule: {
-      title: string;
-      morning: string;
-      afternoon: string;
+    title?: string;
+    detailLink?: string;
+    intro?: string;
+    schedule?: {
+      title?: string;
+      morning?: string;
+      afternoon?: string;
     };
   };
   services: {
-    title: string;
-    intro: string;
-    pricePrefix: string;
-    detailLink: string;
-    priceLabel: string;
-    unitLabel: string;
-    unitSessionLabel: string;
-    insuranceLabel: string;
-    insuranceObligatoryLabel: string;
-    insuranceSupplementaryLabel: string;
-    insuranceNoCoverageLabel: string;
-    insuranceSupplementaryInsurersLabel: string;
-    insuranceCoveredLabel: string;
-    insuranceNotCoveredLabel: string;
+    title?: string;
+    intro?: string;
+    pricePrefix?: string;
+    detailLink?: string;
+    priceLabel?: string;
+    unitLabel?: string;
+    unitSessionLabel?: string;
+    insuranceLabel?: string;
+    insuranceObligatoryLabel?: string;
+    insuranceSupplementaryLabel?: string;
+    insuranceNoCoverageLabel?: string;
+    insuranceSupplementaryInsurersLabel?: string;
+    insuranceCoveredLabel?: string;
+    insuranceNotCoveredLabel?: string;
   };
   posts: {
-    title: string;
-    sectionTitle: string;
-    intro: string;
-    detailLink: string;
-    showAllLabel: string;
+    title?: string;
+    sectionTitle?: string;
+    intro?: string;
+    detailLink?: string;
+    showAllLabel?: string;
   };
   location: {
-    title: string;
-    intro: string;
-    detailLink: string;
-    practiceDetailLink: string;
-    addressLabel: string;
-    openingHoursLabel: string;
-    mapLabel: string;
+    title?: string;
+    intro?: string;
+    detailLink?: string;
+    practiceDetailLink?: string;
+    addressLabel?: string;
+    openingHoursLabel?: string;
+    mapLabel?: string;
   };
   testimonials: {
     kicker: string;
@@ -332,6 +336,7 @@ type I18nData = {
     detailKicker: string;
     emailLabel: string;
     phoneLabel: string;
+    adminLabel: string;
   };
 };
 
@@ -400,21 +405,22 @@ export async function getSiteSeoContent(): Promise<SiteSeoContent> {
   };
 }
 
-type NewsFrontmatter = {
+type NewsLocalizedProfile = {
+  slug?: string;
   title?: string;
-  updated?: string;
-  date?: string;
   excerpt?: string;
-  tags?: string[];
+  content?: string;
 };
 
-type ServiceFrontmatter = {
+type ServiceLocalizedProfile = {
   title?: string;
   description?: string;
+  content?: string;
 };
 
 type ServiceDataFile = {
   id?: string;
+  profile?: Partial<Record<Locale, ServiceLocalizedProfile>>;
   prices?: Array<{
     amountChf?: number;
     unit?: string;
@@ -432,20 +438,94 @@ type ServiceDataFile = {
   highlight?: boolean;
 };
 
-type TestimonialFrontmatter = {
+type TestimonialLocalizedProfile = {
+  name?: string;
+  quote?: string;
+};
+
+type NewsDataFile = {
+  id?: string;
+  updated?: string;
+  tags?: string[];
+  profile?: Partial<Record<Locale, NewsLocalizedProfile>>;
+};
+
+type TestimonialDataFile = {
+  id?: string;
   name?: string;
   date?: string;
   image?: string;
+  profile?: Partial<Record<Locale, TestimonialLocalizedProfile>>;
 };
 
-type TeamFrontmatter = {
+type PageDataFile = {
+  id: string;
+  de: {
+    content: string;
+    title?: string;
+    intro?: string;
+    detailLink?: string;
+    sectionTitle?: string;
+    showAllLabel?: string;
+    practiceDetailLink?: string;
+    addressLabel?: string;
+    openingHoursLabel?: string;
+    mapLabel?: string;
+    schedule?: {
+      title?: string;
+      morning?: string;
+      afternoon?: string;
+    };
+    priceLabel?: string;
+    unitLabel?: string;
+    unitSessionLabel?: string;
+    insuranceLabel?: string;
+    insuranceObligatoryLabel?: string;
+    insuranceSupplementaryLabel?: string;
+    insuranceNoCoverageLabel?: string;
+    insuranceSupplementaryInsurersLabel?: string;
+    insuranceCoveredLabel?: string;
+    insuranceNotCoveredLabel?: string;
+  };
+  fr: {
+    content: string;
+    title?: string;
+    intro?: string;
+    detailLink?: string;
+    sectionTitle?: string;
+    showAllLabel?: string;
+    practiceDetailLink?: string;
+    addressLabel?: string;
+    openingHoursLabel?: string;
+    mapLabel?: string;
+    schedule?: {
+      title?: string;
+      morning?: string;
+      afternoon?: string;
+    };
+    priceLabel?: string;
+    unitLabel?: string;
+    unitSessionLabel?: string;
+    insuranceLabel?: string;
+    insuranceObligatoryLabel?: string;
+    insuranceSupplementaryLabel?: string;
+    insuranceNoCoverageLabel?: string;
+    insuranceSupplementaryInsurersLabel?: string;
+    insuranceCoveredLabel?: string;
+    insuranceNotCoveredLabel?: string;
+  };
+};
+
+type TeamLocalizedProfile = {
   role?: string;
   slogan?: string;
+  content?: string;
 };
 
 type TeamDataFile = {
   id?: string;
   name?: string;
+  profile?: Partial<Record<Locale, TeamLocalizedProfile>>;
   email?: string;
   phone?: string;
   socialLinks?: Array<{
@@ -585,37 +665,41 @@ function getLocalizedField(value: LocalizedField, locale: Locale) {
   return value[locale] ?? value.de ?? value.fr ?? "";
 }
 
-async function readNewsPosts(newsDir: string): Promise<NewsPost[]> {
-  const entries = await fs.readdir(newsDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
+function getNewsLocalizedProfile(newsData: NewsDataFile, locale: Locale): NewsLocalizedProfile {
+  return newsData.profile?.[locale] ?? newsData.profile?.de ?? newsData.profile?.fr ?? {};
+}
+
+async function readNewsPosts(newsDataDir: string, locale: Locale): Promise<NewsPost[]> {
+  const entries = await fs.readdir(newsDataDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") {
       return [];
     }
     throw error;
   });
-  const markdownFiles = entries
+
+  const yamlFiles = entries
     .filter(
       (entry) =>
         entry.isFile() &&
-        entry.name.toLowerCase().endsWith(".md") &&
-        entry.name.toLowerCase() !== "_index.md",
+        (entry.name.toLowerCase().endsWith(".yaml") || entry.name.toLowerCase().endsWith(".yml")),
     )
     .map((entry) => entry.name);
 
   const posts = await Promise.all(
-    markdownFiles.map(async (fileName) => {
-      const filePath = path.join(newsDir, fileName);
-      const raw = await readTextFile(filePath);
-      const parsed = matter(raw);
-      const frontmatter = parsed.data as NewsFrontmatter;
-      const slug = fileName.replace(/\.md$/i, "");
+    yamlFiles.map(async (fileName) => {
+      const filePath = path.join(newsDataDir, fileName);
+      const newsData = await parseYamlFile<NewsDataFile>(filePath);
+      const fileSlug = fileName.replace(/\.ya?ml$/i, "");
+      const localizedProfile = getNewsLocalizedProfile(newsData, locale);
+      const slug = localizedProfile.slug ?? newsData.id ?? fileSlug;
 
       return {
         slug,
-        title: frontmatter.title ?? slug,
-        date: frontmatter.updated ?? frontmatter.date ?? "",
-        excerpt: frontmatter.excerpt ?? "",
-        tags: normalizeTags(frontmatter.tags),
-        content: parsed.content.trim(),
+        title: localizedProfile.title ?? slug,
+        date: newsData.updated ?? "",
+        excerpt: localizedProfile.excerpt ?? "",
+        tags: normalizeTags(newsData.tags),
+        content: (localizedProfile.content ?? "").trim(),
       };
     }),
   );
@@ -623,73 +707,89 @@ async function readNewsPosts(newsDir: string): Promise<NewsPost[]> {
   return posts.sort(compareNewsByDateDesc);
 }
 
-async function readTestimonialPosts(testimonialsDir: string): Promise<TestimonialItem[]> {
-  const entries = await fs.readdir(testimonialsDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
+function getTestimonialLocalizedProfile(
+  testimonialData: TestimonialDataFile,
+  locale: Locale,
+): TestimonialLocalizedProfile | undefined {
+  return testimonialData.profile?.[locale] ?? testimonialData.profile?.de ?? testimonialData.profile?.fr;
+}
+
+async function readTestimonialPosts(testimonialsDataDir: string, locale: Locale): Promise<TestimonialItem[]> {
+  const entries = await fs.readdir(testimonialsDataDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") {
       return [];
     }
     throw error;
   });
-  const markdownFiles = entries
+
+  const yamlFiles = entries
     .filter(
       (entry) =>
         entry.isFile() &&
-        entry.name.toLowerCase().endsWith(".md") &&
-        entry.name.toLowerCase() !== "_index.md",
+        (entry.name.toLowerCase().endsWith(".yaml") || entry.name.toLowerCase().endsWith(".yml")),
     )
     .map((entry) => entry.name);
 
-  const items = await Promise.all(
-    markdownFiles.map(async (fileName) => {
-      const filePath = path.join(testimonialsDir, fileName);
-      const raw = await readTextFile(filePath);
-      const parsed = matter(raw);
-      const frontmatter = parsed.data as TestimonialFrontmatter;
-      const slug = fileName.replace(/\.md$/i, "");
+  const resolved = await Promise.all(
+    yamlFiles.map(async (fileName) => {
+      const filePath = path.join(testimonialsDataDir, fileName);
+      const testimonialData = await parseYamlFile<TestimonialDataFile>(filePath);
+      const fileSlug = fileName.replace(/\.ya?ml$/i, "");
+      const localizedProfile = getTestimonialLocalizedProfile(testimonialData, locale);
+
+      if (!localizedProfile) {
+        return null;
+      }
+
+      const slug = testimonialData.id ?? fileSlug;
 
       return {
         slug,
-        quote: parsed.content.trim(),
-        name: frontmatter.name ?? slug,
-        date: frontmatter.date ?? "",
-        image: frontmatter.image,
+        quote: (localizedProfile.quote ?? "").trim(),
+        name: testimonialData.name ?? localizedProfile.name ?? slug,
+        date: testimonialData.date ?? "",
+        image: testimonialData.image,
       };
     }),
   );
 
+  const items: TestimonialItem[] = resolved.filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+
   return items.sort(compareByDateDesc);
 }
 
-async function readServicePosts(servicesDir: string, servicesDataDir: string): Promise<ServicePost[]> {
-  const entries = await fs.readdir(servicesDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
+function getServiceLocalizedProfile(serviceData: ServiceDataFile, locale: Locale): ServiceLocalizedProfile {
+  return serviceData.profile?.[locale] ?? serviceData.profile?.de ?? serviceData.profile?.fr ?? {};
+}
+
+async function readServicePosts(servicesDataDir: string, locale: Locale): Promise<ServicePost[]> {
+  const entries = await fs.readdir(servicesDataDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") {
       return [];
     }
     throw error;
   });
-  const markdownFiles = entries
+
+  const yamlFiles = entries
     .filter(
       (entry) =>
         entry.isFile() &&
-        entry.name.toLowerCase().endsWith(".md") &&
-        entry.name.toLowerCase() !== "_index.md",
+        (entry.name.toLowerCase().endsWith(".yaml") || entry.name.toLowerCase().endsWith(".yml")),
     )
     .map((entry) => entry.name);
 
   const posts = await Promise.all(
-    markdownFiles.map(async (fileName) => {
-      const filePath = path.join(servicesDir, fileName);
-      const raw = await readTextFile(filePath);
-      const parsed = matter(raw);
-      const frontmatter = parsed.data as ServiceFrontmatter;
-      const slug = fileName.replace(/\.md$/i, "");
-      const serviceDataPath = path.join(servicesDataDir, `${slug}.yaml`);
-      const serviceData = await parseYamlFile<ServiceDataFile>(serviceDataPath);
+    yamlFiles.map(async (fileName) => {
+      const filePath = path.join(servicesDataDir, fileName);
+      const serviceData = await parseYamlFile<ServiceDataFile>(filePath);
+      const fileSlug = fileName.replace(/\.ya?ml$/i, "");
+      const slug = serviceData.id ?? fileSlug;
+      const localizedProfile = getServiceLocalizedProfile(serviceData, locale);
 
       return {
         slug,
-        title: frontmatter.title ?? slug,
-        description: frontmatter.description ?? "",
+        title: localizedProfile.title ?? slug,
+        description: localizedProfile.description ?? "",
         prices: normalizeServicePrices(serviceData.prices),
         insurance: {
           obligatory_coverage: Boolean(serviceData.insurance?.obligatory_coverage),
@@ -702,7 +802,7 @@ async function readServicePosts(servicesDir: string, servicesDataDir: string): P
         tags: normalizeTags(serviceData.tags),
         tag_color: serviceData.tag_color,
         highlight: Boolean(serviceData.highlight),
-        content: parsed.content.trim(),
+        content: (localizedProfile.content ?? "").trim(),
       };
     }),
   );
@@ -710,38 +810,39 @@ async function readServicePosts(servicesDir: string, servicesDataDir: string): P
   return posts.sort(compareServicesBySlug);
 }
 
-async function readTeamProfiles(teamDir: string, teamDataDir: string): Promise<TeamProfileWithMeta[]> {
-  const entries = await fs.readdir(teamDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
+function getTeamLocalizedProfile(teamData: TeamDataFile, locale: Locale): TeamLocalizedProfile {
+  return teamData.profile?.[locale] ?? teamData.profile?.de ?? teamData.profile?.fr ?? {};
+}
+
+async function readTeamProfiles(teamDataDir: string, locale: Locale): Promise<TeamProfileWithMeta[]> {
+  const entries = await fs.readdir(teamDataDir, { withFileTypes: true }).catch((error: NodeJS.ErrnoException) => {
     if (error.code === "ENOENT") {
       return [];
     }
     throw error;
   });
 
-  const markdownFiles = entries
+  const yamlFiles = entries
     .filter(
       (entry) =>
         entry.isFile() &&
-        entry.name.toLowerCase().endsWith(".md") &&
-        entry.name.toLowerCase() !== "_index.md",
+        (entry.name.toLowerCase().endsWith(".yaml") || entry.name.toLowerCase().endsWith(".yml")),
     )
     .map((entry) => entry.name);
 
   const profiles = await Promise.all(
-    markdownFiles.map(async (fileName) => {
-      const filePath = path.join(teamDir, fileName);
-      const raw = await readTextFile(filePath);
-      const parsed = matter(raw);
-      const frontmatter = parsed.data as TeamFrontmatter;
-      const slug = fileName.replace(/\.md$/i, "");
-      const teamDataPath = path.join(teamDataDir, `${slug}.yaml`);
-      const teamData = await parseYamlFile<TeamDataFile>(teamDataPath);
+    yamlFiles.map(async (fileName) => {
+      const filePath = path.join(teamDataDir, fileName);
+      const teamData = await parseYamlFile<TeamDataFile>(filePath);
+      const fileSlug = fileName.replace(/\.ya?ml$/i, "");
+      const slug = teamData.id ?? fileSlug;
+      const localizedProfile = getTeamLocalizedProfile(teamData, locale);
 
       return {
         slug,
         name: teamData.name ?? slug,
-        role: frontmatter.role ?? slug,
-        slogan: frontmatter.slogan,
+        role: localizedProfile.role ?? slug,
+        slogan: localizedProfile.slogan,
         email: teamData.email,
         phone: teamData.phone,
         socialLinks: normalizeTeamSocialLinks(teamData.socialLinks),
@@ -749,7 +850,7 @@ async function readTeamProfiles(teamDir: string, teamDataDir: string): Promise<T
         image: teamData.image,
         headerImage: teamData.headerImage,
         tags: normalizeTags(teamData.tags),
-        content: parsed.content.trim(),
+        content: (localizedProfile.content ?? "").trim(),
       };
     }),
   );
@@ -763,42 +864,38 @@ async function readTeamProfiles(teamDir: string, teamDataDir: string): Promise<T
 
 export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const dataDir = path.join(process.cwd(), "content", "data");
+  const newsDataDir = path.join(dataDir, "news");
+  const testimonialsDataDir = path.join(dataDir, "testimonials");
   const teamDataDir = path.join(dataDir, "team");
   const servicesDataDir = path.join(dataDir, "services");
+  const pagesDataDir = path.join(dataDir, "pages");
   const i18nDir = path.join(process.cwd(), "content", "i18n");
-  const localeDir = path.join(process.cwd(), "content", locale);
-  const teamDir = path.join(process.cwd(), "content", locale, "team");
-  const servicesDir = path.join(process.cwd(), "content", locale, "services");
-  const postsDir = path.join(process.cwd(), "content", locale, "posts");
-  const testimonialsDir = path.join(process.cwd(), "content", locale, "testimonials");
 
-  const [practiceData, i18n, detailEntries, teamProfilesWithMeta, servicePosts, newsPosts, testimonialItems] = await Promise.all([
+  const [practiceData, i18n, pageEntries, teamProfilesWithMeta, servicePosts, newsPosts, testimonialItems] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
     parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`)),
     Promise.all(
       sectionKeys.map(async (key) => {
-        let filePath: string;
-        if (key === "about" || key === "location") {
-          filePath = path.join(localeDir, `${key}.md`);
-        } else if (key === "team") {
-          filePath = path.join(teamDir, "_index.md");
-        } else if (key === "services") {
-          filePath = path.join(servicesDir, "_index.md");
-        } else if (key === "news") {
-          filePath = path.join(postsDir, "_index.md");
-        } else {
-          filePath = path.join(localeDir, `${key}.md`);
-        }
-        return [key, await parseMarkdownFile(filePath)] as const;
+        const pageData = await parseYamlFile<PageDataFile>(path.join(pagesDataDir, `${key}.yaml`));
+        return [key, pageData[locale] ?? { content: "" }] as const;
       }),
     ),
-    readTeamProfiles(teamDir, teamDataDir),
-    readServicePosts(servicesDir, servicesDataDir),
-    readNewsPosts(postsDir),
-    readTestimonialPosts(testimonialsDir),
+    readTeamProfiles(teamDataDir, locale),
+    readServicePosts(servicesDataDir, locale),
+    readNewsPosts(newsDataDir, locale),
+    readTestimonialPosts(testimonialsDataDir, locale),
   ]);
 
-  const details = Object.fromEntries(detailEntries) as Record<SectionKey, string>;
+  const localizedPages = Object.fromEntries(pageEntries) as Record<SectionKey, PageDataFile[Locale]>;
+  const details = Object.fromEntries(
+    sectionKeys.map((key) => [key, localizedPages[key]?.content?.trim() ?? ""]),
+  ) as Record<SectionKey, string>;
+
+  const aboutPage = localizedPages.about;
+  const teamPage = localizedPages.team;
+  const servicesPage = localizedPages.services;
+  const newsPage = localizedPages.news;
+  const locationPage = localizedPages.location;
 
   const teamProfiles: TeamProfile[] = teamProfilesWithMeta.map(({ slug, content }) => ({ slug, content }));
 
@@ -871,55 +968,59 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       secondaryCta: { label: i18n.hero.secondaryCta, href: "#location" },
     },
     about: {
-      title: i18n.about.title,
+      title: aboutPage.title ?? i18n.about.title ?? i18n.nav.about,
       kicker: i18n.nav.about,
-      detailLink: i18n.about.detailLink,
+      detailLink: aboutPage.detailLink ?? i18n.about.detailLink ?? "",
     },
     team: {
-      title: i18n.team.title,
-      intro: i18n.team.intro,
+      title: teamPage.title ?? i18n.team.title ?? i18n.nav.team,
+      intro: teamPage.intro ?? i18n.team.intro ?? "",
       kicker: i18n.nav.team,
-      detailLink: i18n.team.detailLink,
-      scheduleTitle: i18n.team.schedule.title,
-      scheduleMorningLabel: i18n.team.schedule.morning,
-      scheduleAfternoonLabel: i18n.team.schedule.afternoon,
+      detailLink: teamPage.detailLink ?? i18n.team.detailLink ?? "",
+      scheduleTitle: teamPage.schedule?.title ?? i18n.team.schedule?.title ?? "",
+      scheduleMorningLabel: teamPage.schedule?.morning ?? i18n.team.schedule?.morning ?? "",
+      scheduleAfternoonLabel: teamPage.schedule?.afternoon ?? i18n.team.schedule?.afternoon ?? "",
       people: teamPeople,
     },
     services: {
-      title: i18n.services.title,
-      intro: i18n.services.intro,
+      title: servicesPage.title ?? i18n.services.title ?? i18n.nav.services,
+      intro: servicesPage.intro ?? i18n.services.intro ?? "",
       kicker: i18n.nav.services,
-      detailLink: i18n.services.detailLink,
-      priceLabel: i18n.services.priceLabel,
-      unitLabel: i18n.services.unitLabel,
-      unitSessionLabel: i18n.services.unitSessionLabel,
-      insuranceLabel: i18n.services.insuranceLabel,
-      insuranceObligatoryLabel: i18n.services.insuranceObligatoryLabel,
-      insuranceSupplementaryLabel: i18n.services.insuranceSupplementaryLabel,
-      insuranceNoCoverageLabel: i18n.services.insuranceNoCoverageLabel,
-      insuranceSupplementaryInsurersLabel: i18n.services.insuranceSupplementaryInsurersLabel,
-      insuranceCoveredLabel: i18n.services.insuranceCoveredLabel,
-      insuranceNotCoveredLabel: i18n.services.insuranceNotCoveredLabel,
+      detailLink: servicesPage.detailLink ?? i18n.services.detailLink ?? "",
+      priceLabel: servicesPage.priceLabel ?? i18n.services.priceLabel ?? "",
+      unitLabel: servicesPage.unitLabel ?? i18n.services.unitLabel ?? "",
+      unitSessionLabel: servicesPage.unitSessionLabel ?? i18n.services.unitSessionLabel ?? "",
+      insuranceLabel: servicesPage.insuranceLabel ?? i18n.services.insuranceLabel ?? "",
+      insuranceObligatoryLabel:
+        servicesPage.insuranceObligatoryLabel ?? i18n.services.insuranceObligatoryLabel ?? "",
+      insuranceSupplementaryLabel:
+        servicesPage.insuranceSupplementaryLabel ?? i18n.services.insuranceSupplementaryLabel ?? "",
+      insuranceNoCoverageLabel:
+        servicesPage.insuranceNoCoverageLabel ?? i18n.services.insuranceNoCoverageLabel ?? "",
+      insuranceSupplementaryInsurersLabel:
+        servicesPage.insuranceSupplementaryInsurersLabel ?? i18n.services.insuranceSupplementaryInsurersLabel ?? "",
+      insuranceCoveredLabel: servicesPage.insuranceCoveredLabel ?? i18n.services.insuranceCoveredLabel ?? "",
+      insuranceNotCoveredLabel: servicesPage.insuranceNotCoveredLabel ?? i18n.services.insuranceNotCoveredLabel ?? "",
       items: serviceItems,
     },
     news: {
-      title: i18n.posts.title,
-      sectionTitle: i18n.posts.sectionTitle,
-      intro: i18n.posts.intro,
+      title: newsPage.title ?? i18n.posts.title ?? i18n.nav.posts,
+      sectionTitle: newsPage.sectionTitle ?? i18n.posts.sectionTitle ?? i18n.nav.posts,
+      intro: newsPage.intro ?? i18n.posts.intro ?? "",
       kicker: i18n.nav.posts,
-      detailLink: i18n.posts.detailLink,
-      showAllLabel: i18n.posts.showAllLabel,
+      detailLink: newsPage.detailLink ?? i18n.posts.detailLink ?? "",
+      showAllLabel: newsPage.showAllLabel ?? i18n.posts.showAllLabel ?? "",
       items: newsItems,
     },
     location: {
-      title: i18n.location.title,
-      intro: i18n.location.intro,
+      title: locationPage.title ?? i18n.location.title ?? i18n.nav.location,
+      intro: locationPage.intro ?? i18n.location.intro ?? "",
       kicker: i18n.nav.location,
-      detailLink: i18n.location.detailLink,
-      practiceDetailLink: i18n.location.practiceDetailLink,
-      addressLabel: i18n.location.addressLabel,
-      openingHoursLabel: i18n.location.openingHoursLabel,
-      mapLabel: i18n.location.mapLabel,
+      detailLink: locationPage.detailLink ?? i18n.location.detailLink ?? "",
+      practiceDetailLink: locationPage.practiceDetailLink ?? i18n.location.practiceDetailLink ?? "",
+      addressLabel: locationPage.addressLabel ?? i18n.location.addressLabel ?? "",
+      openingHoursLabel: locationPage.openingHoursLabel ?? i18n.location.openingHoursLabel ?? "",
+      mapLabel: locationPage.mapLabel ?? i18n.location.mapLabel ?? "",
     },
     testimonials: {
       title: i18n.testimonials.title,
@@ -964,18 +1065,18 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
 
   const aboutSearchItem: SearchIndexItem = {
     type: "about",
-    title: i18n.about.title,
+    title: page.about.title,
     href: getSectionHref(locale, "about"),
     summary: compactText(details.about, 180),
-    haystack: [i18n.about.title, i18n.nav.about, details.about].filter(Boolean).join(" "),
+    haystack: [page.about.title, i18n.nav.about, details.about].filter(Boolean).join(" "),
   };
 
   const locationSearchItem: SearchIndexItem = {
     type: "location",
-    title: i18n.location.title,
+    title: page.location.title,
     href: getSectionHref(locale, "location"),
     summary: compactText(details.location, 180),
-    haystack: [i18n.location.title, i18n.nav.location, i18n.location.intro, details.location].filter(Boolean).join(" "),
+    haystack: [page.location.title, i18n.nav.location, page.location.intro, details.location].filter(Boolean).join(" "),
   };
 
   const searchIndex = [...teamSearchItems, ...serviceSearchItems, ...newsSearchItems, aboutSearchItem, locationSearchItem];

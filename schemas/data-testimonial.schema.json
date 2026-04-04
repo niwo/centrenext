@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["id", "name", "date", "profile"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "date": { "type": "string" },
+    "image": { "type": "string" },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "de": {
+          "type": "object",
+          "required": ["quote"],
+          "properties": {
+            "quote": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "fr": {
+          "type": "object",
+          "required": ["quote"],
+          "properties": {
+            "quote": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [{ "required": ["de"] }, { "required": ["fr"] }]
+    }
+  },
+  "additionalProperties": false
+}

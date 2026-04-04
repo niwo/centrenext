@@ -1,1 +1,0 @@
-Découvrez nos offres et thérapies.

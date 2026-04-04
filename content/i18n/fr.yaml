@@ -24,47 +24,15 @@ hero:
   primaryCta: Voir les prestations
   secondaryCta: "Voir le contact"
 
-about:
-  title: "Apercu du cabinet"
-  detailLink: "Decouvrir le cabinet"
+about: {}
 
-team:
-  title: Les collaboratrices
-  intro: "Une equipe a taille humaine, avec des expertises complementaires et un suivi tres personnel."
-  detailLink: "Voir l'equipe"
-  schedule:
-    title: Jours de travail
-    morning: Matin
-    afternoon: "Apres-midi"
+team: {}
 
-services:
-  title: Prestations
-  pricePrefix: "des CHF"
-  detailLink: Toutes les prestations
-  priceLabel: Tarifs pour paiements directs
-  unitLabel: Unite
-  unitSessionLabel: Seance
-  insuranceLabel: Prise en charge
-  insuranceObligatoryLabel: Assurance obligatoire
-  insuranceSupplementaryLabel: Assurance complementaire
-  insuranceNoCoverageLabel: Pas pris en charge par l'assurance maladie
-  insuranceSupplementaryInsurersLabel: Pris en charge par
-  insuranceCoveredLabel: Oui
-  insuranceNotCoveredLabel: Non
+services: {}
 
-posts:
-  title: Actualites recentes
-  sectionTitle: Actualites
-  detailLink: Tous les articles
-  showAllLabel: Tout afficher
+posts: {}
 
-location:
-  title: Contact
-  detailLink: "Voir le contact"
-  practiceDetailLink: "Detail du cabinet"
-  addressLabel: Adresse
-  openingHoursLabel: Horaires
-  mapLabel: Carte
+location: {}
 
 footer:
   contactKicker: Contact
@@ -72,6 +40,7 @@ footer:
   detailKicker: "Detail"
   emailLabel: E-mail
   phoneLabel: "Telephone"
+  adminLabel: Admin CMS
 
 testimonials:
   kicker: Temoignages

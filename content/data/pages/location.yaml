@@ -1,0 +1,25 @@
+id: location
+de:
+  title: Kontakt
+  intro: ""
+  detailLink: Kontaktdetails
+  practiceDetailLink: Detail zur Praxis
+  addressLabel: Adresse
+  openingHoursLabel: Öffnungszeiten
+  mapLabel: Kartenansicht
+  content: |
+    Sie finden die Praxis im Zentrum von Biel, nur wenige Meter vom Hauptbahnhof entfernt.
+
+    Parkmöglichkeiten und ÖV-Anbindung machen den Standort gut erreichbar.
+fr:
+  title: Contact
+  intro: ""
+  detailLink: "Voir le contact"
+  practiceDetailLink: "Detail du cabinet"
+  addressLabel: Adresse
+  openingHoursLabel: Horaires
+  mapLabel: Carte
+  content: |
+    Le centre se situe en plein coeur de Bienne, a quelques metres de la gare principale.
+
+    Le cabinet est facilement accessible en transports publics et en voiture.
