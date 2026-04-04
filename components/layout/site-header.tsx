@@ -8,6 +8,7 @@ import { Search, Users, Briefcase, Newspaper, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { getCanonicalSection, getLocalizedPath } from "@/lib/routes";
 import type { SearchIndexItem } from "@/lib/content";
 import type { Locale } from "@/lib/site-config";
@@ -198,6 +199,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
             >
               {alternateLocale.toUpperCase()}
             </Link>
+            <ThemeToggle onClick={() => setIsMobileMenuOpen(false)} />
           </div>
         </nav>
       </header>
