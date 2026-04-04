@@ -24,16 +24,6 @@ hero:
   primaryCta: Voir les prestations
   secondaryCta: "Voir le contact"
 
-about: {}
-
-team: {}
-
-services: {}
-
-posts: {}
-
-location: {}
-
 footer:
   contactKicker: Contact
   backLink: "Retour a la page d'accueil"
