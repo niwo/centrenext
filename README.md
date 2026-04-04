@@ -2,6 +2,7 @@
 
 [![GoatCounter](https://img.shields.io/badge/Analytics-GoatCounter-7c3aed)](https://centrebienetre.goatcounter.com)
 [![Netlify](https://img.shields.io/badge/Hosted%20on-Netlify-00C7B7?logo=netlify&logoColor=white)](https://www.netlify.com)
+[![Decap CMS](https://img.shields.io/badge/CMS-Decap-e11d48)](https://decapcms.org)
 
 Das vorliegende Projekt implementiert die Webseite für **Centre bien-être**.
 
