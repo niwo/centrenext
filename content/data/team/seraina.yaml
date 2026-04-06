@@ -1,0 +1,52 @@
+id: seraina
+name: Seraina Baumgartner
+profile:
+  de:
+    role: Dipl. Physiotherapeutin
+    content: |-
+      ### Aus- und Weiterbildungen:
+
+      * Schwindeltherapie
+      * Myofascial Release
+      * Slings- myofasziales Training
+      * Triggerpunkttherapie IMTT
+      * SAMT manuelle Therapie
+      * Herztherapeutin SAKR
+
+
+
+      ### Berufliche Erfahrung:
+
+      * Physio Unique seit 2021
+      * Hirslanden Klinik Linde Biel, 2015 – 2021
+      * HPS Lyss, 2010 – 2015
+      * Physiotherapie Lyssbachpark, 2010 – 2015
+      * Physiotherapie Kummer Grenchen, 2009 – 2010
+  fr:
+    role: Physiotherapeute diplomee
+    content: |-
+      ### Aus- und Weiterbildungen:
+
+      * Schwindeltherapie
+      * Myofascial Release
+      * Slings- myofasziales Training
+      * Triggerpunkttherapie IMTT
+      * SAMT manuelle Therapie
+      * Herztherapeutin SAKR
+
+
+
+      ### Berufliche Erfahrung:
+
+      * Physio Unique seit 2021
+      * Hirslanden Klinik Linde Biel, 2015 – 2021
+      * HPS Lyss, 2010 – 2015
+      * Physiotherapie Lyssbachpark, 2010 – 2015
+      * Physiotherapie Kummer Grenchen, 2009 – 2010
+schedule:
+  - day: friday
+    periods:
+      - morning
+      - afternoon
+socialLinks: []
+image: /images/uploads/mg_9830-683x1024.jpg
