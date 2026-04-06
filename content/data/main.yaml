@@ -24,10 +24,8 @@ openingHours:
   - dayKey: monday
     hours: 08:00 - 18:00
   - dayKey: tuesday
-    hours: 08:00 - 18:00
-  - dayKey: wednesday
-    hours: 08:00 - 17:00
-  - dayKey: thursday
-    hours: 08:00 - 20:00
-  - dayKey: friday
     hours: 08:00 - 16:00
+  - dayKey: thursday
+    hours: 07:30 - 13:30
+  - dayKey: friday
+    hours: 08:00 - 18:00
