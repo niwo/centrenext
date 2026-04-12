@@ -6,13 +6,25 @@ on:
       - main
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CENTRENEXT_CONTENT_REPO_DIR: ${{ github.workspace }}/centrebienetre-content
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Checkout content repository
+        uses: actions/checkout@v4
+        with:
+          repository: niwo/centrebienetre-content
+          path: centrebienetre-content
+          token: ${{ secrets.CONTENT_REPO_TOKEN != '' && secrets.CONTENT_REPO_TOKEN || github.token }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
