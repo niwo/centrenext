@@ -75,6 +75,14 @@ async function main() {
   const markdownFrontmatterSchema = await readJson("markdown-frontmatter.schema.json");
   const validateFrontmatter = ajv.compile(markdownFrontmatterSchema);
 
+  try {
+    await fs.access(contentDir);
+  } catch {
+    throw new Error(
+      `Content directory not found: ${contentDir}\nSet CENTRENEXT_CONTENT_REPO_DIR (or CENTRENEXT_CONTENT_DIR) to your content repository path.`,
+    );
+  }
+
   const files = await walk(contentDir);
   const yamlFiles = files.filter((file) => file.endsWith(".yaml") || file.endsWith(".yml"));
   const markdownFiles = files.filter((file) => file.endsWith(".md"));

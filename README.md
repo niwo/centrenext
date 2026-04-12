@@ -48,16 +48,17 @@ Der Container nutzt das Image `mcr.microsoft.com/devcontainers/javascript-node:1
 
 - `app/`: Routen und globale Styles
 - `components/`: Layout-, UI- und Section-Komponenten
-- `content/`: Sprachspezifische und geteilte Inhalte
+- `content/`: optionaler lokaler Checkout des externen Content-Repos (ignoriert)
+- `public/images/`: optimierte Build-Artefakte aus dem externen Content-Repo (ignoriert)
 - `schemas/`: JSON-Schemas fuer YAML-Validierung
 - `.devcontainer/`: Container-Setup fuer lokale Entwicklung
 - `.github/workflows/`: CI fuer Lint, Typecheck und Build
 
 ## Inhalte pflegen
 
-- Bereichsinhalte mehrsprachig in `content/data/pages/*.yaml`
-- Strukturierte Inhalte fuer Team, Angebote, News und Testimonials in `content/data/*/*.yaml`
-- Gemeinsame Standortdaten in `content/data/main.yaml`
+- Inhaltsdateien liegen im separaten Content-Repository.
+- Dieses Website-Repository enthält keine produktiven YAML-Inhalte mehr unter `content/`.
+- Site-spezifische Bilder werden ebenfalls aus dem Content-Repository bezogen.
 
 ## Externes Content-Repository
 
@@ -71,7 +72,7 @@ Empfohlene Struktur im privaten Content-Repository:
 Lokale Entwicklung mit separatem Repository:
 
 ```bash
-git clone git@github.com:<org>/centrenext-content.git .content-source
+git clone git@github.com:<org>/centrebienetre-content.git .content-source
 CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run dev
 ```
 
@@ -92,6 +93,11 @@ Fuer Bilder gilt dabei:
 - Die optimierten Bilder werden nach `public/images/` geschrieben, damit der statische Export sie direkt ausliefern kann.
 
 Die Quelldaten im privaten Repository bleiben dabei unveraendert.
+
+Hinweis zur Aufraeumung:
+
+- Falls lokal noch ein alter `content/` oder `public/images/`-Ordner existiert, wird er von Git ignoriert.
+- Die Quelle fuer Inhalte und Bilder ist das externe Content-Repository.
 
 Optional koennen die Pfade feiner gesteuert werden:
 

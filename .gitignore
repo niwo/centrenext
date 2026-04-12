@@ -4,5 +4,7 @@ out
 *.log
 dist
 *.tsbuildinfo
+content/
+public/images/
 .content-build
 .content-source
