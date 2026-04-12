@@ -4,6 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 
+import { getContentSourcePaths } from "@/lib/content-source";
 import { getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
 import type { Locale } from "@/lib/site-config";
 
@@ -364,8 +365,9 @@ async function parseMarkdownFile(filePath: string) {
 }
 
 export async function getLandingPageContent(): Promise<LandingPageContent> {
-  const dataDir = path.join(process.cwd(), "content", "data");
-  const i18nDir = path.join(process.cwd(), "content", "i18n");
+  const { contentDir } = getContentSourcePaths();
+  const dataDir = path.join(contentDir, "data");
+  const i18nDir = path.join(contentDir, "i18n");
 
   const [practiceData, defaultI18n, localizedEntries] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
@@ -402,7 +404,8 @@ export async function getLandingPageContent(): Promise<LandingPageContent> {
 }
 
 export async function getSiteSeoContent(): Promise<SiteSeoContent> {
-  const practiceData = await parseYamlFile<PracticeData>(path.join(process.cwd(), "content", "data", "main.yaml"));
+  const { contentDir } = getContentSourcePaths();
+  const practiceData = await parseYamlFile<PracticeData>(path.join(contentDir, "data", "main.yaml"));
 
   return {
     siteName: practiceData.name,
@@ -870,13 +873,14 @@ async function readTeamProfiles(teamDataDir: string, locale: Locale): Promise<Te
 // ---------------------------------------------------------------------------
 
 export async function getSiteContent(locale: Locale): Promise<SiteContent> {
-  const dataDir = path.join(process.cwd(), "content", "data");
+  const { contentDir } = getContentSourcePaths();
+  const dataDir = path.join(contentDir, "data");
   const newsDataDir = path.join(dataDir, "news");
   const testimonialsDataDir = path.join(dataDir, "testimonials");
   const teamDataDir = path.join(dataDir, "team");
   const servicesDataDir = path.join(dataDir, "services");
   const pagesDataDir = path.join(dataDir, "pages");
-  const i18nDir = path.join(process.cwd(), "content", "i18n");
+  const i18nDir = path.join(contentDir, "i18n");
 
   const [practiceData, i18n, pageEntries, teamProfilesWithMeta, servicePosts, newsPosts, testimonialItems] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),

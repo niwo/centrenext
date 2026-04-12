@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "content:prepare": "node scripts/prepare-build-content.mjs",
+    "dev": "npm run content:prepare && node scripts/run-next-command.mjs dev",
+    "build": "npm run content:prepare && node scripts/run-next-command.mjs build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -37,6 +38,7 @@
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.3.1",
     "postcss": "^8.5.3",
+    "sharp": "^0.34.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
   }

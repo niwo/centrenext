@@ -5,8 +5,10 @@ import Ajv2020 from "ajv/dist/2020.js";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 
+import { getContentSourcePaths } from "./content-source.mjs";
+
 const root = process.cwd();
-const contentDir = path.join(root, "content");
+const { contentDir } = getContentSourcePaths();
 const schemasDir = path.join(root, "schemas");
 
 const yamlSchemaByRelativePath = {
@@ -64,8 +66,8 @@ async function readJson(fileName) {
   return JSON.parse(await fs.readFile(filePath, "utf8"));
 }
 
-function toRelative(filePath) {
-  return path.relative(root, filePath).replaceAll("\\", "/");
+function toContentRelative(filePath) {
+  return path.posix.join("content", path.relative(contentDir, filePath).replaceAll("\\", "/"));
 }
 
 async function main() {
@@ -80,7 +82,7 @@ async function main() {
   const errors = [];
 
   for (const filePath of yamlFiles) {
-    const relativePath = toRelative(filePath);
+    const relativePath = toContentRelative(filePath);
     const schemaName = getYamlSchemaName(relativePath);
 
     if (!schemaName) {
@@ -97,7 +99,7 @@ async function main() {
   }
 
   for (const filePath of markdownFiles) {
-    const relativePath = toRelative(filePath);
+    const relativePath = toContentRelative(filePath);
     const raw = await fs.readFile(filePath, "utf8");
     const parsed = matter(raw);
 
