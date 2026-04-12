@@ -1,6 +1,6 @@
 // OAuth proxy: handle GitHub OAuth callback
 // Exchanges the authorization code for an access token and sends it to Decap CMS
-// via postMessage so the popup can close and the CMS can authenticate.
+// via postMessage in the format Decap expects.
 
 exports.handler = async function (event) {
   const params = event.queryStringParameters || {};
@@ -23,32 +23,45 @@ exports.handler = async function (event) {
   // Clear state cookie in all responses
   const clearCookie = "oauth_state=; HttpOnly; Secure; Max-Age=0; Path=/";
 
-  function htmlResponse(msgStr) {
+  function getHtmlResponse(token, errorMsg) {
+    let msg;
+    if (token) {
+      msg = `authorization:github:success:${JSON.stringify({ token, provider: "github" })}`;
+    } else {
+      msg = `authorization:github:error:${JSON.stringify({ error: errorMsg })}`;
+    }
+
     return {
       statusCode: 200,
       headers: {
         "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-cache",
         "Set-Cookie": clearCookie,
       },
-      body: `<!DOCTYPE html>
-<html lang="de">
-<head><meta charset="utf-8" /><title>CMS Auth</title></head>
+      body: `<!doctype html>
+<html>
+<head><title>Decap CMS OAuth Callback</title></head>
 <body>
 <script>
-(function () {
-  try {
-    var msg = ${JSON.stringify(msgStr)};
-    console.log("postMessage to opener:", msg);
-    if (window.opener) {
-      window.opener.postMessage(msg, "*");
-      setTimeout(function () { window.close(); }, 1000);
-    } else {
-      document.body.innerText = "Auth-Callback empfangen. Bitte warte...\\n\\nNachricht: " + msg;
+(function() {
+  function parseMessage(msg) {
+    var ethicalPost = window.opener;
+    if (!ethicalPost) {
+      console.log('No opener - single window mode');
+      document.body.innerText = msg;
+      return;
     }
-  } catch (e) {
-    console.error("postMessage failed:", e);
-    document.body.innerText = "Error: " + e.message;
+    try {
+      ethicalPost.postMessage(msg, '*');
+      setTimeout(function() { 
+        window.close(); 
+      }, 1000);
+    } catch (e) {
+      console.error('postMessage error:', e);
+      document.body.innerText = 'postMessage failed: ' + e.message;
+    }
   }
+  parseMessage(${JSON.stringify(msg)});
 })();
 </script>
 </body>
@@ -57,42 +70,52 @@ exports.handler = async function (event) {
   }
 
   if (error) {
-    return htmlResponse(`authorization:github:error:${JSON.stringify({ error })}`);
+    return getHtmlResponse(null, error);
   }
 
   if (!code) {
-    return htmlResponse(`authorization:github:error:${JSON.stringify({ error: "Missing code" })}`);
+    return getHtmlResponse(null, "Missing authorization code");
   }
 
-  // Validate state to prevent CSRF
   if (!savedState || state !== savedState) {
-    return htmlResponse(`authorization:github:error:${JSON.stringify({ error: "State mismatch – possible CSRF attempt" })}`);
+    return getHtmlResponse(null, "State validation failed - possible CSRF");
   }
 
   try {
-    const response = await fetch("https://github.com/login/oauth/access_token", {
+    const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
+        "User-Agent": "Decap-CMS",
       },
       body: JSON.stringify({
         client_id: process.env.GITHUB_CLIENT_ID,
         client_secret: process.env.GITHUB_CLIENT_SECRET,
-        code,
+        code: code,
       }),
     });
 
-    const data = await response.json();
-
-    if (data.error || !data.access_token) {
-      return htmlResponse(`authorization:github:error:${JSON.stringify(data)}`);
+    if (!tokenResponse.ok) {
+      console.error("Token exchange failed:", tokenResponse.status, tokenResponse.statusText);
+      return getHtmlResponse(null, `Token exchange failed: ${tokenResponse.statusText}`);
     }
 
-    return htmlResponse(
-      `authorization:github:success:${JSON.stringify({ token: data.access_token, provider: "github" })}`
-    );
+    const tokenData = await tokenResponse.json();
+
+    if (tokenData.error) {
+      console.error("GitHub error:", tokenData.error_description || tokenData.error);
+      return getHtmlResponse(null, tokenData.error_description || tokenData.error);
+    }
+
+    if (!tokenData.access_token) {
+      console.error("No access token in response");
+      return getHtmlResponse(null, "No access token returned");
+    }
+
+    return getHtmlResponse(tokenData.access_token, null);
   } catch (err) {
-    return htmlResponse(`authorization:github:error:${JSON.stringify({ error: err.message })}`);
+    console.error("Callback error:", err);
+    return getHtmlResponse(null, err.message);
   }
 };
