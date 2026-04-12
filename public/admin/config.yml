@@ -9,8 +9,8 @@ backend:
     deleteMedia: Delete "{{path}}"
 
 local_backend: true
-media_folder: public/images/uploads
-public_folder: /images/uploads
+media_folder: public/uploads
+public_folder: /uploads
 locale: de
 slug:
   encoding: ascii

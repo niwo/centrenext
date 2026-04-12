@@ -67,6 +67,7 @@ Empfohlene Struktur im privaten Content-Repository:
 
 - `content/`
 - `public/images/`
+- `public/uploads/`
 
 Lokale Entwicklung mit separatem Repository:
 
@@ -90,6 +91,11 @@ Fuer Bilder gilt dabei:
 - Rasterbilder werden fuer den Website-Build optimiert.
 - JPG- und PNG-Referenzen in den Content-Dateien werden im Build-Snapshot auf WebP umgeschrieben.
 - Die optimierten Bilder werden nach `public/images/` geschrieben, damit der statische Export sie direkt ausliefern kann.
+
+Fuer Uploads gilt dabei:
+
+- Decap-Uploads liegen unter `public/uploads/` (z. B. Bilder, PDFs, Dokumente).
+- `public/uploads/` wird unveraendert aus dem Content-Repository in die Website uebernommen (ohne Bild-Optimierung), damit alle Dateitypen erhalten bleiben.
 
 Die Quelldaten im privaten Repository bleiben dabei unveraendert.
 
