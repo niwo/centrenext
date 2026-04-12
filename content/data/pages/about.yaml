@@ -1,5 +1,6 @@
 id: about
 de:
+  headerImage: /images/DSC06768.webp
   title: Die Praxis im Überblick
   detailLink: Details zur Praxis
   content: |
@@ -11,6 +12,7 @@ de:
     - Verknüpfung von Körper, Bewegung und Alltag
     - Kurze Wege durch ein kompaktes, interdisziplinäres Angebot
 fr:
+  headerImage: /images/DSC06768.webp
   title: "Apercu du cabinet"
   detailLink: "Decouvrir le cabinet"
   content: |

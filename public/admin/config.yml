@@ -153,6 +153,7 @@ collections:
             name: de
             widget: object
             fields:
+              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Detailseite }
               - { label: Detailseite - Inhalt, name: content, widget: markdown }
@@ -160,6 +161,7 @@ collections:
             name: fr
             widget: object
             fields:
+              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page detaillee }
               - { label: Page detail - Contenu, name: content, widget: markdown }
@@ -173,6 +175,7 @@ collections:
             name: de
             widget: object
             fields:
+              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text, required: false }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Kontakt-Detailseite }
@@ -185,6 +188,7 @@ collections:
             name: fr
             widget: object
             fields:
+              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text, required: false }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page contact detaillee }
@@ -203,6 +207,7 @@ collections:
             name: de
             widget: object
             fields:
+              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Team-Detailseite }
@@ -218,6 +223,7 @@ collections:
             name: fr
             widget: object
             fields:
+              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page equipe detaillee }
@@ -239,6 +245,7 @@ collections:
             name: de
             widget: object
             fields:
+              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Angebots-Detailseite }
@@ -257,6 +264,7 @@ collections:
             name: fr
             widget: object
             fields:
+              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page des prestations }
@@ -281,6 +289,7 @@ collections:
             name: de
             widget: object
             fields:
+              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Bereichstitel, name: sectionTitle, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text, required: false }
@@ -291,6 +300,7 @@ collections:
             name: fr
             widget: object
             fields:
+              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Titre de section, name: sectionTitle, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text, required: false }

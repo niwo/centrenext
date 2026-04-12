@@ -1,5 +1,6 @@
 id: team
 de:
+  headerImage: /images/team/christa.webp
   title: Team
   intro: "Das ist das Team von Centre bien-être. Wir freuen uns auf euch!"
   detailLink: Zum Team
@@ -14,6 +15,7 @@ de:
     - Interdisziplinaere Zusammenarbeit innerhalb der Praxis
     - Behandlungsschritte transparent und nachvollziehbar erklaert
 fr:
+  headerImage: /images/team/christa.webp
   title: Les collaboratrices
   intro: "Une equipe a taille humaine, avec des expertises complementaires et un suivi tres personnel."
   detailLink: "Voir l'equipe"
