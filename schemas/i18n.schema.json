@@ -51,8 +51,7 @@
       "type": "object",
       "properties": {
         "kicker": { "type": "string" },
-        "title": { "type": "string" },
-        "intro": { "type": "string" }
+        "title": { "type": "string" }
       },
       "additionalProperties": false
     }

@@ -49,7 +49,7 @@ Der Container nutzt das Image `mcr.microsoft.com/devcontainers/javascript-node:1
 - `app/`: Routen und globale Styles
 - `components/`: Layout-, UI- und Section-Komponenten
 - `content/`: optionaler lokaler Checkout des externen Content-Repos (ignoriert)
-- `public/images/`: optimierte Build-Artefakte aus dem externen Content-Repo (ignoriert)
+- `public/media/`: optimierte Build-Artefakte aus dem externen Content-Repo (ignoriert)
 - `schemas/`: JSON-Schemas fuer YAML-Validierung
 - `.devcontainer/`: Container-Setup fuer lokale Entwicklung
 - `.github/workflows/`: CI fuer Lint, Typecheck und Build
@@ -110,7 +110,7 @@ Die Quelldaten im privaten Repository bleiben dabei unveraendert.
 
 Hinweis zur Aufraeumung:
 
-- Falls lokal noch ein alter `content/` oder `public/images/`-Ordner existiert, wird er von Git ignoriert.
+- Falls lokal noch ein alter `content/`-Ordner existiert, wird er von Git ignoriert.
 - Die Quelle fuer Inhalte und Bilder ist das externe Content-Repository.
 
 Optional koennen die Pfade feiner gesteuert werden:

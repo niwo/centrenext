@@ -47,7 +47,7 @@ export function NewsSection({ news, locale }: NewsSectionProps) {
           <Link id={item.slug} key={item.slug} href={getItemHref(locale, "news", item.slug)}>
             <Card className="border-[rgb(var(--color-clay)/0.26)] bg-[rgb(var(--surface-card)/0.97)] shadow-[0_8px_24px_rgb(var(--color-forest)/0.08)] transition hover:border-[rgb(var(--color-clay)/0.38)] hover:bg-white dark:border-[rgb(var(--border-soft)/0.65)] dark:bg-[rgb(var(--surface-elevated)/0.7)] dark:hover:bg-[rgb(var(--surface-elevated)/0.9)]">
               <Image
-                src="/images/DSC06642.webp"
+                src="/media/DSC06642.webp"
                 alt={item.title}
                 width={960}
                 height={420}

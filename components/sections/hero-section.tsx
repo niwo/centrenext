@@ -24,7 +24,7 @@ export function HeroSection({ hero, locale, tagline }: HeroSectionProps) {
   return (
     <section id="hero" className="section-shell relative overflow-hidden p-0">
       <Image
-        src="/images/DSC06813.webp"
+        src="/media/DSC06813.webp"
         alt="Praxis Impression"
         fill
         className="object-cover"

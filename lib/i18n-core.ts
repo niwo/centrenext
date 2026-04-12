@@ -70,7 +70,6 @@ export type CoreI18nData = {
   testimonials: {
     kicker: string;
     title: string;
-    intro: string;
   };
   footer: {
     contactKicker: string;
@@ -132,7 +131,6 @@ const coreI18nByLocale: Record<Locale, CoreI18nData> = {
     testimonials: {
       kicker: "Erfahrungsberichte",
       title: "Was unsere Kundinnen und Kunden sagen",
-      intro: "",
     },
     footer: {
       contactKicker: "Kontakt",
@@ -178,7 +176,6 @@ const coreI18nByLocale: Record<Locale, CoreI18nData> = {
     testimonials: {
       kicker: "Temoignages",
       title: "Ce que disent nos clients",
-      intro: "",
     },
     footer: {
       contactKicker: "Contact",
@@ -234,7 +231,6 @@ export function mergeI18nWithCore(locale: Locale, input?: CoreI18nDataInput): Co
     testimonials: {
       ...core.testimonials,
       ...(input?.testimonials ?? {}),
-      intro: input?.testimonials?.intro ?? core.testimonials.intro,
     },
     footer: {
       ...core.footer,

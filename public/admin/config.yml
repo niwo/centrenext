@@ -391,7 +391,6 @@ collections:
             fields:
               - { label: Kicker, name: kicker, widget: string, default: Erfahrungsberichte }
               - { label: Titel, name: title, widget: string, default: Was unsere Kundinnen und Kunden sagen }
-              - { label: Intro, name: intro, widget: text, required: false }
       - name: i18n_fr
         label: "🇫🇷 Übersetzungen FR"
         file: content/i18n/fr.yaml
@@ -442,7 +441,6 @@ collections:
             fields:
               - { label: Kicker, name: kicker, widget: string, default: Temoignages }
               - { label: Titre, name: title, widget: string, default: Ce que disent nos clients }
-              - { label: Intro, name: intro, widget: text, required: false }
 
   - name: team_data
     label: "👥 Team"

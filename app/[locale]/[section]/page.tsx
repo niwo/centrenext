@@ -21,10 +21,10 @@ type PageProps = {
 };
 
 const aboutGalleryImages = [
-  "/images/DSC06642.webp",
-  "/images/DSC06768.webp",
-  "/images/DSC06813.webp",
-  "/images/DSC06840.webp",
+  "/media/DSC06642.webp",
+  "/media/DSC06768.webp",
+  "/media/DSC06813.webp",
+  "/media/DSC06840.webp",
 ];
 
 function getSectionTitle(section: SectionKey, content: Awaited<ReturnType<typeof getSiteContent>>) {
@@ -192,7 +192,7 @@ export default async function SectionPage({ params }: PageProps) {
                     <div className="flex items-center gap-7">
                       <div className="shrink-0 overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                         <Image
-                          src="/images/DSC06642.webp"
+                          src="/media/DSC06642.webp"
                           alt={post.title}
                           width={96}
                           height={96}
@@ -269,7 +269,7 @@ export default async function SectionPage({ params }: PageProps) {
                       <div className="flex items-center gap-5">
                         <div className="overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                           <Image
-                            src={person.image ?? "/images/team/christa.webp"}
+                            src={person.image ?? "/media/team-christa.webp"}
                             alt={person.name}
                             width={96}
                             height={96}
