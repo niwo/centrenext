@@ -66,8 +66,7 @@ Die Website kann Inhalte und bildbasierte Assets aus einem separaten privaten Gi
 Empfohlene Struktur im privaten Content-Repository:
 
 - `content/`
-- `public/images/`
-- `public/uploads/`
+- `media/`
 
 Lokale Entwicklung mit separatem Repository:
 
@@ -90,29 +89,36 @@ CI/CD (GitHub Actions):
 
 Wenn `CENTRENEXT_CONTENT_REPO_DIR` gesetzt ist, wird vor `dev` und `build` ein Build-Snapshot in `.content-build/content` erzeugt. Next.js liest waehrend des Builds und im Dev-Server aus diesem Snapshot statt direkt aus dem Quell-Repository.
 
-Fuer Bilder gilt dabei:
+`npm run dev` startet zusaetzlich einen Watcher: Aenderungen in `content/` und bei externem Repository auch in `public/` loesen automatisch ein neues `content:prepare` aus. Damit werden lokale Inhalte, Uploads und optimierte Bilder ohne Dev-Neustart nachgezogen.
 
-- Die Quellbilder werden aus `.content-source/public/images/` gelesen.
+Fuer Medien gilt dabei:
+
+- Die Quelldateien werden aus `.content-source/media/` gelesen.
 - Rasterbilder werden fuer den Website-Build optimiert.
 - JPG- und PNG-Referenzen in den Content-Dateien werden im Build-Snapshot auf WebP umgeschrieben.
-- Die optimierten Bilder werden nach `public/images/` geschrieben, damit der statische Export sie direkt ausliefern kann.
-
-Fuer Uploads gilt dabei:
-
-- Decap-Uploads liegen unter `public/uploads/` (z. B. Bilder, PDFs, Dokumente).
-- `public/uploads/` wird unveraendert aus dem Content-Repository in die Website uebernommen (ohne Bild-Optimierung), damit alle Dateitypen erhalten bleiben.
+- Die optimierten bzw. kopierten Mediendateien werden nach `public/media/` geschrieben, damit der statische Export sie direkt ausliefern kann.
+- Das Content-Repository verwendet eine flache `media/`-Struktur ohne Unterordner.
 
 Die Quelldaten im privaten Repository bleiben dabei unveraendert.
 
 Optional koennen die Pfade feiner gesteuert werden:
 
 - `CENTRENEXT_CONTENT_DIR` fuer einen direkten Override des `content/`-Verzeichnisses
-- `CENTRENEXT_CONTENT_PUBLIC_DIR` fuer einen direkten Override des Quell-`public/`-Verzeichnisses
+- `CENTRENEXT_CONTENT_MEDIA_DIR` fuer einen direkten Override des Quell-`media/`-Verzeichnisses
 
 ## Decap CMS
 
 - Das Admin-Interface ist unter `/admin/index.html` verfuegbar und wird aus `public/admin/` statisch mit ausgeliefert.
 - Die CMS-Konfiguration verwaltet Inhalte in Markdown und YAML fuer Praxisdaten, Uebersetzungen, Team, Angebote, News, Testimonials und Bereichseinleitungen.
+- Allgemeine Basis-Uebersetzungen (Navigation, Tage, Hero, Footer, Testimonials-Kerntexte) liegen als Code-Defaults im Hauptrepository und werden beim Laden mit `content/i18n/*.yaml` gemerged.
+- Werte aus `content/i18n/*.yaml` haben Vorrang und ueberschreiben die Code-Defaults, damit redaktionelle Anpassungen weiterhin ohne Code-Deploy moeglich sind.
+
+Empfohlener Hybrid-Workflow fuer `content/i18n/*.yaml`:
+
+- Nur Keys im Content-Repo pflegen, die bewusst vom Standard abweichen (Override-only).
+- Fehlt ein Key in `content/i18n/*.yaml`, greift automatisch der Core-Default aus `lib/i18n-core.ts`.
+- Bei Copy-Updates zuerst Core-Defaults anpassen, danach nur gezielte Sprach-/Branding-Abweichungen im Content-Repo belassen.
+- Decap ist auf `editorial_workflow` konfiguriert: Inhalte werden ueber Branch + Pull Request/Merge Request freigegeben statt direkt auf `main` zu schreiben.
 - Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden:
 
 ```bash

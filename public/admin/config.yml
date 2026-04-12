@@ -9,8 +9,9 @@ backend:
     deleteMedia: Delete "{{path}}"
 
 local_backend: true
-media_folder: public/uploads
-public_folder: /uploads
+publish_mode: editorial_workflow
+media_folder: public/media
+public_folder: /media
 locale: de
 slug:
   encoding: ascii
@@ -257,6 +258,8 @@ collections:
               - { label: Landingpage - Label Zusatzversicherung, name: insuranceSupplementaryLabel, widget: string }
               - { label: Landingpage - Label Keine Deckung, name: insuranceNoCoverageLabel, widget: string }
               - { label: Landingpage - Label Versicherer, name: insuranceSupplementaryInsurersLabel, widget: string }
+              - { label: Landingpage - Label Alle Versicherungen, name: insuranceAllInsurersLabel, widget: string, required: false }
+              - { label: Landingpage - Label Alle ausser, name: insuranceAllExceptLabel, widget: string, required: false }
               - { label: Landingpage - Label Ja, name: insuranceCoveredLabel, widget: string }
               - { label: Landingpage - Label Nein, name: insuranceNotCoveredLabel, widget: string }
               - { label: Detailseite - Inhalt, name: content, widget: markdown }
@@ -276,6 +279,8 @@ collections:
               - { label: Landing page - Label assurance complementaire, name: insuranceSupplementaryLabel, widget: string }
               - { label: Landing page - Label sans couverture, name: insuranceNoCoverageLabel, widget: string }
               - { label: Landing page - Label assureurs, name: insuranceSupplementaryInsurersLabel, widget: string }
+              - { label: Landing page - Label toutes les assurances, name: insuranceAllInsurersLabel, widget: string, required: false }
+              - { label: Landing page - Label toutes sauf, name: insuranceAllExceptLabel, widget: string, required: false }
               - { label: Landing page - Label oui, name: insuranceCoveredLabel, widget: string }
               - { label: Landing page - Label non, name: insuranceNotCoveredLabel, widget: string }
               - { label: Page detail - Contenu, name: content, widget: markdown }
@@ -617,6 +622,11 @@ collections:
             fields:
               - label: Gedeckt
                 name: covered
+                widget: boolean
+                default: false
+                required: false
+              - label: Alle ausser (Liste unten = ausgeschlossene Versicherer)
+                name: allExcept
                 widget: boolean
                 default: false
                 required: false

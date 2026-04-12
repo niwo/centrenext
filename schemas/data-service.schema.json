@@ -54,6 +54,7 @@
           "required": ["covered"],
           "properties": {
             "covered": { "type": "boolean" },
+            "allExcept": { "type": "boolean" },
             "insurers": {
               "type": "array",
               "items": { "type": "string", "minLength": 1 }

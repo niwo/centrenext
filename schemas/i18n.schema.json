@@ -1,28 +1,60 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["landing", "days", "nav", "hero", "footer", "testimonials"],
   "properties": {
     "landing": {
       "type": "object",
-      "required": ["localeLinkLabel"]
+      "properties": {
+        "localeLinkLabel": { "type": "string" }
+      },
+      "additionalProperties": false
     },
-    "days": { "type": "object" },
+    "days": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
     "nav": {
       "type": "object",
-      "required": ["about", "team", "services", "posts", "search", "location"]
+      "properties": {
+        "about": { "type": "string" },
+        "team": { "type": "string" },
+        "services": { "type": "string" },
+        "posts": { "type": "string" },
+        "search": { "type": "string" },
+        "location": { "type": "string" }
+      },
+      "additionalProperties": false
     },
     "hero": {
       "type": "object",
-      "required": ["eyebrow", "title", "primaryCta", "secondaryCta"]
+      "properties": {
+        "eyebrow": { "type": "string" },
+        "title": { "type": "string" },
+        "primaryCta": { "type": "string" },
+        "secondaryCta": { "type": "string" }
+      },
+      "additionalProperties": false
     },
     "footer": {
       "type": "object",
-      "required": ["contactKicker", "backLink", "detailKicker", "emailLabel", "phoneLabel", "adminLabel"]
+      "properties": {
+        "contactKicker": { "type": "string" },
+        "backLink": { "type": "string" },
+        "detailKicker": { "type": "string" },
+        "emailLabel": { "type": "string" },
+        "phoneLabel": { "type": "string" },
+        "adminLabel": { "type": "string" }
+      },
+      "additionalProperties": false
     },
     "testimonials": {
       "type": "object",
-      "required": ["kicker", "title"]
+      "properties": {
+        "kicker": { "type": "string" },
+        "title": { "type": "string" },
+        "intro": { "type": "string" }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

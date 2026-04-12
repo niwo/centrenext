@@ -83,7 +83,7 @@ async function writeOptimizedWebp(sourcePath, targetPath) {
 }
 
 function toPublicImagePath(relativePath) {
-  return `/${path.posix.join("images", relativePath.replaceAll("\\", "/"))}`;
+  return `/${path.posix.join("media", relativePath.replaceAll("\\", "/"))}`;
 }
 
 async function rewriteBuildContentReferences(buildContentDir, replacements) {
@@ -114,13 +114,12 @@ async function rewriteBuildContentReferences(buildContentDir, replacements) {
 }
 
 async function main() {
-  const { appRoot, appPublicDir, contentDir, sourcePublicDir, usesExternalContent } = getContentSourcePaths();
+  const { appRoot, appPublicDir, contentDir, sourceMediaDir, usesExternalContent } = getContentSourcePaths();
   const buildRoot = path.join(appRoot, ".content-build");
   const buildContentDir = path.join(buildRoot, "content");
-  const sourceImagesDir = path.join(sourcePublicDir, "images");
-  const sourceUploadsDir = path.join(sourcePublicDir, "uploads");
-  const targetImagesDir = path.join(appPublicDir, "images");
-  const targetUploadsDir = path.join(appPublicDir, "uploads");
+  const legacyTargetImagesDir = path.join(appPublicDir, "images");
+  const legacyTargetUploadsDir = path.join(appPublicDir, "uploads");
+  const targetMediaDir = path.join(appPublicDir, "media");
 
   if (!(await pathExists(contentDir))) {
     throw new Error(
@@ -139,24 +138,24 @@ async function main() {
     return;
   }
 
-  if (!(await pathExists(sourceImagesDir))) {
-    throw new Error(`External content images directory not found: ${sourceImagesDir}`);
+  if (!(await pathExists(sourceMediaDir))) {
+    throw new Error(`External content media directory not found: ${sourceMediaDir}`);
   }
 
-  await fs.rm(targetImagesDir, { recursive: true, force: true });
-  await fs.mkdir(targetImagesDir, { recursive: true });
+  await fs.rm(legacyTargetImagesDir, { recursive: true, force: true });
+  await fs.rm(legacyTargetUploadsDir, { recursive: true, force: true });
+  await fs.rm(targetMediaDir, { recursive: true, force: true });
+  await fs.mkdir(targetMediaDir, { recursive: true });
 
-  const sourceFiles = await walk(sourceImagesDir);
-  const relativePaths = sourceFiles.map((filePath) => path.relative(sourceImagesDir, filePath));
-  const availableTargets = new Set(
-    relativePaths.map((relativePath) => relativePath.replaceAll("\\", "/").replace(/\.(jpe?g|png)$/i, ".webp")),
-  );
+  const sourceFiles = await walk(sourceMediaDir);
+  const relativePaths = sourceFiles.map((filePath) => path.relative(sourceMediaDir, filePath));
+  const availableSourceFiles = new Set(relativePaths.map((relativePath) => relativePath.replaceAll("\\", "/")));
   const replacements = new Map();
 
   for (const sourceFile of sourceFiles) {
-    const relativePath = path.relative(sourceImagesDir, sourceFile);
+    const relativePath = path.relative(sourceMediaDir, sourceFile);
     const normalizedRelativePath = relativePath.replaceAll("\\", "/");
-    const targetFile = path.join(targetImagesDir, relativePath);
+    const targetFile = path.join(targetMediaDir, relativePath);
     const extension = path.extname(sourceFile).toLowerCase();
 
     await fs.mkdir(path.dirname(targetFile), { recursive: true });
@@ -170,8 +169,8 @@ async function main() {
 
     if (extension === ".jpg" || extension === ".jpeg" || extension === ".png") {
       const webpRelativePath = normalizedRelativePath.replace(/\.(jpe?g|png)$/i, ".webp");
-      const webpTarget = path.join(targetImagesDir, webpRelativePath);
-      const hasSiblingWebpSource = availableTargets.has(webpRelativePath) && webpRelativePath !== normalizedRelativePath;
+      const webpTarget = path.join(targetMediaDir, webpRelativePath);
+      const hasSiblingWebpSource = availableSourceFiles.has(webpRelativePath) && webpRelativePath !== normalizedRelativePath;
 
       if (!hasSiblingWebpSource) {
         await fs.mkdir(path.dirname(webpTarget), { recursive: true });
@@ -184,12 +183,7 @@ async function main() {
 
   await rewriteBuildContentReferences(buildContentDir, replacements);
 
-  await fs.rm(targetUploadsDir, { recursive: true, force: true });
-  if (await pathExists(sourceUploadsDir)) {
-    await copyDirectory(sourceUploadsDir, targetUploadsDir);
-  }
-
-  console.log(`Prepared build content in ${buildContentDir} and optimized images in ${targetImagesDir}.`);
+  console.log(`Prepared build content in ${buildContentDir} and optimized media in ${targetMediaDir}.`);
 }
 
 main().catch((error) => {

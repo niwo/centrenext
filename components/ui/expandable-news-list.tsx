@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Newspaper } from "lucide-react";
 
 type ExpandableNewsListProps = {
   title: string;
@@ -39,7 +39,8 @@ export function ExpandableNewsList({ title, showAllLabel, items }: ExpandableNew
         <ul className="mt-4 space-y-2 border-t border-[rgb(var(--color-mist)/0.45)] pt-4">
           {items.map((item) => (
             <li key={item.slug}>
-              <Link href={item.href} className="font-semibold text-forest underline-offset-4 hover:underline">
+              <Link href={item.href} className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline">
+                <Newspaper className="h-4 w-4" aria-hidden />
                 {item.title}
               </Link>
             </li>

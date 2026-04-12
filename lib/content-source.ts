@@ -13,22 +13,28 @@ export function getContentSourcePaths() {
   const appRoot = process.cwd();
   const appContentDir = path.join(appRoot, "content");
   const appPublicDir = path.join(appRoot, "public");
+  const appMediaDir = path.join(appPublicDir, "media");
   const configuredRepoRoot = resolveEnvPath(process.env.CENTRENEXT_CONTENT_REPO_DIR);
   const defaultRepoRoot = path.resolve(appRoot, "..", "centrebienetre-content");
   const repoRoot = configuredRepoRoot ?? (existsSync(defaultRepoRoot) ? defaultRepoRoot : undefined);
+  const configuredMediaDir = resolveEnvPath(process.env.CENTRENEXT_CONTENT_MEDIA_DIR);
+  const configuredLegacyPublicDir = resolveEnvPath(process.env.CENTRENEXT_CONTENT_PUBLIC_DIR);
 
   const contentDir = resolveEnvPath(process.env.CENTRENEXT_CONTENT_DIR) ?? (repoRoot ? path.join(repoRoot, "content") : appContentDir);
-  const sourcePublicDir =
-    resolveEnvPath(process.env.CENTRENEXT_CONTENT_PUBLIC_DIR) ?? (repoRoot ? path.join(repoRoot, "public") : appPublicDir);
+  const sourceMediaDir =
+    configuredMediaDir ??
+    (configuredLegacyPublicDir ? path.join(configuredLegacyPublicDir, "media") : undefined) ??
+    (repoRoot ? path.join(repoRoot, "media") : appMediaDir);
 
   return {
     appRoot,
     appContentDir,
     appPublicDir,
+    appMediaDir,
     repoRoot,
     contentDir,
-    sourcePublicDir,
+    sourceMediaDir,
     usesExternalContent:
-      path.resolve(contentDir) !== path.resolve(appContentDir) || path.resolve(sourcePublicDir) !== path.resolve(appPublicDir),
+      path.resolve(contentDir) !== path.resolve(appContentDir) || path.resolve(sourceMediaDir) !== path.resolve(appMediaDir),
   };
 }

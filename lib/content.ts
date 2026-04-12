@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import yaml from "js-yaml";
 
 import { getContentSourcePaths } from "@/lib/content-source";
+import { mergeI18nWithCore, type CoreI18nData, type CoreI18nDataInput } from "@/lib/i18n-core";
 import { getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
 import type { Locale } from "@/lib/site-config";
 
@@ -70,6 +71,7 @@ export type ServicePost = {
     obligatory_coverage: boolean;
     supplementary: {
       covered: boolean;
+      allExcept: boolean;
       insurers: string[];
     };
   };
@@ -148,6 +150,8 @@ type PageContent = {
     insuranceSupplementaryLabel: string;
     insuranceNoCoverageLabel: string;
     insuranceSupplementaryInsurersLabel: string;
+    insuranceAllInsurersLabel: string;
+    insuranceAllExceptLabel: string;
     insuranceCoveredLabel: string;
     insuranceNotCoveredLabel: string;
     items: ServiceItem[];
@@ -266,85 +270,23 @@ type PracticeData = {
 // i18n translation type (stored in content/i18n/<locale>.yaml)
 // ---------------------------------------------------------------------------
 
-type I18nData = {
-  landing: {
-    localeLinkLabel: string;
-  };
-  days: Record<string, string>;
-  nav: {
-    about: string;
-    team: string;
-    services: string;
-    posts: string;
-    search: string;
-    location: string;
-  };
-  hero: {
-    eyebrow: string;
-    title: string;
-    primaryCta: string;
-    secondaryCta: string;
-  };
-  about: {
-    title?: string;
-    detailLink?: string;
-  };
-  team: {
-    title?: string;
-    detailLink?: string;
-    intro?: string;
-    schedule?: {
-      title?: string;
-      morning?: string;
-      afternoon?: string;
-    };
-  };
-  services: {
-    title?: string;
-    intro?: string;
-    pricePrefix?: string;
-    detailLink?: string;
-    priceLabel?: string;
-    unitLabel?: string;
-    unitSessionLabel?: string;
-    insuranceLabel?: string;
-    insuranceObligatoryLabel?: string;
-    insuranceSupplementaryLabel?: string;
-    insuranceNoCoverageLabel?: string;
-    insuranceSupplementaryInsurersLabel?: string;
-    insuranceCoveredLabel?: string;
-    insuranceNotCoveredLabel?: string;
-  };
-  posts: {
-    title?: string;
-    sectionTitle?: string;
-    intro?: string;
-    detailLink?: string;
-    showAllLabel?: string;
-  };
-  location: {
-    title?: string;
-    intro?: string;
-    detailLink?: string;
-    practiceDetailLink?: string;
-    addressLabel?: string;
-    openingHoursLabel?: string;
-    mapLabel?: string;
-  };
-  testimonials: {
-    kicker: string;
-    title: string;
-    intro: string;
-  };
-  footer: {
-    contactKicker: string;
-    backLink: string;
-    detailKicker: string;
-    emailLabel: string;
-    phoneLabel: string;
-    adminLabel: string;
-  };
-};
+type I18nData = CoreI18nData;
+type I18nDataInput = CoreI18nDataInput;
+
+async function readMergedI18n(i18nDir: string, locale: Locale): Promise<I18nData> {
+  const filePath = path.join(i18nDir, `${locale}.yaml`);
+
+  try {
+    const input = await parseYamlFile<I18nDataInput>(filePath);
+    return mergeI18nWithCore(locale, input);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return mergeI18nWithCore(locale);
+    }
+
+    throw error;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // File helpers
@@ -371,10 +313,10 @@ export async function getLandingPageContent(): Promise<LandingPageContent> {
 
   const [practiceData, defaultI18n, localizedEntries] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
-    parseYamlFile<I18nData>(path.join(i18nDir, "de.yaml")),
+    readMergedI18n(i18nDir, "de"),
     Promise.all(
       (["de", "fr"] as const).map(async (locale) => {
-        const i18n = await parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`));
+        const i18n = await readMergedI18n(i18nDir, locale);
         return {
           locale,
           label: i18n.landing.localeLinkLabel,
@@ -389,7 +331,7 @@ export async function getLandingPageContent(): Promise<LandingPageContent> {
       { locale: "de", i18n: defaultI18n },
       {
         locale: "fr",
-        i18n: await parseYamlFile<I18nData>(path.join(i18nDir, "fr.yaml")),
+        i18n: await readMergedI18n(i18nDir, "fr"),
       },
     ] as const).map(({ locale, i18n }) => ({
       locale,
@@ -409,7 +351,7 @@ export async function getSiteSeoContent(): Promise<SiteSeoContent> {
 
   return {
     siteName: practiceData.name,
-    defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.webp",
+    defaultImage: practiceData.seo?.defaultImage ?? "/media/DSC06768.webp",
   };
 }
 
@@ -437,6 +379,7 @@ type ServiceDataFile = {
     obligatory_coverage?: boolean;
     supplementary?: {
       covered?: boolean;
+      allExcept?: boolean;
       insurers?: string[];
     };
   };
@@ -493,6 +436,8 @@ type PageDataFile = {
     insuranceSupplementaryLabel?: string;
     insuranceNoCoverageLabel?: string;
     insuranceSupplementaryInsurersLabel?: string;
+    insuranceAllInsurersLabel?: string;
+    insuranceAllExceptLabel?: string;
     insuranceCoveredLabel?: string;
     insuranceNotCoveredLabel?: string;
   };
@@ -521,6 +466,8 @@ type PageDataFile = {
     insuranceSupplementaryLabel?: string;
     insuranceNoCoverageLabel?: string;
     insuranceSupplementaryInsurersLabel?: string;
+    insuranceAllInsurersLabel?: string;
+    insuranceAllExceptLabel?: string;
     insuranceCoveredLabel?: string;
     insuranceNotCoveredLabel?: string;
   };
@@ -805,10 +752,11 @@ async function readServicePosts(servicesDataDir: string, locale: Locale): Promis
           obligatory_coverage: Boolean(serviceData.insurance?.obligatory_coverage),
           supplementary: {
             covered: Boolean(serviceData.insurance?.supplementary?.covered),
+            allExcept: Boolean(serviceData.insurance?.supplementary?.allExcept),
             insurers: normalizeStringList(serviceData.insurance?.supplementary?.insurers),
           },
         },
-        image: serviceData.image ?? "/images/DSC06840.webp",
+        image: serviceData.image ?? "/media/DSC06840.webp",
         tags: normalizeTags(serviceData.tags),
         tag_color: serviceData.tag_color,
         highlight: Boolean(serviceData.highlight),
@@ -884,7 +832,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
 
   const [practiceData, i18n, pageEntries, teamProfilesWithMeta, servicePosts, newsPosts, testimonialItems] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
-    parseYamlFile<I18nData>(path.join(i18nDir, `${locale}.yaml`)),
+    readMergedI18n(i18nDir, locale),
     Promise.all(
       sectionKeys.map(async (key) => {
         const pageData = await parseYamlFile<PageDataFile>(path.join(pagesDataDir, `${key}.yaml`));
@@ -909,11 +857,11 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const locationPage = localizedPages.location;
 
   const defaultSectionHeaderImages: Record<SectionKey, string> = {
-    about: "/images/DSC06768.webp",
-    team: "/images/team/christa.webp",
-    services: "/images/DSC06840.webp",
-    news: "/images/DSC06642.webp",
-    location: "/images/DSC06768.webp",
+    about: "/media/DSC06768.webp",
+    team: "/media/team-christa.webp",
+    services: "/media/DSC06840.webp",
+    news: "/media/DSC06642.webp",
+    location: "/media/DSC06768.webp",
   };
 
   const teamProfiles: TeamProfile[] = teamProfilesWithMeta.map(({ slug, content }) => ({ slug, content }));
@@ -928,7 +876,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     ],
     mapEmbedUrl: practiceData.map.embedUrl,
     seo: {
-      defaultImage: practiceData.seo?.defaultImage ?? "/images/DSC06768.webp",
+      defaultImage: practiceData.seo?.defaultImage ?? "/media/DSC06768.webp",
     },
     contact: practiceData.contact,
     socialLinks: practiceData.socialLinks,
@@ -1021,6 +969,10 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
         servicesPage.insuranceNoCoverageLabel ?? i18n.services.insuranceNoCoverageLabel ?? "",
       insuranceSupplementaryInsurersLabel:
         servicesPage.insuranceSupplementaryInsurersLabel ?? i18n.services.insuranceSupplementaryInsurersLabel ?? "",
+      insuranceAllInsurersLabel:
+        servicesPage.insuranceAllInsurersLabel ?? (locale === "de" ? "Alle Versicherungen" : "Toutes les assurances"),
+      insuranceAllExceptLabel:
+        servicesPage.insuranceAllExceptLabel ?? (locale === "de" ? "Alle ausser" : "Toutes sauf"),
       insuranceCoveredLabel: servicesPage.insuranceCoveredLabel ?? i18n.services.insuranceCoveredLabel ?? "",
       insuranceNotCoveredLabel: servicesPage.insuranceNotCoveredLabel ?? i18n.services.insuranceNotCoveredLabel ?? "",
       items: serviceItems,

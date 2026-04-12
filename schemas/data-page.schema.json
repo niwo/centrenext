@@ -38,6 +38,8 @@
         "insuranceSupplementaryLabel": { "type": "string" },
         "insuranceNoCoverageLabel": { "type": "string" },
         "insuranceSupplementaryInsurersLabel": { "type": "string" },
+        "insuranceAllInsurersLabel": { "type": "string" },
+        "insuranceAllExceptLabel": { "type": "string" },
         "insuranceCoveredLabel": { "type": "string" },
         "insuranceNotCoveredLabel": { "type": "string" }
       }
@@ -75,6 +77,8 @@
         "insuranceSupplementaryLabel": { "type": "string" },
         "insuranceNoCoverageLabel": { "type": "string" },
         "insuranceSupplementaryInsurersLabel": { "type": "string" },
+        "insuranceAllInsurersLabel": { "type": "string" },
+        "insuranceAllExceptLabel": { "type": "string" },
         "insuranceCoveredLabel": { "type": "string" },
         "insuranceNotCoveredLabel": { "type": "string" }
       }

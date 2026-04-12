@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "content:prepare": "node scripts/prepare-build-content.mjs",
-    "dev": "npm run content:prepare && node scripts/run-next-command.mjs dev",
+    "content:watch": "node scripts/watch-content.mjs",
+    "dev": "node scripts/dev-with-content-watch.mjs",
     "build": "npm run content:prepare && node scripts/run-next-command.mjs build",
     "start": "next start",
     "lint": "eslint .",
@@ -35,6 +36,7 @@
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.5",
     "autoprefixer": "^10.4.21",
+    "chokidar": "^5.0.0",
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.3.1",
     "postcss": "^8.5.3",

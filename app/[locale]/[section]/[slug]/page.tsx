@@ -164,11 +164,16 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                         <div className="rounded-xl border border-[rgb(var(--color-mist)/0.45)] bg-white/70 px-3 py-2 dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-card)/0.98)]">
                           {servicePost.insurance.supplementary.covered ? (
                             <div className="space-y-1">
-                              <p className="font-semibold text-ink">{content.page.services.insuranceSupplementaryLabel}:</p>
+                              <p className="font-semibold text-ink">
+                                {servicePost.insurance.supplementary.allExcept
+                                  ? content.page.services.insuranceAllExceptLabel
+                                  : content.page.services.insuranceSupplementaryInsurersLabel}
+                                :
+                              </p>
                               <ul className="flex flex-wrap gap-2">
                                 {(servicePost.insurance.supplementary.insurers.length > 0
                                   ? servicePost.insurance.supplementary.insurers
-                                  : ["all Insurances"]
+                                  : [content.page.services.insuranceAllInsurersLabel]
                                 ).map((insurer) => (
                                   <li key={insurer}>
                                     <span className="inline-flex rounded-full border border-[rgb(var(--color-mist)/0.7)] bg-white/80 px-3 py-1 text-sm font-semibold text-ink/85 dark:border-[rgb(var(--border-soft)/0.7)] dark:bg-[rgb(var(--surface-shell)/0.98)] dark:text-ink">
@@ -213,7 +218,8 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                       <ul className="mt-2 space-y-2">
                         {relatedNewsPosts.map((post) => (
                           <li key={post.slug}>
-                            <Link href={getItemHref(localeValue, "news", post.slug)} className="font-semibold text-forest underline-offset-4 hover:underline">
+                            <Link href={getItemHref(localeValue, "news", post.slug)} className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline">
+                              <Newspaper className="h-4 w-4" aria-hidden />
                               {post.title}
                             </Link>
                           </li>

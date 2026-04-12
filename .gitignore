@@ -1,11 +1,12 @@
+*.log
+*.tsbuildinfo
 .next
 node_modules
 out
-*.log
 dist
-*.tsbuildinfo
 content/
 public/images/
 public/uploads/
+public/media/
 .content-build
 .content-source
