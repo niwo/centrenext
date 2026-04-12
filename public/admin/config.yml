@@ -481,11 +481,9 @@ collections:
       - label: E-Mail
         name: email
         widget: string
-        required: false
       - label: Telefon
         name: phone
         widget: string
-        required: false
       - label: Arbeitstage
         name: schedule
         widget: list
@@ -527,7 +525,6 @@ collections:
       - label: Profilbild
         name: image
         widget: image
-        required: false
       - label: Headerbild
         name: headerImage
         widget: image
@@ -535,7 +532,8 @@ collections:
       - label: Tags
         name: tags
         widget: list
-        required: false
+        required: true
+        min: 1
         field:
           label: Tag
           name: tag
