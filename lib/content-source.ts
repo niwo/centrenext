@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import path from "node:path";
 
 function resolveEnvPath(value: string | undefined) {
@@ -12,7 +13,9 @@ export function getContentSourcePaths() {
   const appRoot = process.cwd();
   const appContentDir = path.join(appRoot, "content");
   const appPublicDir = path.join(appRoot, "public");
-  const repoRoot = resolveEnvPath(process.env.CENTRENEXT_CONTENT_REPO_DIR);
+  const configuredRepoRoot = resolveEnvPath(process.env.CENTRENEXT_CONTENT_REPO_DIR);
+  const defaultRepoRoot = path.resolve(appRoot, "..", "centrebienetre-content");
+  const repoRoot = configuredRepoRoot ?? (existsSync(defaultRepoRoot) ? defaultRepoRoot : undefined);
 
   const contentDir = resolveEnvPath(process.env.CENTRENEXT_CONTENT_DIR) ?? (repoRoot ? path.join(repoRoot, "content") : appContentDir);
   const sourcePublicDir =

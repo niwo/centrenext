@@ -123,7 +123,13 @@ async function main() {
   const targetUploadsDir = path.join(appPublicDir, "uploads");
 
   if (!(await pathExists(contentDir))) {
-    throw new Error(`Content directory not found: ${contentDir}`);
+    throw new Error(
+      [
+        `Content directory not found: ${contentDir}`,
+        "Set CENTRENEXT_CONTENT_REPO_DIR (or CENTRENEXT_CONTENT_DIR) to your content repository path.",
+        "Default autodiscovery expects a sibling folder: ../centrebienetre-content",
+      ].join("\n"),
+    );
   }
 
   await copyDirectory(contentDir, buildContentDir);
