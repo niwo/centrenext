@@ -1,4 +1,5 @@
 import { promises as fs } from "node:fs";
+import { spawn } from "node:child_process";
 import path from "node:path";
 
 import sharp from "sharp";
@@ -113,8 +114,55 @@ async function rewriteBuildContentReferences(buildContentDir, replacements) {
   );
 }
 
+function runCommand(command, args, cwd) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd,
+      stdio: "inherit",
+      env: process.env,
+    });
+
+    child.on("exit", (code, signal) => {
+      if (signal) {
+        reject(new Error(`${command} terminated by signal ${signal}`));
+        return;
+      }
+
+      if (code !== 0) {
+        reject(new Error(`${command} exited with code ${code ?? 1}`));
+        return;
+      }
+
+      resolve();
+    });
+  });
+}
+
+async function bootstrapExternalContentRepo(appRoot) {
+  if (process.env.CENTRENEXT_CONTENT_DIR || process.env.CENTRENEXT_CONTENT_REPO_DIR) {
+    return false;
+  }
+
+  const repoSlug = process.env.CENTRENEXT_CONTENT_REPO_SLUG ?? "niwo/centrebienetre-content";
+  const repoBranch = process.env.CENTRENEXT_CONTENT_REPO_BRANCH ?? "main";
+  const accessToken = process.env.CONTENT_REPO_TOKEN ?? process.env.CENTRENEXT_CONTENT_REPO_TOKEN;
+
+  if (!accessToken) {
+    return false;
+  }
+
+  const checkoutDir = path.join(appRoot, ".content-source");
+  const cloneUrl = `https://x-access-token:${encodeURIComponent(accessToken)}@github.com/${repoSlug}.git`;
+
+  await fs.rm(checkoutDir, { recursive: true, force: true });
+  console.log(`Content directory missing. Cloning ${repoSlug}#${repoBranch} to ${checkoutDir} ...`);
+  await runCommand("git", ["clone", "--depth", "1", "--branch", repoBranch, cloneUrl, checkoutDir], appRoot);
+  process.env.CENTRENEXT_CONTENT_REPO_DIR = checkoutDir;
+  return true;
+}
+
 async function main() {
-  const { appRoot, appPublicDir, contentDir, sourceMediaDir, usesExternalContent } = getContentSourcePaths();
+  let { appRoot, appPublicDir, contentDir, sourceMediaDir, usesExternalContent } = getContentSourcePaths();
   const buildRoot = path.join(appRoot, ".content-build");
   const buildContentDir = path.join(buildRoot, "content");
   const legacyTargetImagesDir = path.join(appPublicDir, "images");
@@ -122,10 +170,19 @@ async function main() {
   const targetMediaDir = path.join(appPublicDir, "media");
 
   if (!(await pathExists(contentDir))) {
+    const bootstrapped = await bootstrapExternalContentRepo(appRoot);
+
+    if (bootstrapped) {
+      ({ appRoot, appPublicDir, contentDir, sourceMediaDir, usesExternalContent } = getContentSourcePaths());
+    }
+  }
+
+  if (!(await pathExists(contentDir))) {
     throw new Error(
       [
         `Content directory not found: ${contentDir}`,
         "Set CENTRENEXT_CONTENT_REPO_DIR (or CENTRENEXT_CONTENT_DIR) to your content repository path.",
+        "Alternatively set CONTENT_REPO_TOKEN (and optional CENTRENEXT_CONTENT_REPO_SLUG/CENTRENEXT_CONTENT_REPO_BRANCH) for automatic checkout during build.",
         "Default autodiscovery expects a sibling folder: ../centrebienetre-content",
       ].join("\n"),
     );

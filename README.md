@@ -88,6 +88,12 @@ CI/CD (GitHub Actions):
 - Der Workflow checkt das private Content-Repo nach `centrebienetre-content/` aus und setzt `CENTRENEXT_CONTENT_REPO_DIR` automatisch.
 - Das Repo-Secret `CONTENT_REPO_TOKEN` ist erforderlich (PAT mit Leserechten auf `niwo/centrebienetre-content`).
 
+Netlify Build:
+
+- Setze in Netlify die Variable `CONTENT_REPO_TOKEN` (PAT mit Leserechten auf `niwo/centrebienetre-content`).
+- Wenn kein lokales `content/` und kein `CENTRENEXT_CONTENT_REPO_DIR` vorhanden ist, checkt `npm run content:prepare` das Content-Repo automatisch nach `.content-source` aus.
+- Optional koennen `CENTRENEXT_CONTENT_REPO_SLUG` (Default: `niwo/centrebienetre-content`) und `CENTRENEXT_CONTENT_REPO_BRANCH` (Default: `main`) gesetzt werden.
+
 Wenn `CENTRENEXT_CONTENT_REPO_DIR` gesetzt ist, wird vor `dev` und `build` ein Build-Snapshot in `.content-build/content` erzeugt. Next.js liest waehrend des Builds und im Dev-Server aus diesem Snapshot statt direkt aus dem Quell-Repository.
 
 `npm run dev` startet zusaetzlich einen Watcher: Aenderungen in `content/` und bei externem Repository auch in `public/` loesen automatisch ein neues `content:prepare` aus. Damit werden lokale Inhalte, Uploads und optimierte Bilder ohne Dev-Neustart nachgezogen.
