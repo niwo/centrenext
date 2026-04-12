@@ -1,5 +1,6 @@
 backend:
   name: github
+  site_domain: centrebienetre2.netlify.app
   base_url: https://api.netlify.com
   auth_endpoint: auth
   repo: niwo/centrebienetre-content
