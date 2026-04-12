@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { Facebook, Github, Instagram, LayoutDashboard, Linkedin, Mail, MapPin, Phone, Twitter, Youtube } from "lucide-react";
 
@@ -59,14 +58,16 @@ export function SiteFooter({ footer, practice }: SiteFooterProps) {
 
         <div className="flex items-start sm:items-center sm:justify-self-center">
           <div className="flex items-center gap-3">
-            <Link
+            <a
               href="/admin/index.html"
+              target="_blank"
+              rel="noreferrer"
               title={footer.adminLabel}
               aria-label={footer.adminLabel}
               className="inline-flex h-8 w-8 items-center justify-center rounded-full text-sand/75 transition-colors hover:bg-sand/10 hover:text-sand dark:text-ink/75 dark:hover:bg-white/10 dark:hover:text-ink"
             >
               <LayoutDashboard className="h-4 w-4" />
-            </Link>
+            </a>
             {socialLinks.map((social) => {
               const Icon = socialIconByPlatform[social.platform];
               const label = socialLabelByPlatform[social.platform];

@@ -1,5 +1,7 @@
 backend:
   name: github
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
   repo: niwo/centrebienetre-content
   branch: main
   commit_messages:
