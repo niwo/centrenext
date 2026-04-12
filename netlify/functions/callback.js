@@ -23,7 +23,7 @@ exports.handler = async function (event) {
   // Clear state cookie in all responses
   const clearCookie = "oauth_state=; HttpOnly; Secure; Max-Age=0; Path=/";
 
-  function htmlResponse(msg) {
+  function htmlResponse(msgStr) {
     return {
       statusCode: 200,
       headers: {
@@ -36,7 +36,7 @@ exports.handler = async function (event) {
 <body>
 <script>
 (function () {
-  var msg = ${JSON.stringify(msg)};
+  var msg = ${JSON.stringify(msgStr)};
   if (window.opener) {
     window.opener.postMessage(msg, "*");
     setTimeout(function () { window.close(); }, 500);
