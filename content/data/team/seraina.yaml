@@ -41,10 +41,16 @@ profile:
       * HPS Lyss, 2010 – 2015
       * Physiotherapie Lyssbachpark, 2010 – 2015
       * Physiotherapie Kummer Grenchen, 2009 – 2010
+email: seraina@centrebienetre.ch
+phone: +41 79 790 79 79
 schedule:
   - day: friday
     periods:
       - morning
       - afternoon
-socialLinks: []
+socialLinks:
+  - platform: linkedin
+    href: https://www.linkedin.com/in/seraina-baumgartner-08b7a32a4/
 image: /images/uploads/mg_9830-683x1024.jpg
+tags:
+  - physio
