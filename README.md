@@ -59,6 +59,45 @@ Der Container nutzt das Image `mcr.microsoft.com/devcontainers/javascript-node:1
 - Strukturierte Inhalte fuer Team, Angebote, News und Testimonials in `content/data/*/*.yaml`
 - Gemeinsame Standortdaten in `content/data/main.yaml`
 
+## Externes Content-Repository
+
+Die Website kann Inhalte und bildbasierte Assets aus einem separaten privaten GitHub-Repository lesen. Das ist die saubere Variante, wenn Code und redaktionelle Daten getrennt versioniert werden sollen.
+
+Empfohlene Struktur im privaten Content-Repository:
+
+- `content/`
+- `public/images/`
+
+Lokale Entwicklung mit separatem Repository:
+
+```bash
+git clone git@github.com:<org>/centrenext-content.git .content-source
+CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run dev
+```
+
+Build und Validierung mit separatem Repository:
+
+```bash
+CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run validate:content
+CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run build
+```
+
+Wenn `CENTRENEXT_CONTENT_REPO_DIR` gesetzt ist, wird vor `dev` und `build` ein Build-Snapshot in `.content-build/content` erzeugt. Next.js liest waehrend des Builds und im Dev-Server aus diesem Snapshot statt direkt aus dem Quell-Repository.
+
+Fuer Bilder gilt dabei:
+
+- Die Quellbilder werden aus `.content-source/public/images/` gelesen.
+- Rasterbilder werden fuer den Website-Build optimiert.
+- JPG- und PNG-Referenzen in den Content-Dateien werden im Build-Snapshot auf WebP umgeschrieben.
+- Die optimierten Bilder werden nach `public/images/` geschrieben, damit der statische Export sie direkt ausliefern kann.
+
+Die Quelldaten im privaten Repository bleiben dabei unveraendert.
+
+Optional koennen die Pfade feiner gesteuert werden:
+
+- `CENTRENEXT_CONTENT_DIR` fuer einen direkten Override des `content/`-Verzeichnisses
+- `CENTRENEXT_CONTENT_PUBLIC_DIR` fuer einen direkten Override des Quell-`public/`-Verzeichnisses
+
 ## Decap CMS
 
 - Das Admin-Interface ist unter `/admin/index.html` verfuegbar und wird aus `public/admin/` statisch mit ausgeliefert.
@@ -72,6 +111,12 @@ npx decap-server
 - Die URL der produktiven Netlify-Site kann in `public/admin/settings.js` als `siteUrl` hinterlegt werden. Auf `localhost` wird dann automatisch zur gehosteten Admin-Seite weitergeleitet.
 - Fuer die produktive Nutzung auf Netlify muessen **Netlify Identity** und **Git Gateway** aktiviert sein, da das CMS mit dem `git-gateway` Backend konfiguriert ist.
 - Nach dem Aktivieren von Identity sollten Redakteurinnen und Redakteure ueber Netlify eingeladen werden, damit der Login unter `/admin/index.html` funktioniert.
+
+Wichtige Einschraenkung bei getrenntem Repository:
+
+- Das aktuelle Decap-Setup mit `git-gateway` schreibt immer in dieses Website-Repository.
+- Wenn Inhalte in ein separates privates GitHub-Repository verschoben werden, muss Decap auf ein Backend umgestellt werden, das direkt in dieses Content-Repository schreibt, oder das CMS muss aus dem Content-Repository selbst betrieben werden.
+- Die hier umgesetzte Trennung entkoppelt Build und Laufzeitdaten. Sie loest nicht automatisch die Cross-Repo-Schreibrechte des aktuellen Decap-Setups.
 
 ## SEO und Tracking
 

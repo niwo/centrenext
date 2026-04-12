@@ -4,6 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 
+import { getContentSourcePaths } from "@/lib/content-source";
 import { getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
 import type { Locale } from "@/lib/site-config";
 
@@ -120,12 +121,14 @@ type PageContent = {
     title: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
   };
   team: {
     title: string;
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     scheduleTitle: string;
     scheduleMorningLabel: string;
     scheduleAfternoonLabel: string;
@@ -136,6 +139,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     priceLabel: string;
     unitLabel: string;
     unitSessionLabel: string;
@@ -154,6 +158,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     showAllLabel: string;
     items: NewsItem[];
   };
@@ -162,6 +167,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     practiceDetailLink: string;
     addressLabel: string;
     openingHoursLabel: string;
@@ -359,8 +365,9 @@ async function parseMarkdownFile(filePath: string) {
 }
 
 export async function getLandingPageContent(): Promise<LandingPageContent> {
-  const dataDir = path.join(process.cwd(), "content", "data");
-  const i18nDir = path.join(process.cwd(), "content", "i18n");
+  const { contentDir } = getContentSourcePaths();
+  const dataDir = path.join(contentDir, "data");
+  const i18nDir = path.join(contentDir, "i18n");
 
   const [practiceData, defaultI18n, localizedEntries] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
@@ -397,7 +404,8 @@ export async function getLandingPageContent(): Promise<LandingPageContent> {
 }
 
 export async function getSiteSeoContent(): Promise<SiteSeoContent> {
-  const practiceData = await parseYamlFile<PracticeData>(path.join(process.cwd(), "content", "data", "main.yaml"));
+  const { contentDir } = getContentSourcePaths();
+  const practiceData = await parseYamlFile<PracticeData>(path.join(contentDir, "data", "main.yaml"));
 
   return {
     siteName: practiceData.name,
@@ -462,6 +470,7 @@ type PageDataFile = {
   id: string;
   de: {
     content: string;
+    headerImage?: string;
     title?: string;
     intro?: string;
     detailLink?: string;
@@ -489,6 +498,7 @@ type PageDataFile = {
   };
   fr: {
     content: string;
+    headerImage?: string;
     title?: string;
     intro?: string;
     detailLink?: string;
@@ -863,13 +873,14 @@ async function readTeamProfiles(teamDataDir: string, locale: Locale): Promise<Te
 // ---------------------------------------------------------------------------
 
 export async function getSiteContent(locale: Locale): Promise<SiteContent> {
-  const dataDir = path.join(process.cwd(), "content", "data");
+  const { contentDir } = getContentSourcePaths();
+  const dataDir = path.join(contentDir, "data");
   const newsDataDir = path.join(dataDir, "news");
   const testimonialsDataDir = path.join(dataDir, "testimonials");
   const teamDataDir = path.join(dataDir, "team");
   const servicesDataDir = path.join(dataDir, "services");
   const pagesDataDir = path.join(dataDir, "pages");
-  const i18nDir = path.join(process.cwd(), "content", "i18n");
+  const i18nDir = path.join(contentDir, "i18n");
 
   const [practiceData, i18n, pageEntries, teamProfilesWithMeta, servicePosts, newsPosts, testimonialItems] = await Promise.all([
     parseYamlFile<PracticeData>(path.join(dataDir, "main.yaml")),
@@ -896,6 +907,14 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const servicesPage = localizedPages.services;
   const newsPage = localizedPages.news;
   const locationPage = localizedPages.location;
+
+  const defaultSectionHeaderImages: Record<SectionKey, string> = {
+    about: "/images/DSC06768.webp",
+    team: "/images/team/christa.webp",
+    services: "/images/DSC06840.webp",
+    news: "/images/DSC06642.webp",
+    location: "/images/DSC06768.webp",
+  };
 
   const teamProfiles: TeamProfile[] = teamProfilesWithMeta.map(({ slug, content }) => ({ slug, content }));
 
@@ -971,12 +990,14 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       title: aboutPage.title ?? i18n.about.title ?? i18n.nav.about,
       kicker: i18n.nav.about,
       detailLink: aboutPage.detailLink ?? i18n.about.detailLink ?? "",
+      headerImage: aboutPage.headerImage ?? defaultSectionHeaderImages.about,
     },
     team: {
       title: teamPage.title ?? i18n.team.title ?? i18n.nav.team,
       intro: teamPage.intro ?? i18n.team.intro ?? "",
       kicker: i18n.nav.team,
       detailLink: teamPage.detailLink ?? i18n.team.detailLink ?? "",
+      headerImage: teamPage.headerImage ?? defaultSectionHeaderImages.team,
       scheduleTitle: teamPage.schedule?.title ?? i18n.team.schedule?.title ?? "",
       scheduleMorningLabel: teamPage.schedule?.morning ?? i18n.team.schedule?.morning ?? "",
       scheduleAfternoonLabel: teamPage.schedule?.afternoon ?? i18n.team.schedule?.afternoon ?? "",
@@ -987,6 +1008,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: servicesPage.intro ?? i18n.services.intro ?? "",
       kicker: i18n.nav.services,
       detailLink: servicesPage.detailLink ?? i18n.services.detailLink ?? "",
+      headerImage: servicesPage.headerImage ?? defaultSectionHeaderImages.services,
       priceLabel: servicesPage.priceLabel ?? i18n.services.priceLabel ?? "",
       unitLabel: servicesPage.unitLabel ?? i18n.services.unitLabel ?? "",
       unitSessionLabel: servicesPage.unitSessionLabel ?? i18n.services.unitSessionLabel ?? "",
@@ -1009,6 +1031,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: newsPage.intro ?? i18n.posts.intro ?? "",
       kicker: i18n.nav.posts,
       detailLink: newsPage.detailLink ?? i18n.posts.detailLink ?? "",
+      headerImage: newsPage.headerImage ?? defaultSectionHeaderImages.news,
       showAllLabel: newsPage.showAllLabel ?? i18n.posts.showAllLabel ?? "",
       items: newsItems,
     },
@@ -1017,6 +1040,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: locationPage.intro ?? i18n.location.intro ?? "",
       kicker: i18n.nav.location,
       detailLink: locationPage.detailLink ?? i18n.location.detailLink ?? "",
+      headerImage: locationPage.headerImage ?? defaultSectionHeaderImages.location,
       practiceDetailLink: locationPage.practiceDetailLink ?? i18n.location.practiceDetailLink ?? "",
       addressLabel: locationPage.addressLabel ?? i18n.location.addressLabel ?? "",
       openingHoursLabel: locationPage.openingHoursLabel ?? i18n.location.openingHoursLabel ?? "",

@@ -11,6 +11,7 @@
       "additionalProperties": false,
       "properties": {
         "content": { "type": "string" },
+        "headerImage": { "type": "string" },
         "title": { "type": "string" },
         "intro": { "type": "string" },
         "detailLink": { "type": "string" },
@@ -47,6 +48,7 @@
       "additionalProperties": false,
       "properties": {
         "content": { "type": "string" },
+        "headerImage": { "type": "string" },
         "title": { "type": "string" },
         "intro": { "type": "string" },
         "detailLink": { "type": "string" },
