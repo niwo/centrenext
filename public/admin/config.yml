@@ -11,7 +11,8 @@ backend:
     uploadMedia: Upload "{{path}}"
     deleteMedia: Delete "{{path}}"
 
-local_backend: true
+local_backend:
+  url: http://localhost:8081/api/v1
 publish_mode: editorial_workflow
 media_folder: media
 public_folder: /media

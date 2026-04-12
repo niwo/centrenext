@@ -91,7 +91,6 @@
       }
     </style>
     <script src="/admin/settings.js"></script>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
       window.CMS_MANUAL_INIT = true;
     </script>
@@ -180,16 +179,6 @@
           }
 
           return;
-        }
-
-        if (window.netlifyIdentity) {
-          window.netlifyIdentity.on("init", function (user) {
-            if (!user) {
-              window.netlifyIdentity.on("login", function () {
-                document.location.href = "/admin/index.html";
-              });
-            }
-          });
         }
 
         if (typeof window.initCMS !== "function") {
