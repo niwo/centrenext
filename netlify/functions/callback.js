@@ -36,12 +36,18 @@ exports.handler = async function (event) {
 <body>
 <script>
 (function () {
-  var msg = ${JSON.stringify(msgStr)};
-  if (window.opener) {
-    window.opener.postMessage(msg, "*");
-    setTimeout(function () { window.close(); }, 500);
-  } else {
-    document.body.innerText = "Auth abgeschlossen. Fenster kann geschlossen werden.";
+  try {
+    var msg = ${JSON.stringify(msgStr)};
+    console.log("postMessage to opener:", msg);
+    if (window.opener) {
+      window.opener.postMessage(msg, "*");
+      setTimeout(function () { window.close(); }, 1000);
+    } else {
+      document.body.innerText = "Auth-Callback empfangen. Bitte warte...\\n\\nNachricht: " + msg;
+    }
+  } catch (e) {
+    console.error("postMessage failed:", e);
+    document.body.innerText = "Error: " + e.message;
   }
 })();
 </script>
