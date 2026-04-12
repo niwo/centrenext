@@ -4,6 +4,10 @@
   command = "npm run build"
   publish = "out"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 [context.production.environment]
   NEXT_PUBLIC_GOATCOUNTER_ENDPOINT = "https://centrebienetre.goatcounter.com/count"
 

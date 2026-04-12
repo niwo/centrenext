@@ -1,10 +1,9 @@
 backend:
   name: github
-  site_domain: centrebienetre2.netlify.app
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
   repo: niwo/centrebienetre-content
   branch: main
+  base_url: https://centrebienetre2.netlify.app
+  auth_endpoint: .netlify/functions/auth
   commit_messages:
     create: Create {{collection}} "{{slug}}"
     update: Update {{collection}} "{{slug}}"
