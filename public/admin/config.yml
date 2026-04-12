@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: niwo/centrebienetre-content
   branch: main
   commit_messages:
     create: Create {{collection}} "{{slug}}"
@@ -10,7 +11,7 @@ backend:
 
 local_backend: true
 publish_mode: editorial_workflow
-media_folder: public/media
+media_folder: media
 public_folder: /media
 locale: de
 slug:

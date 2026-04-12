@@ -116,6 +116,7 @@ Optional koennen die Pfade feiner gesteuert werden:
 
 - Das Admin-Interface ist unter `/admin/index.html` verfuegbar und wird aus `public/admin/` statisch mit ausgeliefert.
 - Die CMS-Konfiguration verwaltet Inhalte in Markdown und YAML fuer Praxisdaten, Uebersetzungen, Team, Angebote, News, Testimonials und Bereichseinleitungen.
+- Decap schreibt direkt ins Content-Repository `niwo/centrebienetre-content` (Backend `github`) statt ins Website-Repository.
 - Allgemeine Basis-Uebersetzungen (Navigation, Tage, Hero, Footer, Testimonials-Kerntexte) liegen als Code-Defaults im Hauptrepository und werden beim Laden mit `content/i18n/*.yaml` gemerged.
 - Werte aus `content/i18n/*.yaml` haben Vorrang und ueberschreiben die Code-Defaults, damit redaktionelle Anpassungen weiterhin ohne Code-Deploy moeglich sind.
 
@@ -125,21 +126,22 @@ Empfohlener Hybrid-Workflow fuer `content/i18n/*.yaml`:
 - Fehlt ein Key in `content/i18n/*.yaml`, greift automatisch der Core-Default aus `lib/i18n-core.ts`.
 - Bei Copy-Updates zuerst Core-Defaults anpassen, danach nur gezielte Sprach-/Branding-Abweichungen im Content-Repo belassen.
 - Decap ist auf `editorial_workflow` konfiguriert: Inhalte werden ueber Branch + Pull Request/Merge Request freigegeben statt direkt auf `main` zu schreiben.
-- Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden:
+- Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden (Decap-Server im Content-Repo starten):
 
 ```bash
+cd ../centrebienetre-content
 npx decap-server
 ```
 
+Danach im Website-Repo den Dev-Server starten und `/admin` oeffnen:
+
+```bash
+cd ../centrenext
+npm run dev
+```
+
 - Die URL der produktiven Netlify-Site kann in `public/admin/settings.js` als `siteUrl` hinterlegt werden. Auf `localhost` wird dann automatisch zur gehosteten Admin-Seite weitergeleitet.
-- Fuer die produktive Nutzung auf Netlify muessen **Netlify Identity** und **Git Gateway** aktiviert sein, da das CMS mit dem `git-gateway` Backend konfiguriert ist.
-- Nach dem Aktivieren von Identity sollten Redakteurinnen und Redakteure ueber Netlify eingeladen werden, damit der Login unter `/admin/index.html` funktioniert.
-
-Wichtige Einschraenkung bei getrenntem Repository:
-
-- Das aktuelle Decap-Setup mit `git-gateway` schreibt immer in dieses Website-Repository.
-- Wenn Inhalte in ein separates privates GitHub-Repository verschoben werden, muss Decap auf ein Backend umgestellt werden, das direkt in dieses Content-Repository schreibt, oder das CMS muss aus dem Content-Repository selbst betrieben werden.
-- Die hier umgesetzte Trennung entkoppelt Build und Laufzeitdaten. Sie loest nicht automatisch die Cross-Repo-Schreibrechte des aktuellen Decap-Setups.
+- Fuer die produktive Nutzung muss das Decap-`github` Backend per OAuth App konfiguriert werden (Client-ID/Secret und Callback-URL passend zur Admin-URL).
 
 ## SEO und Tracking
 
