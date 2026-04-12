@@ -72,7 +72,7 @@ Empfohlene Struktur im privaten Content-Repository:
 Lokale Entwicklung mit separatem Repository:
 
 ```bash
-git clone git@github.com:<org>/centrenext-content.git .content-source
+git clone git@github.com:<org>/centrebienetre-content.git .content-source
 CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run dev
 ```
 
@@ -86,7 +86,7 @@ CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run build
 CI/CD (GitHub Actions):
 
 - Der Workflow checkt das private Content-Repo nach `centrebienetre-content/` aus und setzt `CENTRENEXT_CONTENT_REPO_DIR` automatisch.
-- Falls `GITHUB_TOKEN` keinen Zugriff auf das private Content-Repo hat, lege ein Repo-Secret `CONTENT_REPO_TOKEN` (PAT mit `repo`/Leserechten) an.
+- Das Repo-Secret `CONTENT_REPO_TOKEN` ist erforderlich (PAT mit Leserechten auf `niwo/centrebienetre-content`).
 
 Wenn `CENTRENEXT_CONTENT_REPO_DIR` gesetzt ist, wird vor `dev` und `build` ein Build-Snapshot in `.content-build/content` erzeugt. Next.js liest waehrend des Builds und im Dev-Server aus diesem Snapshot statt direkt aus dem Quell-Repository.
 

@@ -19,12 +19,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Ensure content repo token exists
+        run: |
+          if [ -z "${{ secrets.CONTENT_REPO_TOKEN }}" ]; then
+            echo "::error::Missing required secret CONTENT_REPO_TOKEN (needs read access to niwo/centrebienetre-content)."
+            exit 1
+          fi
+
       - name: Checkout content repository
         uses: actions/checkout@v4
         with:
           repository: niwo/centrebienetre-content
+          ref: main
           path: centrebienetre-content
-          token: ${{ secrets.CONTENT_REPO_TOKEN != '' && secrets.CONTENT_REPO_TOKEN || github.token }}
+          token: ${{ secrets.CONTENT_REPO_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
