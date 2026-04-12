@@ -120,12 +120,14 @@ type PageContent = {
     title: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
   };
   team: {
     title: string;
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     scheduleTitle: string;
     scheduleMorningLabel: string;
     scheduleAfternoonLabel: string;
@@ -136,6 +138,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     priceLabel: string;
     unitLabel: string;
     unitSessionLabel: string;
@@ -154,6 +157,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     showAllLabel: string;
     items: NewsItem[];
   };
@@ -162,6 +166,7 @@ type PageContent = {
     intro: string;
     kicker: string;
     detailLink: string;
+    headerImage: string;
     practiceDetailLink: string;
     addressLabel: string;
     openingHoursLabel: string;
@@ -462,6 +467,7 @@ type PageDataFile = {
   id: string;
   de: {
     content: string;
+    headerImage?: string;
     title?: string;
     intro?: string;
     detailLink?: string;
@@ -489,6 +495,7 @@ type PageDataFile = {
   };
   fr: {
     content: string;
+    headerImage?: string;
     title?: string;
     intro?: string;
     detailLink?: string;
@@ -897,6 +904,14 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   const newsPage = localizedPages.news;
   const locationPage = localizedPages.location;
 
+  const defaultSectionHeaderImages: Record<SectionKey, string> = {
+    about: "/images/DSC06768.webp",
+    team: "/images/team/christa.webp",
+    services: "/images/DSC06840.webp",
+    news: "/images/DSC06642.webp",
+    location: "/images/DSC06768.webp",
+  };
+
   const teamProfiles: TeamProfile[] = teamProfilesWithMeta.map(({ slug, content }) => ({ slug, content }));
 
   // Merge practice data + day-name translations
@@ -971,12 +986,14 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       title: aboutPage.title ?? i18n.about.title ?? i18n.nav.about,
       kicker: i18n.nav.about,
       detailLink: aboutPage.detailLink ?? i18n.about.detailLink ?? "",
+      headerImage: aboutPage.headerImage ?? defaultSectionHeaderImages.about,
     },
     team: {
       title: teamPage.title ?? i18n.team.title ?? i18n.nav.team,
       intro: teamPage.intro ?? i18n.team.intro ?? "",
       kicker: i18n.nav.team,
       detailLink: teamPage.detailLink ?? i18n.team.detailLink ?? "",
+      headerImage: teamPage.headerImage ?? defaultSectionHeaderImages.team,
       scheduleTitle: teamPage.schedule?.title ?? i18n.team.schedule?.title ?? "",
       scheduleMorningLabel: teamPage.schedule?.morning ?? i18n.team.schedule?.morning ?? "",
       scheduleAfternoonLabel: teamPage.schedule?.afternoon ?? i18n.team.schedule?.afternoon ?? "",
@@ -987,6 +1004,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: servicesPage.intro ?? i18n.services.intro ?? "",
       kicker: i18n.nav.services,
       detailLink: servicesPage.detailLink ?? i18n.services.detailLink ?? "",
+      headerImage: servicesPage.headerImage ?? defaultSectionHeaderImages.services,
       priceLabel: servicesPage.priceLabel ?? i18n.services.priceLabel ?? "",
       unitLabel: servicesPage.unitLabel ?? i18n.services.unitLabel ?? "",
       unitSessionLabel: servicesPage.unitSessionLabel ?? i18n.services.unitSessionLabel ?? "",
@@ -1009,6 +1027,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: newsPage.intro ?? i18n.posts.intro ?? "",
       kicker: i18n.nav.posts,
       detailLink: newsPage.detailLink ?? i18n.posts.detailLink ?? "",
+      headerImage: newsPage.headerImage ?? defaultSectionHeaderImages.news,
       showAllLabel: newsPage.showAllLabel ?? i18n.posts.showAllLabel ?? "",
       items: newsItems,
     },
@@ -1017,6 +1036,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: locationPage.intro ?? i18n.location.intro ?? "",
       kicker: i18n.nav.location,
       detailLink: locationPage.detailLink ?? i18n.location.detailLink ?? "",
+      headerImage: locationPage.headerImage ?? defaultSectionHeaderImages.location,
       practiceDetailLink: locationPage.practiceDetailLink ?? i18n.location.practiceDetailLink ?? "",
       addressLabel: locationPage.addressLabel ?? i18n.location.addressLabel ?? "",
       openingHoursLabel: locationPage.openingHoursLabel ?? i18n.location.openingHoursLabel ?? "",
