@@ -1,0 +1,16 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "git config": true,
+        "git cat-file": true,
+        "set": true,
+        "git rev-parse": true,
+        "git push": true,
+        "npm run -s validate-content": true,
+        "npm run validate-content": true,
+        "git stash": true,
+        "git rebase": true,
+        "git add": true,
+        "git commit": true,
+        "npm install": true
+    }
+}

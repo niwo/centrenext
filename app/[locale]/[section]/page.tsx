@@ -20,14 +20,6 @@ type PageProps = {
   }>;
 };
 
-const sectionImageByKey: Record<SectionKey, string> = {
-  about: "/images/DSC06768.webp",
-  team: "/images/team/christa.webp",
-  services: "/images/DSC06840.webp",
-  news: "/images/DSC06642.webp",
-  location: "/images/DSC06768.webp",
-};
-
 const aboutGalleryImages = [
   "/images/DSC06642.webp",
   "/images/DSC06768.webp",
@@ -41,6 +33,14 @@ function getSectionTitle(section: SectionKey, content: Awaited<ReturnType<typeof
   if (section === "services") return content.page.services.title;
   if (section === "news") return content.page.news.sectionTitle;
   return content.page.location.title;
+}
+
+function getSectionHeaderImage(section: SectionKey, content: Awaited<ReturnType<typeof getSiteContent>>) {
+  if (section === "about") return content.page.about.headerImage;
+  if (section === "team") return content.page.team.headerImage;
+  if (section === "services") return content.page.services.headerImage;
+  if (section === "news") return content.page.news.headerImage;
+  return content.page.location.headerImage;
 }
 
 function formatNewsDate(date: string, locale: string) {
@@ -76,6 +76,7 @@ export default async function SectionPage({ params }: PageProps) {
 
   const content = await getSiteContent(localeValue);
   const title = getSectionTitle(canonicalSection, content);
+  const headerImage = getSectionHeaderImage(canonicalSection, content);
   const isAboutSection = canonicalSection === "about";
   const isTeamSection = canonicalSection === "team";
   const isServicesSection = canonicalSection === "services";
@@ -89,7 +90,7 @@ export default async function SectionPage({ params }: PageProps) {
         <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
         <Card className="space-y-6 p-0 overflow-hidden">
-          <Image src={sectionImageByKey[canonicalSection]} alt={title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
+          <Image src={headerImage} alt={title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
           <div className="space-y-4 px-6 pb-8 sm:px-8">
             <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
               <Link href={`/${locale}`} className="hover:text-forest">

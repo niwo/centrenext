@@ -1,5 +1,6 @@
 id: news
 de:
+  headerImage: /images/DSC06642.webp
   title: Aktuelle News
   sectionTitle: News
   intro: ""
@@ -7,6 +8,7 @@ de:
   showAllLabel: Alle anzeigen
   content: ""
 fr:
+  headerImage: /images/DSC06642.webp
   title: Actualites recentes
   sectionTitle: Actualites
   intro: ""

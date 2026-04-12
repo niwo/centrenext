@@ -1,5 +1,6 @@
 id: services
 de:
+  headerImage: /images/DSC06840.webp
   title: Angebote
   intro: Erfahre mehr zu unseren Angeboten und Therapien.
   detailLink: Alle Angebote
@@ -16,6 +17,7 @@ de:
   content: |
     Erfahre mehr zu unseren Angeboten und Therapien.
 fr:
+  headerImage: /images/DSC06840.webp
   title: Prestations
   intro: "Découvrez nos offres et thérapies."
   detailLink: Toutes les prestations
