@@ -118,10 +118,18 @@ async function main() {
   const buildRoot = path.join(appRoot, ".content-build");
   const buildContentDir = path.join(buildRoot, "content");
   const sourceImagesDir = path.join(sourcePublicDir, "images");
+  const sourceUploadsDir = path.join(sourcePublicDir, "uploads");
   const targetImagesDir = path.join(appPublicDir, "images");
+  const targetUploadsDir = path.join(appPublicDir, "uploads");
 
   if (!(await pathExists(contentDir))) {
-    throw new Error(`Content directory not found: ${contentDir}`);
+    throw new Error(
+      [
+        `Content directory not found: ${contentDir}`,
+        "Set CENTRENEXT_CONTENT_REPO_DIR (or CENTRENEXT_CONTENT_DIR) to your content repository path.",
+        "Default autodiscovery expects a sibling folder: ../centrebienetre-content",
+      ].join("\n"),
+    );
   }
 
   await copyDirectory(contentDir, buildContentDir);
@@ -175,6 +183,11 @@ async function main() {
   }
 
   await rewriteBuildContentReferences(buildContentDir, replacements);
+
+  await fs.rm(targetUploadsDir, { recursive: true, force: true });
+  if (await pathExists(sourceUploadsDir)) {
+    await copyDirectory(sourceUploadsDir, targetUploadsDir);
+  }
 
   console.log(`Prepared build content in ${buildContentDir} and optimized images in ${targetImagesDir}.`);
 }

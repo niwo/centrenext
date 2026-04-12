@@ -68,6 +68,7 @@ Empfohlene Struktur im privaten Content-Repository:
 
 - `content/`
 - `public/images/`
+- `public/uploads/`
 
 Lokale Entwicklung mit separatem Repository:
 
@@ -83,6 +84,11 @@ CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run validate:content
 CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run build
 ```
 
+CI/CD (GitHub Actions):
+
+- Der Workflow checkt das private Content-Repo nach `centrebienetre-content/` aus und setzt `CENTRENEXT_CONTENT_REPO_DIR` automatisch.
+- Das Repo-Secret `CONTENT_REPO_TOKEN` ist erforderlich (PAT mit Leserechten auf `niwo/centrebienetre-content`).
+
 Wenn `CENTRENEXT_CONTENT_REPO_DIR` gesetzt ist, wird vor `dev` und `build` ein Build-Snapshot in `.content-build/content` erzeugt. Next.js liest waehrend des Builds und im Dev-Server aus diesem Snapshot statt direkt aus dem Quell-Repository.
 
 Fuer Bilder gilt dabei:
@@ -91,6 +97,11 @@ Fuer Bilder gilt dabei:
 - Rasterbilder werden fuer den Website-Build optimiert.
 - JPG- und PNG-Referenzen in den Content-Dateien werden im Build-Snapshot auf WebP umgeschrieben.
 - Die optimierten Bilder werden nach `public/images/` geschrieben, damit der statische Export sie direkt ausliefern kann.
+
+Fuer Uploads gilt dabei:
+
+- Decap-Uploads liegen unter `public/uploads/` (z. B. Bilder, PDFs, Dokumente).
+- `public/uploads/` wird unveraendert aus dem Content-Repository in die Website uebernommen (ohne Bild-Optimierung), damit alle Dateitypen erhalten bleiben.
 
 Die Quelldaten im privaten Repository bleiben dabei unveraendert.
 
