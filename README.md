@@ -135,8 +135,7 @@ Empfohlener Hybrid-Workflow fuer `content/i18n/*.yaml`:
 - Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden (Decap-Server im Content-Repo starten):
 
 ```bash
-cd ../centrebienetre-content
-npx decap-server
+npm run cms:proxy
 ```
 
 Danach im Website-Repo den Dev-Server starten und `/admin` oeffnen:
@@ -145,6 +144,8 @@ Danach im Website-Repo den Dev-Server starten und `/admin` oeffnen:
 cd ../centrenext
 npm run dev
 ```
+
+Wichtig: Wenn der Proxy stattdessen im Website-Repo gestartet wird, erscheinen Collections lokal oft leer, da die YAML-Dateien im separaten Content-Repo liegen.
 
 - Die URL der produktiven Netlify-Site kann in `public/admin/settings.js` als `siteUrl` hinterlegt werden. Auf `localhost` wird dann automatisch zur gehosteten Admin-Seite weitergeleitet.
 - Fuer die produktive Nutzung muss das Decap-`github` Backend per OAuth App konfiguriert werden (Client-ID/Secret und Callback-URL passend zur Admin-URL).

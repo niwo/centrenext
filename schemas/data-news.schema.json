@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["id", "updated", "tags", "profile"],
+  "required": ["updated", "tags", "profile"],
   "properties": {
     "id": { "type": "string" },
     "updated": { "type": "string" },

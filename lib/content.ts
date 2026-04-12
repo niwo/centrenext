@@ -253,6 +253,12 @@ type LocalizedField = string | Partial<Record<Locale, string>>;
 type PracticeData = {
   name: string;
   tagline?: Partial<Record<string, string>>;
+  hero?: {
+    eyebrow?: Partial<Record<string, string>>;
+    title?: Partial<Record<string, string>>;
+    primaryCta?: Partial<Record<string, string>>;
+    secondaryCta?: Partial<Record<string, string>>;
+  };
   seo?: {
     defaultImage?: string;
   };
@@ -929,10 +935,16 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     navigation,
     searchLabel: i18n.nav.search,
     hero: {
-      eyebrow: i18n.hero.eyebrow,
-      title: i18n.hero.title,
-      primaryCta: { label: i18n.hero.primaryCta, href: "#services" },
-      secondaryCta: { label: i18n.hero.secondaryCta, href: "#location" },
+      eyebrow: practiceData.hero?.eyebrow?.[locale] ?? i18n.hero.eyebrow,
+      title: practiceData.hero?.title?.[locale] ?? i18n.hero.title,
+      primaryCta: {
+        label: practiceData.hero?.primaryCta?.[locale] ?? i18n.hero.primaryCta,
+        href: "#services",
+      },
+      secondaryCta: {
+        label: practiceData.hero?.secondaryCta?.[locale] ?? i18n.hero.secondaryCta,
+        href: "#location",
+      },
     },
     about: {
       title: aboutPage.title ?? i18n.about.title ?? i18n.nav.about,

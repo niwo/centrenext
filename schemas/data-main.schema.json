@@ -12,6 +12,44 @@
     "name": {
       "type": "string"
     },
+    "hero": {
+      "type": "object",
+      "properties": {
+        "eyebrow": {
+          "type": "object",
+          "properties": {
+            "de": { "type": "string" },
+            "fr": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "title": {
+          "type": "object",
+          "properties": {
+            "de": { "type": "string" },
+            "fr": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "primaryCta": {
+          "type": "object",
+          "properties": {
+            "de": { "type": "string" },
+            "fr": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "secondaryCta": {
+          "type": "object",
+          "properties": {
+            "de": { "type": "string" },
+            "fr": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "seo": {
       "type": "object",
       "required": [

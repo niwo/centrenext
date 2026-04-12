@@ -52,6 +52,34 @@ collections:
                 name: defaultImage
                 widget: image
                 required: false
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - label: Eyebrow
+                name: eyebrow
+                widget: object
+                fields:
+                  - { label: Deutsch, name: de, widget: string, default: Die Praxis fuer das ganzheitliche Wohlbefinden }
+                  - { label: Francais, name: fr, widget: string, default: Le cabinet pour le bien-etre holistique }
+              - label: Titel
+                name: title
+                widget: object
+                fields:
+                  - { label: Deutsch, name: de, widget: text, default: Physiotherapie, Coaching und mehr in Biel - finden Sie die passenden Angebote fuer Ihr Wohlbefinden. }
+                  - { label: Francais, name: fr, widget: text, default: Physiotherapie, coaching et plus encore a Bienne - trouvez les prestations adaptees a votre bien-etre. }
+              - label: Primaerer CTA
+                name: primaryCta
+                widget: object
+                fields:
+                  - { label: Deutsch, name: de, widget: string, default: Angebote ansehen }
+                  - { label: Francais, name: fr, widget: string, default: Voir les prestations }
+              - label: Sekundaerer CTA
+                name: secondaryCta
+                widget: object
+                fields:
+                  - { label: Deutsch, name: de, widget: string, default: Kontakt entdecken }
+                  - { label: Francais, name: fr, widget: string, default: Voir le contact }
           - label: Adresse
             name: address
             widget: object
@@ -238,7 +266,7 @@ collections:
                   - { label: Landing page - Label apres-midi, name: afternoon, widget: string }
               - { label: Page detail - Contenu, name: content, widget: markdown }
       - name: services
-        label: "💓 Angebote"
+        label: "🗂️ Angebote"
         file: content/data/pages/services.yaml
         format: yaml
         fields:
@@ -325,51 +353,44 @@ collections:
               - label: Sprachwechsel-Label
                 name: localeLinkLabel
                 widget: string
+                default: Zur deutschen Version
           - label: Wochentage
             name: days
             widget: object
             fields:
-              - { label: Montag, name: monday, widget: string }
-              - { label: Dienstag, name: tuesday, widget: string }
-              - { label: Mittwoch, name: wednesday, widget: string }
-              - { label: Donnerstag, name: thursday, widget: string }
-              - { label: Freitag, name: friday, widget: string }
-              - { label: Samstag, name: saturday, widget: string }
-              - { label: Sonntag, name: sunday, widget: string }
+              - { label: Montag, name: monday, widget: string, default: Montag }
+              - { label: Dienstag, name: tuesday, widget: string, default: Dienstag }
+              - { label: Mittwoch, name: wednesday, widget: string, default: Mittwoch }
+              - { label: Donnerstag, name: thursday, widget: string, default: Donnerstag }
+              - { label: Freitag, name: friday, widget: string, default: Freitag }
+              - { label: Samstag, name: saturday, widget: string, default: Samstag }
+              - { label: Sonntag, name: sunday, widget: string, default: Sonntag }
           - label: Navigation
             name: nav
             widget: object
             fields:
-              - { label: Praxis, name: about, widget: string }
-              - { label: Team, name: team, widget: string }
-              - { label: Angebote, name: services, widget: string }
-              - { label: News, name: posts, widget: string }
-              - { label: Suche, name: search, widget: string }
-              - { label: Kontakt, name: location, widget: string }
-          - label: Hero
-            name: hero
-            widget: object
-            fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Titel, name: title, widget: text }
-              - { label: Primaerer CTA, name: primaryCta, widget: string }
-              - { label: Sekundaerer CTA, name: secondaryCta, widget: string }
+              - { label: Praxis, name: about, widget: string, default: Praxis }
+              - { label: Team, name: team, widget: string, default: Team }
+              - { label: Angebote, name: services, widget: string, default: Angebote }
+              - { label: News, name: posts, widget: string, default: News }
+              - { label: Suche, name: search, widget: string, default: Suche }
+              - { label: Kontakt, name: location, widget: string, default: Kontakt }
           - label: Footer
             name: footer
             widget: object
             fields:
-              - { label: Kontakt-Kicker, name: contactKicker, widget: string }
-              - { label: Back-Link, name: backLink, widget: string }
-              - { label: Detail-Kicker, name: detailKicker, widget: string }
-              - { label: E-Mail-Label, name: emailLabel, widget: string }
-              - { label: Telefon-Label, name: phoneLabel, widget: string }
-              - { label: CMS-Admin-Label, name: adminLabel, widget: string }
+              - { label: Kontakt-Kicker, name: contactKicker, widget: string, default: Kontakt }
+              - { label: Back-Link, name: backLink, widget: string, default: Zurueck zur Startseite }
+              - { label: Detail-Kicker, name: detailKicker, widget: string, default: Detailseite }
+              - { label: E-Mail-Label, name: emailLabel, widget: string, default: E-Mail }
+              - { label: Telefon-Label, name: phoneLabel, widget: string, default: Telefon }
+              - { label: CMS-Admin-Label, name: adminLabel, widget: string, default: CMS Admin }
           - label: Testimonials
             name: testimonials
             widget: object
             fields:
-              - { label: Kicker, name: kicker, widget: string }
-              - { label: Titel, name: title, widget: string }
+              - { label: Kicker, name: kicker, widget: string, default: Erfahrungsberichte }
+              - { label: Titel, name: title, widget: string, default: Was unsere Kundinnen und Kunden sagen }
               - { label: Intro, name: intro, widget: text, required: false }
       - name: i18n_fr
         label: "🇫🇷 Übersetzungen FR"
@@ -383,51 +404,44 @@ collections:
               - label: Label du lien de langue
                 name: localeLinkLabel
                 widget: string
+                default: Version francaise
           - label: Jours
             name: days
             widget: object
             fields:
-              - { label: Lundi, name: monday, widget: string }
-              - { label: Mardi, name: tuesday, widget: string }
-              - { label: Mercredi, name: wednesday, widget: string }
-              - { label: Jeudi, name: thursday, widget: string }
-              - { label: Vendredi, name: friday, widget: string }
-              - { label: Samedi, name: saturday, widget: string }
-              - { label: Dimanche, name: sunday, widget: string }
+              - { label: Lundi, name: monday, widget: string, default: Lundi }
+              - { label: Mardi, name: tuesday, widget: string, default: Mardi }
+              - { label: Mercredi, name: wednesday, widget: string, default: Mercredi }
+              - { label: Jeudi, name: thursday, widget: string, default: Jeudi }
+              - { label: Vendredi, name: friday, widget: string, default: Vendredi }
+              - { label: Samedi, name: saturday, widget: string, default: Samedi }
+              - { label: Dimanche, name: sunday, widget: string, default: Dimanche }
           - label: Navigation
             name: nav
             widget: object
             fields:
-              - { label: Cabinet, name: about, widget: string }
-              - { label: Equipe, name: team, widget: string }
-              - { label: Prestations, name: services, widget: string }
-              - { label: Articles, name: posts, widget: string }
-              - { label: Recherche, name: search, widget: string }
-              - { label: Contact, name: location, widget: string }
-          - label: Hero
-            name: hero
-            widget: object
-            fields:
-              - { label: Eyebrow, name: eyebrow, widget: string }
-              - { label: Titre, name: title, widget: text }
-              - { label: CTA primaire, name: primaryCta, widget: string }
-              - { label: CTA secondaire, name: secondaryCta, widget: string }
+              - { label: Cabinet, name: about, widget: string, default: Cabinet }
+              - { label: Equipe, name: team, widget: string, default: Equipe }
+              - { label: Prestations, name: services, widget: string, default: Prestations }
+              - { label: Articles, name: posts, widget: string, default: Articles }
+              - { label: Recherche, name: search, widget: string, default: Recherche }
+              - { label: Contact, name: location, widget: string, default: Contact }
           - label: Footer
             name: footer
             widget: object
             fields:
-              - { label: Kicker contact, name: contactKicker, widget: string }
-              - { label: Lien retour, name: backLink, widget: string }
-              - { label: Kicker detail, name: detailKicker, widget: string }
-              - { label: Label e-mail, name: emailLabel, widget: string }
-              - { label: Label telephone, name: phoneLabel, widget: string }
-              - { label: Label admin CMS, name: adminLabel, widget: string }
+              - { label: Kicker contact, name: contactKicker, widget: string, default: Contact }
+              - { label: Lien retour, name: backLink, widget: string, default: Retour a la page d'accueil }
+              - { label: Kicker detail, name: detailKicker, widget: string, default: Detail }
+              - { label: Label e-mail, name: emailLabel, widget: string, default: E-mail }
+              - { label: Label telephone, name: phoneLabel, widget: string, default: Telephone }
+              - { label: Label admin CMS, name: adminLabel, widget: string, default: Admin CMS }
           - label: Testimonials
             name: testimonials
             widget: object
             fields:
-              - { label: Kicker, name: kicker, widget: string }
-              - { label: Titre, name: title, widget: string }
+              - { label: Kicker, name: kicker, widget: string, default: Temoignages }
+              - { label: Titre, name: title, widget: string, default: Ce que disent nos clients }
               - { label: Intro, name: intro, widget: text, required: false }
 
   - name: team_data
@@ -438,17 +452,11 @@ collections:
     delete: true
     extension: yaml
     format: yaml
-    identifier_field: id
-    slug: "{{fields.id}}"
+    slug: "{{fields.name}}"
     summary: "👤 {{name}}"
     editor:
       preview: false
     fields:
-      - label: Slug
-        name: id
-        widget: string
-        hint: Muss mit den Slugs in den lokalen Teamprofilen uebereinstimmen.
-        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
       - label: Name
         name: name
         widget: string
@@ -546,24 +554,18 @@ collections:
           widget: string
 
   - name: service_data
-    label: "💓 Angebote"
+    label: "🗂️ Angebote"
     label_singular: Angebot
     folder: content/data/services
     create: true
     delete: true
     extension: yaml
     format: yaml
-    identifier_field: id
-    slug: "{{fields.id}}"
-    summary: "💓 {{profile.de.title}}"
+    slug: "{{fields.profile.de.title}}"
+    summary: "🗂️ {{profile.de.title}}"
     editor:
       preview: false
     fields:
-      - label: Slug
-        name: id
-        widget: string
-        hint: Muss mit den Slugs in den lokalen Angebotsseiten uebereinstimmen.
-        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
       - label: Profil
         name: profile
         widget: object
@@ -674,16 +676,11 @@ collections:
     delete: true
     extension: yaml
     format: yaml
-    identifier_field: id
-    slug: "{{fields.id}}"
-    summary: "📰 {{profile.de.title}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{fields.profile.de.title}}"
+    summary: "📰 {{updated}} - {{profile.de.title}}"
     editor:
       preview: false
     fields:
-      - label: ID
-        name: id
-        widget: string
-        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
       - label: Datum
         name: updated
         widget: datetime
@@ -738,23 +735,18 @@ collections:
                 widget: markdown
 
   - name: testimonials_data
-    label: "👍 Testimonials"
+    label: "💬 Testimonials"
     label_singular: Testimonial
     folder: content/data/testimonials
     create: true
     delete: true
     extension: yaml
     format: yaml
-    identifier_field: id
-    slug: "{{fields.id}}"
-    summary: "👤 {{name}}"
+    slug: "{{fields.date}}-{{fields.name}}"
+    summary: "💬 {{name}}"
     editor:
       preview: false
     fields:
-      - label: ID
-        name: id
-        widget: string
-        pattern: ['^[a-z0-9-]+$', 'Nur Kleinbuchstaben, Zahlen und Bindestriche sind erlaubt.']
       - label: Name
         name: name
         widget: string
