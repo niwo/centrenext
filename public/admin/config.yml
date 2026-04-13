@@ -15,6 +15,7 @@ backend:
 local_backend:
   url: http://localhost:8081/api/v1
 publish_mode: simple
+app_title: Centre Bien Être CMS
 logo:
   src: /logo.svg
   show_in_header: true
