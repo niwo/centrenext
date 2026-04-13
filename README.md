@@ -131,7 +131,7 @@ Empfohlener Hybrid-Workflow fuer `content/i18n/*.yaml`:
 - Nur Keys im Content-Repo pflegen, die bewusst vom Standard abweichen (Override-only).
 - Fehlt ein Key in `content/i18n/*.yaml`, greift automatisch der Core-Default aus `lib/i18n-core.ts`.
 - Bei Copy-Updates zuerst Core-Defaults anpassen, danach nur gezielte Sprach-/Branding-Abweichungen im Content-Repo belassen.
-- Sveltia ist auf `editorial_workflow` konfiguriert: Inhalte werden ueber Branch + Pull Request/Merge Request freigegeben statt direkt auf `main` zu schreiben.
+- Sveltia ist auf `simple` konfiguriert: Inhalte werden direkt auf den konfigurierten Ziel-Branch (`main`) geschrieben.
 - Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden (Sveltia Local Proxy im Content-Repo starten):
 
 ```bash
