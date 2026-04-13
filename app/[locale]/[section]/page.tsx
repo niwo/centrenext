@@ -192,7 +192,7 @@ export default async function SectionPage({ params }: PageProps) {
                     <div className="flex items-center gap-7">
                       <div className="shrink-0 overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
                         <Image
-                          src="/media/DSC06642.webp"
+                          src={post.image}
                           alt={post.title}
                           width={96}
                           height={96}

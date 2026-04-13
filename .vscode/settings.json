@@ -4,6 +4,7 @@
         "git add": true,
         "git commit": true,
         "git push": true,
-        "printf": true
+        "printf": true,
+        "npm run typecheck": true
     }
 }

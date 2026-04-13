@@ -274,7 +274,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
           <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
           <Card className="space-y-6 overflow-hidden p-0">
-            <Image src="/media/DSC06642.webp" alt={post.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
+            <Image src={post.image} alt={post.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
             <div className="space-y-4 px-6 pb-8 sm:px-8">
               <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
                 <Link href={`/${locale}`} className="hover:text-forest">

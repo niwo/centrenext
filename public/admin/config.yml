@@ -689,6 +689,10 @@ collections:
         date_format: YYYY-MM-DD
         time_format: false
         format: YYYY-MM-DD
+      - label: Bild
+        name: image
+        widget: image
+        required: false
       - label: Tags
         name: tags
         widget: list

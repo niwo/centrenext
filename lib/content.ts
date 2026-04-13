@@ -87,6 +87,7 @@ type NewsItem = {
   title: string;
   date: string;
   excerpt: string;
+  image: string;
 };
 
 export type NewsPost = NewsItem & {
@@ -403,6 +404,7 @@ type TestimonialLocalizedProfile = {
 type NewsDataFile = {
   id?: string;
   updated?: string;
+  image?: string;
   tags?: string[];
   profile?: Partial<Record<Locale, NewsLocalizedProfile>>;
 };
@@ -661,6 +663,7 @@ async function readNewsPosts(newsDataDir: string, locale: Locale): Promise<NewsP
         title: localizedProfile.title ?? slug,
         date: newsData.updated ?? "",
         excerpt: localizedProfile.excerpt ?? "",
+        image: newsData.image ?? "/media/DSC06642.webp",
         tags: normalizeTags(newsData.tags),
         content: (localizedProfile.content ?? "").trim(),
       };
@@ -914,11 +917,12 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     image: item.image,
   }));
 
-  const newsItems = newsPosts.map(({ slug, title, date, excerpt }) => ({
+  const newsItems = newsPosts.map(({ slug, title, date, excerpt, image }) => ({
     slug,
     title,
     date,
     excerpt,
+    image,
   }));
 
   // Build navigation from i18n nav keys (order follows sectionKeys)
