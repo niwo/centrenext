@@ -1,4 +1,4 @@
-// OAuth proxy: initiate GitHub OAuth flow for Decap CMS
+// OAuth proxy: initiate GitHub OAuth flow for Sveltia CMS
 exports.handler = async function (event) {
   const clientId = process.env.GITHUB_CLIENT_ID;
   const siteUrl = (process.env.OAUTH_SITE_URL || process.env.URL || "").replace(/\/+$/, "");

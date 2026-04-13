@@ -3,7 +3,7 @@
 [![Next.js](https://img.shields.io/badge/Built%20with-Next.js-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org)
 [![GoatCounter](https://img.shields.io/badge/Analytics-GoatCounter-7c3aed)](https://centrebienetre.goatcounter.com)
 [![Netlify](https://img.shields.io/badge/Hosted%20on-Netlify-00C7B7?logo=netlify&logoColor=white)](https://www.netlify.com)
-[![Decap CMS](https://img.shields.io/badge/CMS-Decap-e11d48)](https://decapcms.org)
+[![Sveltia CMS](https://img.shields.io/badge/CMS-Sveltia-ff6b6b)](https://sveltiacms.app)
 
 Das vorliegende Projekt implementiert die Webseite für **Centre bien-être**.
 
@@ -118,11 +118,11 @@ Optional koennen die Pfade feiner gesteuert werden:
 - `CENTRENEXT_CONTENT_DIR` fuer einen direkten Override des `content/`-Verzeichnisses
 - `CENTRENEXT_CONTENT_MEDIA_DIR` fuer einen direkten Override des Quell-`media/`-Verzeichnisses
 
-## Decap CMS
+## Sveltia CMS
 
 - Das Admin-Interface ist unter `/admin/index.html` verfuegbar und wird aus `public/admin/` statisch mit ausgeliefert.
 - Die CMS-Konfiguration verwaltet Inhalte in Markdown und YAML fuer Praxisdaten, Uebersetzungen, Team, Angebote, News, Testimonials und Bereichseinleitungen.
-- Decap schreibt direkt ins Content-Repository `niwo/centrebienetre-content` (Backend `github`) statt ins Website-Repository.
+- Sveltia schreibt direkt ins Content-Repository `niwo/centrebienetre-content` (Backend `github`) statt ins Website-Repository.
 - Allgemeine Basis-Uebersetzungen (Navigation, Tage, Hero, Footer, Testimonials-Kerntexte) liegen als Code-Defaults im Hauptrepository und werden beim Laden mit `content/i18n/*.yaml` gemerged.
 - Werte aus `content/i18n/*.yaml` haben Vorrang und ueberschreiben die Code-Defaults, damit redaktionelle Anpassungen weiterhin ohne Code-Deploy moeglich sind.
 
@@ -131,8 +131,8 @@ Empfohlener Hybrid-Workflow fuer `content/i18n/*.yaml`:
 - Nur Keys im Content-Repo pflegen, die bewusst vom Standard abweichen (Override-only).
 - Fehlt ein Key in `content/i18n/*.yaml`, greift automatisch der Core-Default aus `lib/i18n-core.ts`.
 - Bei Copy-Updates zuerst Core-Defaults anpassen, danach nur gezielte Sprach-/Branding-Abweichungen im Content-Repo belassen.
-- Decap ist auf `editorial_workflow` konfiguriert: Inhalte werden ueber Branch + Pull Request/Merge Request freigegeben statt direkt auf `main` zu schreiben.
-- Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden (Decap-Server im Content-Repo starten):
+- Sveltia ist auf `editorial_workflow` konfiguriert: Inhalte werden ueber Branch + Pull Request/Merge Request freigegeben statt direkt auf `main` zu schreiben.
+- Lokal kann der CMS-Workflow mit dem lokalen Backend getestet werden (Sveltia Local Proxy im Content-Repo starten):
 
 ```bash
 npm run cms:proxy
@@ -148,7 +148,7 @@ npm run dev
 Wichtig: Wenn der Proxy stattdessen im Website-Repo gestartet wird, erscheinen Collections lokal oft leer, da die YAML-Dateien im separaten Content-Repo liegen.
 
 - Die URL der produktiven Netlify-Site kann in `public/admin/settings.js` als `siteUrl` hinterlegt werden. Auf `localhost` wird dann automatisch zur gehosteten Admin-Seite weitergeleitet.
-- Fuer die produktive Nutzung muss das Decap-`github` Backend per OAuth App konfiguriert werden (Client-ID/Secret und Callback-URL passend zur Admin-URL).
+- Fuer die produktive Nutzung muss das Sveltia-`github` Backend per OAuth App konfiguriert werden (Client-ID/Secret und Callback-URL passend zur Admin-URL).
 
 ## SEO und Tracking
 

@@ -5,7 +5,7 @@
   "scripts": {
     "content:prepare": "node scripts/prepare-build-content.mjs",
     "content:watch": "node scripts/watch-content.mjs",
-    "cms:proxy": "node scripts/run-decap-proxy.mjs",
+    "cms:proxy": "node scripts/run-sveltia-proxy.mjs",
     "dev": "node scripts/dev-with-content-watch.mjs",
     "build": "npm run content:prepare && node scripts/run-next-command.mjs build",
     "start": "next start",

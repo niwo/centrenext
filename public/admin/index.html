@@ -117,6 +117,7 @@
         var runtimeConfig = window.CENTRENEXT_CMS_CONFIG || {};
         var searchParams = new URLSearchParams(window.location.search);
         var savedSiteUrl = window.localStorage.getItem(storageKey);
+        var useLocalBackend = searchParams.get("local_backend") === "1";
         var isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
         var configuredSiteUrl = searchParams.get("site_url") || runtimeConfig.siteUrl || (isLocalhost ? savedSiteUrl : "") || "";
         var setupRoot = document.getElementById("cms-setup");
@@ -158,12 +159,12 @@
           });
         }
 
-        if (isLocalhost && configuredSiteUrl) {
+        if (isLocalhost && configuredSiteUrl && !useLocalBackend) {
           window.location.replace(getAdminUrl(configuredSiteUrl));
           return;
         }
 
-        if (isLocalhost && !configuredSiteUrl) {
+        if (isLocalhost && !configuredSiteUrl && !useLocalBackend) {
           if (setupRoot) setupRoot.classList.add("is-visible");
           return;
         }

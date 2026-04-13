@@ -1,4 +1,4 @@
-// OAuth proxy: handle GitHub OAuth callback for Decap CMS (debug version)
+// OAuth proxy: handle GitHub OAuth callback for Sveltia CMS.
 exports.handler = async function (event) {
   const { code, error } = event.queryStringParameters || {};
 
@@ -9,7 +9,7 @@ exports.handler = async function (event) {
     try {
       const res = await fetch("https://github.com/login/oauth/access_token", {
         method: "POST",
-        headers: { Accept: "application/json", "Content-Type": "application/json", "User-Agent": "Netlify-Decap" },
+        headers: { Accept: "application/json", "Content-Type": "application/json", "User-Agent": "Netlify-Sveltia" },
         body: JSON.stringify({
           client_id: process.env.GITHUB_CLIENT_ID,
           client_secret: process.env.GITHUB_CLIENT_SECRET,
@@ -34,54 +34,16 @@ exports.handler = async function (event) {
   return {
     statusCode: 200,
     headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-cache" },
-    body: `<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Decap OAuth</title>
-<style>body{font:16px/1.5 system-ui;padding:24px;max-width:600px;margin:0 auto}
-pre{background:#f5f5f5;padding:12px;border-radius:6px;word-break:break-all;white-space:pre-wrap}
-.ok{color:green}.err{color:red}.btn{padding:8px 16px;font-size:14px;cursor:pointer;margin-top:12px}</style>
-</head>
-<body>
-<h2>Decap CMS – OAuth Callback</h2>
-<p><strong>Status:</strong> <span id="status">Wird verarbeitet...</span></p>
-<p><strong>window.opener:</strong> <span id="opener">?</span></p>
-<p><strong>Nachricht an Decap:</strong></p>
-<pre id="msg">${postMsg.replace(/</g, "&lt;")}</pre>
-<p><strong>postMessage ergebnis:</strong> <span id="pmresult">-</span></p>
-<button class="btn" id="sendBtn" onclick="sendMsg()">Erneut senden &amp; schliessen</button>
-<script>
-var msg = ${JSON.stringify(postMsg)};
-var ok = ${result.ok ? 'true' : 'false'};
-
-document.getElementById('status').textContent = ok ? '✓ Token erhalten' : '✗ Fehler: ' + msg;
-document.getElementById('status').className = ok ? 'ok' : 'err';
-document.getElementById('opener').textContent = window.opener ? 'vorhanden (same-origin: ' + (window.opener.location ? 'ja' : 'nein, cross-origin') + ')' : 'NULL – postMessage nicht möglich';
-
-function sendMsg() {
+    body: `<!doctype html><html><head><meta charset="utf-8"><title>Sveltia OAuth</title></head><body><script>
+(function() {
+  var msg = ${JSON.stringify(postMsg)};
   if (window.opener) {
-    try {
-      window.opener.postMessage(msg, '*');
-      document.getElementById('pmresult').textContent = 'gesendet!';
-      setTimeout(function() { window.close(); }, 1500);
-    } catch(e) {
-      document.getElementById('pmresult').textContent = 'Fehler: ' + e.message;
-    }
+    window.opener.postMessage(msg, "*");
+    setTimeout(function() { window.close(); }, 500);
   } else {
-    document.getElementById('pmresult').textContent = 'No opener – kann nicht senden';
+    document.body.innerText = "Authentication complete. This window can be closed.\n\n" + msg;
   }
-}
-
-// Auto-send but keep page visible
-if (window.opener) {
-  try {
-    window.opener.postMessage(msg, '*');
-    document.getElementById('pmresult').textContent = 'automatisch gesendet (Fenster bleibt offen fuer Diagnose)';
-  } catch(e) {
-    document.getElementById('pmresult').textContent = 'Fehler beim senden: ' + e.message;
-  }
-}
-</script>
-</body>
-</html>`,
+})();
+</script></body></html>`,
   };
 };
