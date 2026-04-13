@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Centre bien-etre CMS</title>
+    <title>Centre bien-être CMS</title>
     <style>
       body {
         margin: 0;
@@ -91,17 +91,13 @@
       }
     </style>
     <script src="/admin/settings.js"></script>
-    <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
   </head>
   <body>
     <div id="cms-setup" class="cms-setup">
       <div class="cms-card">
         <h1>CMS Setup</h1>
         <p>
-          Auf <code>localhost</code> braucht Decap entweder das lokale Backend via <code>npx decap-server</code>
-          oder die URL Ihrer veroeffentlichten Netlify-Site mit aktiviertem Identity Service und Git Gateway.
+          Auf <code>localhost</code> braucht Sveltia CMS das lokale Backend via <code>npx @sveltia/cms-local-proxy</code>.
         </p>
         <p>
           Hinterlegen Sie die Netlify-URL einmalig hier. Danach wird die gehostete Admin-Seite verwendet.
@@ -114,15 +110,13 @@
         </div>
       </div>
     </div>
-    <div id="nc-root"></div>
-    <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
+    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
     <script>
       (function () {
         var storageKey = "centrenext-cms-site-url";
         var runtimeConfig = window.CENTRENEXT_CMS_CONFIG || {};
         var searchParams = new URLSearchParams(window.location.search);
         var savedSiteUrl = window.localStorage.getItem(storageKey);
-        var useLocalBackend = searchParams.get("local_backend") === "1";
         var isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
         var configuredSiteUrl = searchParams.get("site_url") || runtimeConfig.siteUrl || (isLocalhost ? savedSiteUrl : "") || "";
         var setupRoot = document.getElementById("cms-setup");
@@ -150,11 +144,7 @@
         if (saveUrlButton) {
           saveUrlButton.addEventListener("click", function () {
             var nextValue = siteUrlInput && siteUrlInput.value ? normalizeSiteUrl(siteUrlInput.value.trim()) : "";
-
-            if (!nextValue) {
-              return;
-            }
-
+            if (!nextValue) return;
             window.localStorage.setItem(storageKey, nextValue);
             window.location.href = getAdminUrl(nextValue);
           });
@@ -168,30 +158,15 @@
           });
         }
 
-        if (isLocalhost && configuredSiteUrl && !useLocalBackend) {
+        if (isLocalhost && configuredSiteUrl) {
           window.location.replace(getAdminUrl(configuredSiteUrl));
           return;
         }
 
-        if (isLocalhost && !configuredSiteUrl && !useLocalBackend) {
-          if (setupRoot) {
-            setupRoot.classList.add("is-visible");
-          }
-
+        if (isLocalhost && !configuredSiteUrl) {
+          if (setupRoot) setupRoot.classList.add("is-visible");
           return;
         }
-
-        if (typeof window.initCMS !== "function") {
-          return;
-        }
-
-        var publicSiteUrl = configuredSiteUrl || window.location.origin;
-        window.initCMS({
-          config: {
-            site_url: publicSiteUrl,
-            display_url: publicSiteUrl,
-          },
-        });
       })();
     </script>
   </body>
