@@ -4,6 +4,12 @@
   command = "npm run build"
   publish = "out"
 
+# Cache Next.js build artifacts between deploys
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [".next/cache"]
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"

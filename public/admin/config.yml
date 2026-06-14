@@ -12,8 +12,6 @@ backend:
     uploadMedia: Upload "{{path}}"
     deleteMedia: Delete "{{path}}"
 
-local_backend:
-  url: http://localhost:8081/api/v1
 publish_mode: simple
 app_title: Centre Bien Être CMS
 logo:
@@ -21,7 +19,6 @@ logo:
   show_in_header: true
 media_folder: media
 public_folder: /media
-locale: de
 slug:
   encoding: ascii
   clean_accents: true
@@ -182,16 +179,25 @@ collections:
                 name: hours
                 widget: string
       - name: about
-        label: "📄 Ueber uns"
+        label: "📄 Über uns"
         file: content/data/pages/about.yaml
         format: yaml
         fields:
           - { name: id, widget: hidden, default: about }
+          - { label: Header-Bild, name: headerImage, widget: image, required: false }
+          - label: Galerie-Bilder
+            name: galleryImages
+            widget: list
+            required: false
+            hint: Bilder fuer die Galerie auf der Detailseite Ueber uns
+            fields:
+              - label: Bild
+                name: image
+                widget: image
           - label: Deutsch
             name: de
             widget: object
             fields:
-              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Detailseite }
               - { label: Detailseite - Inhalt, name: content, widget: markdown }
@@ -199,7 +205,6 @@ collections:
             name: fr
             widget: object
             fields:
-              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page detaillee }
               - { label: Page detail - Contenu, name: content, widget: markdown }
@@ -209,11 +214,11 @@ collections:
         format: yaml
         fields:
           - { name: id, widget: hidden, default: location }
+          - { label: Header-Bild, name: headerImage, widget: image, required: false }
           - label: Deutsch
             name: de
             widget: object
             fields:
-              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text, required: false }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Kontakt-Detailseite }
@@ -226,7 +231,6 @@ collections:
             name: fr
             widget: object
             fields:
-              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text, required: false }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page contact detaillee }
@@ -241,11 +245,11 @@ collections:
         format: yaml
         fields:
           - { name: id, widget: hidden, default: team }
+          - { label: Header-Bild, name: headerImage, widget: image, required: false }
           - label: Deutsch
             name: de
             widget: object
             fields:
-              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Team-Detailseite }
@@ -261,7 +265,6 @@ collections:
             name: fr
             widget: object
             fields:
-              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page equipe detaillee }
@@ -279,11 +282,11 @@ collections:
         format: yaml
         fields:
           - { name: id, widget: hidden, default: services }
+          - { label: Header-Bild, name: headerImage, widget: image, required: false }
           - label: Deutsch
             name: de
             widget: object
             fields:
-              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text }
               - { label: Landingpage - Buttontext, name: detailLink, widget: string, hint: Text fuer den Link zur Angebots-Detailseite }
@@ -304,7 +307,6 @@ collections:
             name: fr
             widget: object
             fields:
-              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text }
               - { label: Landing page - Texte du bouton, name: detailLink, widget: string, hint: Texte du lien vers la page des prestations }
@@ -327,11 +329,11 @@ collections:
         format: yaml
         fields:
           - { name: id, widget: hidden, default: news }
+          - { label: Header-Bild, name: headerImage, widget: image, required: false }
           - label: Deutsch
             name: de
             widget: object
             fields:
-              - { label: Detailseite - Headerbild, name: headerImage, widget: image, required: false }
               - { label: Landingpage - Titel, name: title, widget: string }
               - { label: Landingpage - Bereichstitel, name: sectionTitle, widget: string }
               - { label: Landingpage - Intro, name: intro, widget: text, required: false }
@@ -342,7 +344,6 @@ collections:
             name: fr
             widget: object
             fields:
-              - { label: Page detail - Image d'en-tete, name: headerImage, widget: image, required: false }
               - { label: Landing page - Titre, name: title, widget: string }
               - { label: Landing page - Titre de section, name: sectionTitle, widget: string }
               - { label: Landing page - Intro, name: intro, widget: text, required: false }
@@ -498,9 +499,28 @@ collections:
               - label: Contenu du profil
                 name: content
                 widget: markdown
-      - label: E-Mail
-        name: email
-        widget: string
+      - label: E-Mail-Adressen
+        name: emails
+        widget: list
+        required: false
+        fields:
+          - label: E-Mail-Adresse
+            name: address
+            widget: string
+          - label: Beschreibung
+            name: description
+            widget: object
+            required: false
+            hint: "Optionale Bezeichnung pro Sprache"
+            fields:
+              - label: Deutsch
+                name: de
+                widget: string
+                required: false
+              - label: Français
+                name: fr
+                widget: string
+                required: false
       - label: Telefon
         name: phone
         widget: string
@@ -545,19 +565,24 @@ collections:
       - label: Profilbild
         name: image
         widget: image
-      - label: Headerbild
+      - label: Header-Image
         name: headerImage
         widget: image
         required: false
       - label: Tags
         name: tags
-        widget: list
+        widget: select
+        multiple: true
         required: true
-        min: 1
-        field:
-          label: Tag
-          name: tag
-          widget: string
+        hint: Wähle bestehende Tags aus den Angeboten
+        options:
+          - coaching
+          - fascias
+          - massage
+          - physio
+          - praevention
+          - sportphysio
+          - vestibular
 
   - name: service_data
     label: "🗂️ Angebote"
@@ -651,14 +676,24 @@ collections:
         name: image
         widget: image
         required: false
+      - label: Header-Image
+        name: headerImage
+        widget: image
+        required: false
       - label: Tags
         name: tags
-        widget: list
+        widget: select
+        multiple: true
         required: false
-        field:
-          label: Tag
-          name: tag
-          widget: string
+        hint: Wähle bestehende Tags aus den Angeboten
+        options:
+          - coaching
+          - fascias
+          - massage
+          - physio
+          - praevention
+          - sportphysio
+          - vestibular
       - label: Tag-Farbe
         name: tag_color
         widget: select
@@ -697,14 +732,24 @@ collections:
         name: image
         widget: image
         required: false
+      - label: Header-Bild
+        name: headerImage
+        widget: image
+        required: false
       - label: Tags
         name: tags
-        widget: list
+        widget: select
+        multiple: true
         required: false
-        field:
-          label: Tag
-          name: tag
-          widget: string
+        hint: Wähle bestehende Tags aus den Angeboten
+        options:
+          - coaching
+          - fascias
+          - massage
+          - physio
+          - praevention
+          - sportphysio
+          - vestibular
       - label: Profil
         name: profile
         widget: object

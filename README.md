@@ -76,6 +76,8 @@ git clone git@github.com:<org>/centrebienetre-content.git .content-source
 CENTRENEXT_CONTENT_REPO_DIR=.content-source npm run dev
 ```
 
+In dieser Workspace-Struktur wird das Content-Repo auch automatisch erkannt, wenn es als Geschwisterordner `../content` neben `web/` liegt.
+
 Build und Validierung mit separatem Repository:
 
 ```bash

@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
-import { Building2, Clock3, Home, Mail, MapPin, Phone } from "lucide-react";
+import { Building2, Clock3, Home, Mail, MapPin, Phone, Users } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Markdown } from "@/components/ui/markdown";
 import { MapPinned } from "lucide-react";
 import { getSiteContent, sectionKeys, type SectionKey } from "@/lib/content";
 import { getCanonicalSection, getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
@@ -19,13 +19,6 @@ type PageProps = {
     section: string;
   }>;
 };
-
-const aboutGalleryImages = [
-  "/media/DSC06642.webp",
-  "/media/DSC06768.webp",
-  "/media/DSC06813.webp",
-  "/media/DSC06840.webp",
-];
 
 function getSectionTitle(section: SectionKey, content: Awaited<ReturnType<typeof getSiteContent>>) {
   if (section === "about") return content.page.about.title;
@@ -104,7 +97,7 @@ export default async function SectionPage({ params }: PageProps) {
               <>
                 <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
                   <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                    <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
+                    <Markdown>{content.details[canonicalSection]}</Markdown>
                   </div>
                   <Card className="space-y-5 bg-[rgb(var(--surface-elevated)/0.74)]">
                     <div>
@@ -126,34 +119,44 @@ export default async function SectionPage({ params }: PageProps) {
                     </div>
                   </Card>
                 </div>
-                <Button asChild variant="outline" className="self-start">
-                  <Link href={getSectionHref(localeValue, "location")} className="inline-flex items-center gap-2">
-                    <MapPin className="h-4 w-4" aria-hidden />
-                    {content.page.location.detailLink}
-                  </Link>
-                </Button>
-                <div className="space-y-3">
-                  <p className="text-sm font-semibold uppercase tracking-[0.24em] text-clay">Galerie</p>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {aboutGalleryImages.map((imageSrc, index) => (
-                      <div key={imageSrc} className="overflow-hidden rounded-2xl border border-[rgb(var(--border-soft)/0.6)] bg-[rgb(var(--surface-card)/0.88)]">
-                        <Image
-                          src={imageSrc}
-                          alt={`${title} Bild ${index + 1}`}
-                          width={960}
-                          height={640}
-                          sizes="(max-width: 640px) 100vw, 50vw"
-                          className="h-52 w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
-                        />
-                      </div>
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-3">
+                  <Button asChild variant="outline">
+                    <Link href={getSectionHref(localeValue, "location")} className="inline-flex items-center gap-2">
+                      <MapPin className="h-4 w-4" aria-hidden />
+                      {content.page.location.detailLink}
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link href={getSectionHref(localeValue, "team")} className="inline-flex items-center gap-2">
+                      <Users className="h-4 w-4" aria-hidden />
+                      {content.page.team.detailLink}
+                    </Link>
+                  </Button>
                 </div>
+                {content.page.about.galleryImages.length > 0 ? (
+                  <div className="space-y-3">
+                    <p className="text-sm font-semibold uppercase tracking-[0.24em] text-clay">Galerie</p>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {content.page.about.galleryImages.map((imageSrc, index) => (
+                        <div key={imageSrc} className="overflow-hidden rounded-2xl border border-[rgb(var(--border-soft)/0.6)] bg-[rgb(var(--surface-card)/0.88)]">
+                          <Image
+                            src={imageSrc}
+                            alt={`${title} Bild ${index + 1}`}
+                            width={960}
+                            height={640}
+                            sizes="(max-width: 640px) 100vw, 50vw"
+                            className="h-52 w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </>
             ) : isServicesSection ? (
               <div className="space-y-8">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
+                  <Markdown>{content.details[canonicalSection]}</Markdown>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
                   {content.page.services.items.map((service) => (
@@ -212,7 +215,7 @@ export default async function SectionPage({ params }: PageProps) {
             ) : isLocationSection ? (
               <div className="space-y-8">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
+                  <Markdown>{content.details[canonicalSection]}</Markdown>
                 </div>
                 <Card className="max-w-xl space-y-3 bg-[rgb(var(--surface-elevated)/0.74)]">
                   <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-clay">
@@ -257,7 +260,7 @@ export default async function SectionPage({ params }: PageProps) {
             ) : isTeamSection ? (
               <div className="space-y-8">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
+                  <Markdown>{content.details[canonicalSection]}</Markdown>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
                   {content.page.team.people.map((person) => (
@@ -290,7 +293,7 @@ export default async function SectionPage({ params }: PageProps) {
             ) : (
               <div className="space-y-8">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{content.details[canonicalSection]}</ReactMarkdown>
+                  <Markdown>{content.details[canonicalSection]}</Markdown>
                 </div>
               </div>
             )}

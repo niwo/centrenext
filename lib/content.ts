@@ -30,12 +30,17 @@ type SchedulePeriod = "morning" | "afternoon";
 type ScheduleDayKey = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
 type WorkingDay = { day: ScheduleDayKey; periods: SchedulePeriod[] };
 
+type TeamEmail = {
+  address: string;
+  description?: string;
+};
+
 type TeamMember = {
   slug: string;
   name: string;
   slogan?: string;
   role: string;
-  email?: string;
+  emails?: TeamEmail[];
   phone?: string;
   socialLinks?: Array<{
     platform: "website" | "instagram" | "linkedin";
@@ -88,6 +93,7 @@ type NewsItem = {
   date: string;
   excerpt: string;
   image: string;
+  headerImage?: string;
 };
 
 export type NewsPost = NewsItem & {
@@ -125,6 +131,7 @@ type PageContent = {
     kicker: string;
     detailLink: string;
     headerImage: string;
+    galleryImages: string[];
   };
   team: {
     title: string;
@@ -405,6 +412,7 @@ type NewsDataFile = {
   id?: string;
   updated?: string;
   image?: string;
+  headerImage?: string;
   tags?: string[];
   profile?: Partial<Record<Locale, NewsLocalizedProfile>>;
 };
@@ -419,9 +427,10 @@ type TestimonialDataFile = {
 
 type PageDataFile = {
   id: string;
+  headerImage?: string;
+  galleryImages?: Array<{ image?: string }>;
   de: {
     content: string;
-    headerImage?: string;
     title?: string;
     intro?: string;
     detailLink?: string;
@@ -451,7 +460,6 @@ type PageDataFile = {
   };
   fr: {
     content: string;
-    headerImage?: string;
     title?: string;
     intro?: string;
     detailLink?: string;
@@ -491,7 +499,7 @@ type TeamDataFile = {
   id?: string;
   name?: string;
   profile?: Partial<Record<Locale, TeamLocalizedProfile>>;
-  email?: string;
+  emails?: Array<{ address?: string; description?: string | Partial<Record<Locale, string>> }>;
   phone?: string;
   socialLinks?: Array<{
     platform?: "website" | "instagram" | "linkedin";
@@ -510,7 +518,7 @@ type TeamProfileWithMeta = TeamProfile & {
   name: string;
   role: string;
   slogan?: string;
-  email?: string;
+  emails?: TeamEmail[];
   phone?: string;
   socialLinks?: Array<{
     platform: "website" | "instagram" | "linkedin";
@@ -544,6 +552,16 @@ function normalizeStringList(value: unknown) {
     .filter((entry) => entry.length > 0);
 }
 
+function normalizeGalleryImages(value: PageDataFile["galleryImages"]) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((entry) => (typeof entry?.image === "string" ? entry.image.trim() : ""))
+    .filter((entry) => entry.length > 0);
+}
+
 function normalizeServicePrices(value: ServiceDataFile["prices"]) {
   if (!Array.isArray(value)) {
     return [];
@@ -571,6 +589,27 @@ function normalizeTeamSchedule(value: TeamDataFile["schedule"]): WorkingDay[] {
         : [],
     }))
     .filter((entry): entry is WorkingDay => entry.day !== undefined && entry.periods.length > 0);
+}
+
+function normalizeTeamEmails(value: TeamDataFile["emails"], locale: Locale): TeamEmail[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((entry) => {
+      const address = typeof entry?.address === "string" ? entry.address.trim() : "";
+      const rawDescription = entry?.description;
+      const description =
+        typeof rawDescription === "string"
+          ? rawDescription.trim()
+          : typeof rawDescription === "object" && rawDescription !== null
+            ? getLocalizedField(rawDescription as LocalizedField, locale).trim()
+            : "";
+
+      return description ? { address, description } : { address };
+    })
+    .filter((entry): entry is TeamEmail => entry.address.length > 0);
 }
 
 function normalizeTeamSocialLinks(value: TeamDataFile["socialLinks"]) {
@@ -664,6 +703,7 @@ async function readNewsPosts(newsDataDir: string, locale: Locale): Promise<NewsP
         date: newsData.updated ?? "",
         excerpt: localizedProfile.excerpt ?? "",
         image: newsData.image ?? "/media/DSC06642.webp",
+        headerImage: newsData.headerImage,
         tags: normalizeTags(newsData.tags),
         content: (localizedProfile.content ?? "").trim(),
       };
@@ -810,7 +850,7 @@ async function readTeamProfiles(teamDataDir: string, locale: Locale): Promise<Te
         name: teamData.name ?? slug,
         role: localizedProfile.role ?? slug,
         slogan: localizedProfile.slogan,
-        email: teamData.email,
+        emails: normalizeTeamEmails(teamData.emails, locale),
         phone: teamData.phone,
         socialLinks: normalizeTeamSocialLinks(teamData.socialLinks),
         schedule: normalizeTeamSchedule(teamData.schedule),
@@ -845,7 +885,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     Promise.all(
       sectionKeys.map(async (key) => {
         const pageData = await parseYamlFile<PageDataFile>(path.join(pagesDataDir, `${key}.yaml`));
-        return [key, pageData[locale] ?? { content: "" }] as const;
+        return [key, pageData] as const;
       }),
     ),
     readTeamProfiles(teamDataDir, locale),
@@ -854,7 +894,15 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     readTestimonialPosts(testimonialsDataDir, locale),
   ]);
 
-  const localizedPages = Object.fromEntries(pageEntries) as Record<SectionKey, PageDataFile[Locale]>;
+  const pagesBySection = Object.fromEntries(pageEntries) as Record<SectionKey, PageDataFile>;
+  const localizedPages = Object.fromEntries(
+    sectionKeys.map((key) => [key, pagesBySection[key]?.[locale] ?? { content: "" }]),
+  ) as Record<SectionKey, PageDataFile[Locale]>;
+
+  function resolveSectionHeaderImage(sectionKey: SectionKey) {
+    const sectionPage = pagesBySection[sectionKey];
+    return sectionPage.headerImage;
+  }
   const details = Object.fromEntries(
     sectionKeys.map((key) => [key, localizedPages[key]?.content?.trim() ?? ""]),
   ) as Record<SectionKey, string>;
@@ -901,7 +949,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     name: member.name,
     slogan: member.slogan,
     role: member.role,
-    email: member.email,
+    emails: member.emails,
     phone: member.phone,
     socialLinks: member.socialLinks,
     schedule: member.schedule,
@@ -917,12 +965,13 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
     image: item.image,
   }));
 
-  const newsItems = newsPosts.map(({ slug, title, date, excerpt, image }) => ({
+  const newsItems = newsPosts.map(({ slug, title, date, excerpt, image, headerImage }) => ({
     slug,
     title,
     date,
     excerpt,
     image,
+    headerImage,
   }));
 
   // Build navigation from i18n nav keys (order follows sectionKeys)
@@ -954,14 +1003,15 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       title: aboutPage.title ?? i18n.about.title ?? i18n.nav.about,
       kicker: i18n.nav.about,
       detailLink: aboutPage.detailLink ?? i18n.about.detailLink ?? "",
-      headerImage: aboutPage.headerImage ?? defaultSectionHeaderImages.about,
+      headerImage: resolveSectionHeaderImage("about") ?? defaultSectionHeaderImages.about,
+      galleryImages: normalizeGalleryImages(pagesBySection.about.galleryImages),
     },
     team: {
       title: teamPage.title ?? i18n.team.title ?? i18n.nav.team,
       intro: teamPage.intro ?? i18n.team.intro ?? "",
       kicker: i18n.nav.team,
       detailLink: teamPage.detailLink ?? i18n.team.detailLink ?? "",
-      headerImage: teamPage.headerImage ?? defaultSectionHeaderImages.team,
+      headerImage: resolveSectionHeaderImage("team") ?? defaultSectionHeaderImages.team,
       scheduleTitle: teamPage.schedule?.title ?? i18n.team.schedule?.title ?? "",
       scheduleMorningLabel: teamPage.schedule?.morning ?? i18n.team.schedule?.morning ?? "",
       scheduleAfternoonLabel: teamPage.schedule?.afternoon ?? i18n.team.schedule?.afternoon ?? "",
@@ -972,7 +1022,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: servicesPage.intro ?? i18n.services.intro ?? "",
       kicker: i18n.nav.services,
       detailLink: servicesPage.detailLink ?? i18n.services.detailLink ?? "",
-      headerImage: servicesPage.headerImage ?? defaultSectionHeaderImages.services,
+      headerImage: resolveSectionHeaderImage("services") ?? defaultSectionHeaderImages.services,
       priceLabel: servicesPage.priceLabel ?? i18n.services.priceLabel ?? "",
       unitLabel: servicesPage.unitLabel ?? i18n.services.unitLabel ?? "",
       unitSessionLabel: servicesPage.unitSessionLabel ?? i18n.services.unitSessionLabel ?? "",
@@ -999,7 +1049,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: newsPage.intro ?? i18n.posts.intro ?? "",
       kicker: i18n.nav.posts,
       detailLink: newsPage.detailLink ?? i18n.posts.detailLink ?? "",
-      headerImage: newsPage.headerImage ?? defaultSectionHeaderImages.news,
+      headerImage: resolveSectionHeaderImage("news") ?? defaultSectionHeaderImages.news,
       showAllLabel: newsPage.showAllLabel ?? i18n.posts.showAllLabel ?? "",
       items: newsItems,
     },
@@ -1008,7 +1058,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       intro: locationPage.intro ?? i18n.location.intro ?? "",
       kicker: i18n.nav.location,
       detailLink: locationPage.detailLink ?? i18n.location.detailLink ?? "",
-      headerImage: locationPage.headerImage ?? defaultSectionHeaderImages.location,
+      headerImage: resolveSectionHeaderImage("location") ?? defaultSectionHeaderImages.location,
       practiceDetailLink: locationPage.practiceDetailLink ?? i18n.location.practiceDetailLink ?? "",
       addressLabel: locationPage.addressLabel ?? i18n.location.addressLabel ?? "",
       openingHoursLabel: locationPage.openingHoursLabel ?? i18n.location.openingHoursLabel ?? "",

@@ -66,9 +66,11 @@
       "additionalProperties": false
     },
     "image": { "type": "string" },
+    "headerImage": { "type": "string" },
     "tags": {
       "type": "array",
       "items": { "type": "string" },
+      "uniqueItems": true,
       "minItems": 1
     },
     "tag_color": {

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
 import { Building2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 import { getSectionHref } from "@/lib/routes";
 import type { Locale } from "@/lib/site-config";
 
@@ -36,7 +36,7 @@ export function AboutSection({ locale, title, kicker, tagline, detailLink, about
           {tagline ? <p className="text-base leading-7 text-ink/70">{tagline}</p> : null}
         </div>
         <div className="prose prose-stone max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-          <ReactMarkdown>{about}</ReactMarkdown>
+          <Markdown>{about}</Markdown>
         </div>
         <Button asChild variant="outline" className="mt-auto self-start">
           <Link href={getSectionHref(locale, "about")} className="inline-flex items-center gap-2">

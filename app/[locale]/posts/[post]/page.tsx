@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 import { Home, Newspaper } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Markdown } from "@/components/ui/markdown";
 import { getSiteContent } from "@/lib/content";
 import { getItemHref, getSectionHref } from "@/lib/routes";
 import { isLocale, siteConfig, type Locale } from "@/lib/site-config";
@@ -67,7 +67,7 @@ export default async function NewsPostPage({ params }: PageProps) {
         <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
         <Card className="space-y-6 overflow-hidden p-0">
-          <Image src={newsPost.image} alt={newsPost.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
+          <Image src={newsPost.headerImage ?? newsPost.image} alt={newsPost.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
           <div className="space-y-4 px-6 pb-8 sm:px-8">
             <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
               <Link href={`/${locale}`} className="hover:text-forest">
@@ -86,7 +86,7 @@ export default async function NewsPostPage({ params }: PageProps) {
 
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
               <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                <ReactMarkdown>{newsPost.content}</ReactMarkdown>
+                <Markdown>{newsPost.content}</Markdown>
               </div>
 
               {relatedServices.length > 0 ? (

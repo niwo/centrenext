@@ -5,9 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Search, Users, HeartPulse, Newspaper, X } from "lucide-react";
-import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
+import { Markdown } from "@/components/ui/markdown";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { getCanonicalSection, getLocalizedPath } from "@/lib/routes";
 import type { SearchIndexItem } from "@/lib/content";
@@ -254,7 +254,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
                         </p>
                         <p className="mt-2 text-lg font-semibold text-forest">{highlightMatches(item.title, searchQuery)}</p>
                         <div className="mt-1 max-h-20 overflow-hidden text-sm text-ink/75">
-                          <ReactMarkdown
+                          <Markdown
                             components={{
                               p: ({ children }) => <p className="mb-2 last:mb-0">{highlightNodeText(children, searchQuery)}</p>,
                               strong: ({ children }) => (
@@ -266,7 +266,7 @@ export function SiteHeader({ locale, practiceName, searchLabel, navigation, sear
                             }}
                           >
                             {item.summary}
-                          </ReactMarkdown>
+                          </Markdown>
                         </div>
                       </Link>
                     </li>

@@ -183,7 +183,7 @@ async function main() {
         `Content directory not found: ${contentDir}`,
         "Set CENTRENEXT_CONTENT_REPO_DIR (or CENTRENEXT_CONTENT_DIR) to your content repository path.",
         "Alternatively set CONTENT_REPO_TOKEN (and optional CENTRENEXT_CONTENT_REPO_SLUG/CENTRENEXT_CONTENT_REPO_BRANCH) for automatic checkout during build.",
-        "Default autodiscovery expects a sibling folder: ../centrebienetre-content",
+        "Default autodiscovery checks sibling folders: ../centrebienetre-content and ../content",
       ].join("\n"),
     );
   }

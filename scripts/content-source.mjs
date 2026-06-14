@@ -9,14 +9,22 @@ function resolveEnvPath(value) {
   return path.isAbsolute(value) ? value : path.resolve(process.cwd(), value);
 }
 
+function resolveDefaultRepoRoot(appRoot) {
+  const candidates = [
+    path.resolve(appRoot, "..", "centrebienetre-content"),
+    path.resolve(appRoot, "..", "content"),
+  ];
+
+  return candidates.find((candidatePath) => existsSync(candidatePath));
+}
+
 export function getContentSourcePaths() {
   const appRoot = process.cwd();
   const appContentDir = path.join(appRoot, "content");
   const appPublicDir = path.join(appRoot, "public");
   const appMediaDir = path.join(appPublicDir, "media");
   const configuredRepoRoot = resolveEnvPath(process.env.CENTRENEXT_CONTENT_REPO_DIR);
-  const defaultRepoRoot = path.resolve(appRoot, "..", "centrebienetre-content");
-  const repoRoot = configuredRepoRoot ?? (existsSync(defaultRepoRoot) ? defaultRepoRoot : undefined);
+  const repoRoot = configuredRepoRoot ?? resolveDefaultRepoRoot(appRoot);
   const configuredMediaDir = resolveEnvPath(process.env.CENTRENEXT_CONTENT_MEDIA_DIR);
   const configuredLegacyPublicDir = resolveEnvPath(process.env.CENTRENEXT_CONTENT_PUBLIC_DIR);
 

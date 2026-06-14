@@ -47,17 +47,23 @@ export function NewsSection({ news, locale }: NewsSectionProps) {
         {news.items.slice(0, 2).map((item) => (
           <Link id={item.slug} key={item.slug} href={getItemHref(locale, "news", item.slug)}>
             <Card className="border-[rgb(var(--color-clay)/0.26)] bg-[rgb(var(--surface-card)/0.97)] shadow-[0_8px_24px_rgb(var(--color-forest)/0.08)] transition hover:border-[rgb(var(--color-clay)/0.38)] hover:bg-white dark:border-[rgb(var(--border-soft)/0.65)] dark:bg-[rgb(var(--surface-elevated)/0.7)] dark:hover:bg-[rgb(var(--surface-elevated)/0.9)]">
-              <Image
-                src={item.image}
-                alt={item.title}
-                width={960}
-                height={420}
-                sizes="(max-width: 768px) 100vw, 960px"
-                className="h-40 w-full rounded-xl object-cover"
-              />
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{formatNewsDate(item.date, locale)}</p>
-              <h3 className="mt-3 text-2xl text-forest">{item.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-ink/75">{item.excerpt}</p>
+              <div className="flex items-center gap-7">
+                <div className="shrink-0 overflow-hidden rounded-full border border-[rgb(var(--border-soft)/0.6)]">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={96}
+                    height={96}
+                    sizes="96px"
+                    className="h-[96px] w-[96px] object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{formatNewsDate(item.date, locale)}</p>
+                  <h3 className="mt-1 text-2xl text-forest">{item.title}</h3>
+                  <p className="mt-1 text-sm leading-7 text-ink/75">{item.excerpt}</p>
+                </div>
+              </div>
             </Card>
           </Link>
         ))}

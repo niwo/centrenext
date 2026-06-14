@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 import { Check, Globe, HeartPulse, Home, Instagram, Linkedin, Mail, Newspaper, Phone, User, Users, X } from "lucide-react";
 
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -9,6 +8,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { ExpandableNewsList } from "@/components/ui/expandable-news-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Markdown } from "../../../../components/ui/markdown";
 import { WeeklySchedule } from "@/components/ui/weekly-schedule";
 import { getSiteContent, type SectionKey } from "@/lib/content";
 import { getCanonicalSection, getItemHref, getSectionHref, getSectionSlug } from "@/lib/routes";
@@ -123,7 +123,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                   <p className="text-lg leading-8 text-ink/75">{servicePost.description}</p>
 
                   <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                    <ReactMarkdown>{servicePost.content}</ReactMarkdown>
+                    <Markdown>{servicePost.content}</Markdown>
                   </div>
                 </div>
 
@@ -274,7 +274,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
           <SiteHeader locale={localeValue} practiceName={content.practice.name} searchLabel={content.page.searchLabel} navigation={content.page.navigation} searchItems={content.searchIndex} />
 
           <Card className="space-y-6 overflow-hidden p-0">
-            <Image src={post.image} alt={post.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
+            <Image src={post.headerImage ?? post.image} alt={post.title} width={1500} height={560} sizes="(max-width: 1280px) 100vw, 1200px" className="h-64 w-full object-cover" />
             <div className="space-y-4 px-6 pb-8 sm:px-8">
               <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-clay">
                 <Link href={`/${locale}`} className="hover:text-forest">
@@ -293,7 +293,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
 
               <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/80 prose-strong:text-forest">
-                  <ReactMarkdown>{post.content}</ReactMarkdown>
+                  <Markdown>{post.content}</Markdown>
                 </div>
 
                 {relatedServices.length > 0 || relatedTeamMembers.length > 0 ? (
@@ -416,11 +416,18 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                 <div className="rounded-2xl border border-[rgb(var(--color-mist)/0.5)] bg-[rgb(var(--surface-elevated)/0.85)] px-6 py-5 shadow-sm">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-clay">{content.page.footer.contactKicker}</p>
                   <div className="space-y-2 text-base text-ink/80">
-                    {person.email ? (
-                      <a href={`mailto:${person.email}`} className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline">
-                        <Mail className="h-4 w-4" aria-hidden />
-                        {person.email}
-                      </a>
+                    {person.emails && person.emails.length > 0 ? (
+                      person.emails.map((entry) => (
+                        <div key={entry.address} className="flex flex-col gap-0.5">
+                          <a href={`mailto:${entry.address}`} className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline">
+                            <Mail className="h-4 w-4" aria-hidden />
+                            {entry.address}
+                          </a>
+                          {entry.description ? (
+                            <span className="pl-6 text-sm text-ink/60">{entry.description}</span>
+                          ) : null}
+                        </div>
+                      ))
                     ) : null}
                     {person.phone && phoneHref ? (
                       <a href={phoneHref} className="inline-flex items-center gap-2 font-semibold text-forest underline-offset-4 hover:underline">
@@ -524,7 +531,7 @@ export default async function LocalizedDetailPage({ params }: PageProps) {
                 ) : null}
 
                 <div className="prose prose-stone prose-lg max-w-none prose-headings:text-forest prose-p:text-ink/85 prose-strong:text-forest">
-                  <ReactMarkdown>{profile.content}</ReactMarkdown>
+                  <Markdown>{profile.content}</Markdown>
                 </div>
               </div>
             </div>
